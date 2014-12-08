@@ -1,3 +1,6 @@
+import geomerative.*;           // library for text manipulation and point extraction
+
+
 PShape s;  // The PShape object
 PShape logo; // Create the shape group
 PShape bezier; 
@@ -36,7 +39,14 @@ void setup() {
   bezier.vertex(30, 20);
   bezier.bezierVertex(80, 0, 80, 75, 30, 75);
   bezier.endShape();
-
+  
+  ////////////////////////////////////////////
+  
+  ////////////////////////////////////////////
+  // initialize the Geomerative library
+  RG.init(this);
+  
+  
 }
 
 
