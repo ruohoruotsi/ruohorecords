@@ -14,6 +14,7 @@
 
 import fontastic.*;
 import java.util.List;
+import geomerative.*;
 
 Fontastic f;
 
@@ -24,22 +25,58 @@ int version = 0;
 
 boolean fontBuilt = false;
 
+RFont font;
+String myText = "R";
+
 
 void setup() {
-
+ 
+  RG.init(this); 
+ 
   size(800, 600);
+  background(255);
+  smooth(4);
   fill(0);
+    
+  //////////////////////////////////////////////
 
   randomizeFont();
   createFont();
-}
+  
+  //////////////////////////////////////////////
+  
+  /*
+  font = new RFont(f.getTTFfilename(), 600, CENTER);
 
+  stroke(10);
+  strokeWeight(0.3);
+  translate(width * 0.4, height * 0.9);
+  
+  // Configure segment length, mode and set length between two points
+  // in a shape/font outline
+  RCommand.setSegmentLength(5);//ASSIGN A VALUE OF 10, SO EVERY 10 PIXELS
+  RCommand.setSegmentator(RCommand.UNIFORMLENGTH);
+
+  //GROUP TOGETHER MY FONT & TEXT.
+  RGroup myGroup = font.toGroup(myText); 
+  myGroup = myGroup.toPolygonGroup();
+  
+  //ACCESS POINTS ON MY FONT/SHAPE OUTLINE
+  RPoint[] myPoints = myGroup.getPoints();
+
+  //DRAW ELLIPSES AT EACH OF THESE POINTS
+  for (int i=0; i<myPoints.length; i++) {
+    //ellipse(myPoints[i].x, myPoints[i].y, 2, 2);
+    line(myPoints[i].x, myPoints[i].y, 10, 10);
+    // line(myPoints[i].x, myPoints[i].y,8,-360);
+    //line(myPoints[i].x+10, myPoints[i].y,myPoints[i].x+9,myPoints[i].y+130);
+  } */
+}
 
 void draw() {
 
   background(255);
-
-  strokeWeight(6);
+  strokeWeight(2);
   textSize(25); // for small numbers at bezier lines
 
  // for (int i=0; i<5; i++) {
@@ -54,22 +91,30 @@ void draw() {
     // fill(0,255,0,80);
     // renderGlyphSolid(Fontastic.alphabet[i]);
     popMatrix();
- // }
+  // }
 
-  // fill(0,255,0,80);
-  // noStroke();
-  // renderGlyphSolid('A');
 
   if(fontBuilt) {
+    strokeWeight(1);
     pushMatrix();
-    textFont(myFont);
-    textAlign(CENTER, CENTER);
-    //fill(0);
-    textSize(charWidth);
-    text("R", width/2, height*0.6);
-    popMatrix();
-  }
+    translate(width * 0.4, height * 0.9);
 
+    //GROUP TOGETHER MY FONT & TEXT.
+    RGroup myGroup = font.toGroup(myText); 
+    myGroup = myGroup.toPolygonGroup();
+     
+    //ACCESS POINTS ON MY FONT/SHAPE OUTLINE
+    RPoint[] myPoints = myGroup.getPoints();
+  
+    //DRAW ELLIPSES AT EACH OF THESE POINTS
+    for (i=0; i<myPoints.length; i++) {
+      // ellipse(myPoints[i].x, myPoints[i].y, 5, 5);
+      line(myPoints[i].x, myPoints[i].y, 10, 10);
+      // line(myPoints[i].x, myPoints[i].y,8,-360);
+      // line(myPoints[i].x+10, myPoints[i].y,myPoints[i].x+9,myPoints[i].y+130);
+    }
+    popMatrix();     
+  } 
 }
 
 void randomizeFont() {
@@ -154,7 +199,6 @@ void renderGlyphSolid(char c) {
       endShape();
     }
   }
-
 }
 
 
@@ -164,9 +208,9 @@ void createFont() {
   f.cleanup();
 
   myFont = createFont(f.getTTFfilename(), 200);
-  
-  fontBuilt = true;
+  font = new RFont(f.getTTFfilename(), 600, CENTER);
 
+  fontBuilt = true;
 }
 
 
