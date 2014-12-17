@@ -16,24 +16,38 @@ import fontastic.*;
 import java.util.List;
 import geomerative.*;
 
+//////////////////////////////////////////////
+// Fontastic
+//////////////////////////////////////////////
+
 Fontastic f;
+PFont myFont;
 
 float charWidth = 512;
-
-PFont myFont;
 int version = 0;
-
 boolean fontBuilt = false;
 
+//////////////////////////////////////////////
+// Geomerative
+//////////////////////////////////////////////
+
 RFont font;
-String myText = "R";
+String displayText = "R";
+
+//////////////////////////////////////////////
+// Constants
+//////////////////////////////////////////////
+
+final int canvasWidth = 800;
+final int canvasHeight = 600;
+
 
 
 void setup() {
  
   RG.init(this); 
  
-  size(800, 600);
+  size(canvasWidth, canvasHeight);
   background(255);
   smooth(4);
   fill(0);
@@ -42,35 +56,6 @@ void setup() {
 
   randomizeFont();
   createFont();
-  
-  //////////////////////////////////////////////
-  
-  /*
-  font = new RFont(f.getTTFfilename(), 600, CENTER);
-
-  stroke(10);
-  strokeWeight(0.3);
-  translate(width * 0.4, height * 0.9);
-  
-  // Configure segment length, mode and set length between two points
-  // in a shape/font outline
-  RCommand.setSegmentLength(5);//ASSIGN A VALUE OF 10, SO EVERY 10 PIXELS
-  RCommand.setSegmentator(RCommand.UNIFORMLENGTH);
-
-  //GROUP TOGETHER MY FONT & TEXT.
-  RGroup myGroup = font.toGroup(myText); 
-  myGroup = myGroup.toPolygonGroup();
-  
-  //ACCESS POINTS ON MY FONT/SHAPE OUTLINE
-  RPoint[] myPoints = myGroup.getPoints();
-
-  //DRAW ELLIPSES AT EACH OF THESE POINTS
-  for (int i=0; i<myPoints.length; i++) {
-    //ellipse(myPoints[i].x, myPoints[i].y, 2, 2);
-    line(myPoints[i].x, myPoints[i].y, 10, 10);
-    // line(myPoints[i].x, myPoints[i].y,8,-360);
-    //line(myPoints[i].x+10, myPoints[i].y,myPoints[i].x+9,myPoints[i].y+130);
-  } */
 }
 
 void draw() {
@@ -79,39 +64,38 @@ void draw() {
   strokeWeight(2);
   textSize(25); // for small numbers at bezier lines
 
- // for (int i=0; i<5; i++) {
-   int i = 0;
-    pushMatrix();
-    translate(width/2, height/4);
-    scale(0.5);
-    translate(-1*charWidth / 2 + i*charWidth, charWidth / 2);
-    
-    renderGlyphOutline('R', color(255,0,0), color(100)); 
-    
-    // fill(0,255,0,80);
-    // renderGlyphSolid(Fontastic.alphabet[i]);
-    popMatrix();
-  // }
+  int i = 0;
+  pushMatrix();
+  translate(width/2, height/4);
+  scale(0.5);
+  translate(-1*charWidth / 2 + i*charWidth, charWidth / 2);
+  
+  // draw outline so we can see what we're doing
+  renderGlyphOutline('R', color(255,0,0), color(100)); 
+  popMatrix();
 
+  //////////////////////////////////////////////
 
   if(fontBuilt) {
     strokeWeight(1);
     pushMatrix();
     translate(width * 0.4, height * 0.9);
 
-    //GROUP TOGETHER MY FONT & TEXT.
-    RGroup myGroup = font.toGroup(myText); 
-    myGroup = myGroup.toPolygonGroup();
+    // RFont -> RGroup -> RPoints
+    
+    // Make groups
+    RGroup group = font.toGroup(displayText); 
+    group = group.toPolygonGroup();
      
-    //ACCESS POINTS ON MY FONT/SHAPE OUTLINE
-    RPoint[] myPoints = myGroup.getPoints();
+    // Get points from font/shape via the group
+    RPoint[] fontPoints = group.getPoints();
   
-    //DRAW ELLIPSES AT EACH OF THESE POINTS
-    for (i=0; i<myPoints.length; i++) {
-      // ellipse(myPoints[i].x, myPoints[i].y, 5, 5);
-      line(myPoints[i].x, myPoints[i].y, 10, 10);
-      // line(myPoints[i].x, myPoints[i].y,8,-360);
-      // line(myPoints[i].x+10, myPoints[i].y,myPoints[i].x+9,myPoints[i].y+130);
+    // Draw points as ellipses, lines, etc
+    for (i=0; i < fontPoints.length; i++) {
+      ellipse(fontPoints[i].x, fontPoints[i].y, 5, 5);
+      // line(fontPoints[i].x, fontPoints[i].y, 10, 10);
+      // line(fontPoints[i].x, fontPoints[i].y,8,-360);
+      // line(fontPoints[i].x+10, fontPoints[i].y,fontPoints[i].x+9,fontPoints[i].y+130);
     }
     popMatrix();     
   } 
@@ -128,35 +112,30 @@ void randomizeFont() {
   f.setVersion("0.1");
   f.setAdvanceWidth(int(charWidth));
 
-  //for (int i=0; i<Fontastic.alphabet.length; i++) {
+  System.out.println(Fontastic.alphabet.length);
+  char c = 'R'; //Fontastic.alphabet[i];
 
-    System.out.println(Fontastic.alphabet.length);
-    char c = 'R'; //Fontastic.alphabet[i];
-
-    FPoint[] points = new FPoint[4];
+  FPoint[] points = new FPoint[4];
   
-    float rectSize = charWidth*0.5;
-    float rnd = charWidth*0.2;
+  float rectSize = charWidth*0.5;
+  float rnd = charWidth*0.2;
 
-    points[0] = new FPoint(charWidth/2 - rectSize/2, charWidth/2 - rectSize/2);
-    points[1] = new FPoint(charWidth/2 - rectSize/2, charWidth/2 + rectSize/2);
-    points[2] = new FPoint(charWidth/2 + rectSize/2, charWidth/2 + rectSize/2);
-    points[3] = new FPoint(charWidth/2 + rectSize/2, charWidth/2 - rectSize/2);
+  points[0] = new FPoint(charWidth/2 - rectSize/2, charWidth/2 - rectSize/2);
+  points[1] = new FPoint(charWidth/2 - rectSize/2, charWidth/2 + rectSize/2);
+  points[2] = new FPoint(charWidth/2 + rectSize/2, charWidth/2 + rectSize/2);
+  points[3] = new FPoint(charWidth/2 + rectSize/2, charWidth/2 - rectSize/2);
 
-    points[0].setControlPoint1(points[0].x + rnd, points[0].y + random(-rnd, rnd));
-    points[1].setControlPoint1(points[1].x + random(-rnd, rnd), points[1].y - rnd);
-    points[2].setControlPoint1(points[2].x - rnd, points[2].y + random(-rnd, rnd));
-    points[3].setControlPoint1(points[3].x - random(-rnd, rnd), points[3].y + rnd);
+  points[0].setControlPoint1(points[0].x + rnd, points[0].y + random(-rnd, rnd));
+  points[1].setControlPoint1(points[1].x + random(-rnd, rnd), points[1].y - rnd);
+  points[2].setControlPoint1(points[2].x - rnd, points[2].y + random(-rnd, rnd));
+  points[3].setControlPoint1(points[3].x - random(-rnd, rnd), points[3].y + rnd);
 
-    points[0].setControlPoint2(points[0].x + random(-rnd, rnd), points[0].y + rnd);
-    points[1].setControlPoint2(points[1].x + rnd, points[1].y + random(-rnd, rnd));
-    points[2].setControlPoint2(points[2].x + random(-rnd, rnd), points[2].y - rnd);
-    points[3].setControlPoint2(points[3].x - rnd, points[3].y + random(-rnd, rnd));
+  points[0].setControlPoint2(points[0].x + random(-rnd, rnd), points[0].y + rnd);
+  points[1].setControlPoint2(points[1].x + rnd, points[1].y + random(-rnd, rnd));
+  points[2].setControlPoint2(points[2].x + random(-rnd, rnd), points[2].y - rnd);
+  points[3].setControlPoint2(points[3].x - rnd, points[3].y + random(-rnd, rnd));
 
-    f.addGlyph(c).addContour(points);
-
- // }
-
+  f.addGlyph(c).addContour(points);
 }
 
 void renderGlyphOutline(char c, color linecolor, color handlecolor) {
@@ -240,12 +219,12 @@ void bezierWithHandles(String legend, float p1x, float p1y, float cp1x, float cp
 void keyPressed() {
 
   if (key == ' ') {
-    randomizeFont();
-    fontBuilt = false;
+    //randomizeFont();
+    //fontBuilt = false;
   }
 
   if (key == 's') {
-    createFont();
+    //createFont();
   }
 }
 
