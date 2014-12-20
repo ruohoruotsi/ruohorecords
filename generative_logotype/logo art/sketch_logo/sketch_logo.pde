@@ -1,3 +1,14 @@
+/*
+//////////////////////////////////////////////
+--------- GEOMERATIVE TUTORIALS --------------
+//////////////////////////////////////////////
+Title   :   Geo_Font_02
+Date    :   01/03/2011 
+Version :   v0.5
+We access a number of points on a font's outline.
+
+ */
+//////////////////////////////////////////////
 import geomerative.*;           // library for text manipulation and point extraction
 
 
