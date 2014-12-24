@@ -45,12 +45,14 @@ final int canvasHeight = 600;
 
 void setup() {
  
-  RG.init(this); 
- 
   size(canvasWidth, canvasHeight);
   background(255);
   smooth(4);
   fill(0);
+  
+  RG.init(this); 
+ 
+
     
   //////////////////////////////////////////////
 
