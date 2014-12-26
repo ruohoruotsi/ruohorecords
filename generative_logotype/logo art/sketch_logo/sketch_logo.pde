@@ -11,45 +11,72 @@ Version :   v0.5
 import geomerative.*;
 
 
-final int canvasWidth = 800;
-final int canvasHeight = 800;
-RPolygon rpoly;
+final int canvasWidth = 600;
+final int canvasHeight = 600;
+
+RShape circle;
+RShape rectangle;
+RShape triangle;
 
 void setup() {
   
-  smooth();
+  smooth(8);
+  //size(800, 800, P2D);
   size(canvasWidth, canvasHeight, P2D);
+
+  ellipseMode(CENTER);
+  ellipse(width/2, height/2, width, height);
+  
+
 
   ////////////////////////////////////////////
   // initialize the Geomerative library
   RG.init(this);
-
-  RShape shp2 = new RShape();
-
-  shp2.addMoveTo( 0 , 0  );
-  shp2.addLineTo( 185 , 0  );
-  shp2.addLineTo( 213 , 0 );
-  shp2.addLineTo( 249 , 2 );
-  shp2.addBezierTo( 267 , 4 , 281 , 9 , 292 , 17);
-  shp2.addBezierTo(  303 , 24 , 309 , 33 , 309 , 43);
-  shp2.addBezierTo(  309 , 63 , 287 , 75 , 243 , 80);
   
-  shp2.addLineTo( 300 , 130  );
-  shp2.addLineTo( 337 , 152 );
+  // noStroke();
+  // strokeWeight(2);
 
-  shp2.addLineTo( 191 , 152  );
-  shp2.addLineTo( 0 , 152  );
-  shp2.addLineTo( 0 , 0 );
-  shp2.addClose();
+  int circleWidth = canvasWidth * 8/10;
   
-  rpoly = (RPolygon)(shp2.toPolygon());
+  rectangle = RShape.createRectangle(0, 0, circleWidth/2, canvasHeight);
+  //rectangle.draw();
+
+  circle = RShape.createEllipse(circleWidth/2, circleWidth/2, circleWidth , circleWidth);
+  //circle.draw();
+ 
+  triangle = new RShape();
+  triangle.addLineTo(circleWidth, canvasHeight);
+  triangle.addLineTo(0, canvasHeight);
+  // triangle.draw();
   
-  colorMode( HSB );
+  // 
+  strokeWeight(5);
+  RShape diff = circle.union(rectangle).union(triangle);
+  //fill();
+  diff.translate(60, 0);
+  diff.draw();   
+  
+  
+  System.out.println(circleWidth);
+  
+  ////////////////////////////////////////////
+  // draw Guides
+  
+  strokeWeight(2);
+  // ellipseMode(CENTER);
+  // ellipse(canvasWidth/2, canvasHeight/2, canvasWidth/4, canvasHeight/4);
+  
+  line(width/2, 0, width/2, height);  // vertical guide
+  line(0, height/2, width, height/2); // horizontal guide
+  
+  // end draw Guides
+  ////////////////////////////////////////////
+  
 }
 
 
 void draw() {
-  
+  /*
   // draw Guides
   strokeWeight(1);
   ellipseMode(CENTER);
@@ -77,5 +104,5 @@ void draw() {
       }
       line( pnts[j-1].x, pnts[j-1].y, pnts[0].x, pnts[0].y );
   }
-
+*/
 }
