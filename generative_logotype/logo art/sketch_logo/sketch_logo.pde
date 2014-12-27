@@ -1,28 +1,31 @@
 /*
 //////////////////////////////////////////////
---------- generative lettertypography ----------
+--------- generative logotypography ----------
 //////////////////////////////////////////////
 Title   :   sketch_letter
 Date    :   12/23/2014 
 Version :   v0.5
 
- */
 //////////////////////////////////////////////
+*/
+
 import geomerative.*;
 
-
+////////////////////////////////////////////
+// Globals
 final int letterWidth = 400;
 final int letterHeight = 400;
 
 final int canvasWidth = 700;
 final int canvasHeight = 700;
 
+////////////////////////////////////////////
+// Shapes
 RShape circle;
 RShape rectangle;
 RShape triangle;
-
 RShape circumscribingCircle;
-
+RShape diff;
 
 void setup() {
   
@@ -30,6 +33,8 @@ void setup() {
   // noStroke();
   strokeWeight(5);
   size(canvasWidth, canvasHeight, P2D);
+  
+  frameRate(10);
   
   ////////////////////////////////////////////
   // initialize the Geomerative library
@@ -56,15 +61,16 @@ void setup() {
   // triangle.draw();
   
   // Diff
-  RShape diff = triangle.union(circle).union(rectangle);
+  diff = triangle.union(circle).union(rectangle);
 
   // Translate to center
   int translateWidth = (letterWidth - circleWidth)/2 + (canvasWidth - letterWidth)/2;
   int translateHeight = (canvasHeight - letterHeight)/2;
   diff.translate(translateWidth, translateHeight);
-  diff.draw();   
   
-   
+  // fill(156, 0, 7);
+  // diff.draw();   
+  
   ////////////////////////////////////////////
   // draw Guides
   
@@ -78,29 +84,50 @@ void setup() {
   // end draw Guides
   ////////////////////////////////////////////
   
+  
+  /*
+  // tell geomerative how to convert the outline
+  RCommand.setSegmentLength(25);
+  RCommand.setSegmentator(RCommand.UNIFORMLENGTH);
+  
+  // turn the RShape into an RPolygon
+  RPolygon wavePolygon = diff.toPolygon();
+
+  // we have just 1 RContour in the RPolygon because we had one RPath in the RShape
+  // otherwise you need to loop through the polygon contours like shown in typography/font_to_points_dots
+  for(int i = 0; i < wavePolygon.contours[0].points.length; i++)
+  {
+    RPoint curPoint = wavePolygon.contours[0].points[i];
+    ellipse(curPoint.x, curPoint.y, 5, 5);
+  }
+  */
+  
+  saveFrame("grab.png");
 }
 
 
 void draw() {
-  /*
 
   ////////////////////////////////////////////
 
-  for( int i = 0; i < rpoly.contours.length; i++ )
-  {
-      // test
-      // rpoly.contours[i].draw();
-     
-      RPoint[] pnts = rpoly.contours[i].getPoints();
-      
-      int j = 1;
-      strokeWeight(5);
+  background(255);
+  // translate(width/2,height/2);
 
-      for ( ; j < pnts.length; j++ )
-      {
-          line( pnts[j-1].x, pnts[j-1].y, pnts[j].x, pnts[j].y );
-      }
-      line( pnts[j-1].x, pnts[j-1].y, pnts[0].x, pnts[0].y );
-  }
-*/
+  //RCommand.setSegmentStep(random(0,3));
+  //RCommand.setSegmentator(RCommand.UNIFORMSTEP);
+    
+  RCommand.setSegmentLength(frameCount % 50);
+  RCommand.setSegmentator(RCommand.UNIFORMLENGTH);
+    
+  //RCommand.setSegmentAngle(random(0,HALF_PI));
+  //RCommand.setSegmentator(RCommand.ADAPTATIVE);
+
+  RPoint[] pnts = diff.getPoints();
+  
+  ellipse(pnts[0].x, pnts[0].y, 15, 15);
+  for ( int i = 1; i < pnts.length; i++ )
+  {    
+    line( pnts[i-1].x, pnts[i-1].y, pnts[i].x, pnts[i].y );
+    ellipse(pnts[i].x, pnts[i].y, 15, 15);
+ }
 }
