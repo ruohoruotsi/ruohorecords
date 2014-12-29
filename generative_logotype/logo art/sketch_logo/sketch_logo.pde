@@ -27,6 +27,10 @@ RShape triangle;
 RShape circumscribingCircle;
 RShape diff;
 
+////////////////////////////////////////////
+// Control
+Boolean down = true;
+
 void setup() {
   
   smooth(8);
@@ -102,32 +106,45 @@ void setup() {
   }
   */
   
-  saveFrame("grab.png");
+  // saveFrame("grab.png");
 }
 
 
-void draw() {
-
-  ////////////////////////////////////////////
-
+void draw() 
+{
   background(255);
   // translate(width/2,height/2);
+ 
 
-  //RCommand.setSegmentStep(random(0,3));
-  //RCommand.setSegmentator(RCommand.UNIFORMSTEP);
-    
-  RCommand.setSegmentLength(frameCount % 50);
-  RCommand.setSegmentator(RCommand.UNIFORMLENGTH);
-    
-  //RCommand.setSegmentAngle(random(0,HALF_PI));
-  //RCommand.setSegmentator(RCommand.ADAPTATIVE);
-
-  RPoint[] pnts = diff.getPoints();
   
-  ellipse(pnts[0].x, pnts[0].y, 15, 15);
+  ////////////////////////////////////////////
+  // V2
+  int maxFrames = 50;
+  int multiplier = 1;
+  int seglenA = frameCount % maxFrames;
+  if (seglenA == 0) down = !down;  
+  if(down) {
+      RCommand.setSegmentLength(seglenA * multiplier);
+  } else {   
+      RCommand.setSegmentLength((maxFrames - seglenA) * multiplier);
+  }
+    
+  RCommand.setSegmentator(RCommand.UNIFORMLENGTH);
+  // System.out.println(seglenA);
+  ////////////////////////////////////////////
+
+  ////////////////////////////////////////////
+  // V1
+  // RCommand.setSegmentLength(frameCount % 50);
+  ////////////////////////////////////////////
+
+
+  RCommand.setSegmentator(RCommand.UNIFORMLENGTH);
+  RPoint[] pnts = diff.getPoints();
+  ellipse(pnts[0].x, pnts[0].y, 5, 5);
   for ( int i = 1; i < pnts.length; i++ )
   {    
     line( pnts[i-1].x, pnts[i-1].y, pnts[i].x, pnts[i].y );
-    ellipse(pnts[i].x, pnts[i].y, 15, 15);
+    ellipse(pnts[i].x, pnts[i].y, 5, 5);
  }
 }
