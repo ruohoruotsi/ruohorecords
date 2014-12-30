@@ -49,12 +49,12 @@ void setup() {
   int ccircleWidth = canvasWidth - distanceIn;
   circumscribingCircle = RShape.createEllipse(ccircleWidth/2, ccircleWidth/2, ccircleWidth, ccircleWidth);
   circumscribingCircle.translate(distanceIn/2, distanceIn/2);
-  circumscribingCircle.draw();
+  // circumscribingCircle.draw();
 
   // Union shapes
-  int circleWidth = letterWidth * 8/10;
+  int circleWidth = letterWidth * 8 / 10;
   
-  rectangle = RShape.createRectangle(0, 0, circleWidth/2, letterHeight); 
+  rectangle = RShape.createRectangle(0, 0, circleWidth/2, circleWidth); 
   //rectangle.draw();
   circle = RShape.createEllipse(circleWidth/2, circleWidth/2, circleWidth , circleWidth);
   //circle.draw();
@@ -66,6 +66,7 @@ void setup() {
   
   // Diff
   diff = triangle.union(circle).union(rectangle);
+  // diff = rectangle.union(circle);
 
   // Translate to center
   int translateWidth = (letterWidth - circleWidth)/2 + (canvasWidth - letterWidth)/2;
@@ -77,14 +78,14 @@ void setup() {
   
   ////////////////////////////////////////////
   // draw Guides
-  
+  /*
   strokeWeight(2);
   // ellipseMode(CENTER);
   // ellipse(letterWidth/2, letterHeight/2, letterWidth/4, letterHeight/4);
   
   line(canvasWidth/2, 0, canvasWidth/2, canvasHeight);  // vertical guide
   line(0, canvasHeight/2, canvasWidth, canvasHeight/2); // horizontal guide
-  
+  */
   // end draw Guides
   ////////////////////////////////////////////
   
@@ -115,11 +116,26 @@ void draw()
   background(255);
   // translate(width/2,height/2);
  
-
+  strokeWeight(8);
+  // circumscribingCircle.draw();
+  
+  ////////////////////////////////////////////
+  // draw Guides
+  
+  strokeWeight(2);
+  // ellipseMode(CENTER);
+  // ellipse(letterWidth/2, letterHeight/2, letterWidth/4, letterHeight/4);
+  
+  //line(canvasWidth/2, 0, canvasWidth/2, canvasHeight);  // vertical guide
+  //line(0, canvasHeight/2, canvasWidth, canvasHeight/2); // horizontal guide
+  
+  // end draw Guides
+  ////////////////////////////////////////////
+  
   
   ////////////////////////////////////////////
   // V2
-  int maxFrames = 50;
+  int maxFrames = 60;
   int multiplier = 1;
   int seglenA = frameCount % maxFrames;
   if (seglenA == 0) down = !down;  
@@ -130,7 +146,7 @@ void draw()
   }
     
   RCommand.setSegmentator(RCommand.UNIFORMLENGTH);
-  // System.out.println(seglenA);
+  System.out.println(seglenA);
   ////////////////////////////////////////////
 
   ////////////////////////////////////////////
@@ -146,5 +162,5 @@ void draw()
   {    
     line( pnts[i-1].x, pnts[i-1].y, pnts[i].x, pnts[i].y );
     ellipse(pnts[i].x, pnts[i].y, 5, 5);
- }
+ } 
 }
