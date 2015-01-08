@@ -2,7 +2,7 @@
 //////////////////////////////////////////////
 --------- generative logotypography ----------
 //////////////////////////////////////////////
-Title   :   sketch_letter
+Title   :   sketch_logo
 Date    :   12/23/2014 
 Version :   v0.5
 
@@ -37,8 +37,8 @@ void setup() {
   // noStroke();
   strokeWeight(5);
   size(canvasWidth, canvasHeight, P2D);
-  
-  frameRate(10);
+  background(255);
+  frameRate(15);
   
   ////////////////////////////////////////////
   // initialize the Geomerative library
@@ -114,15 +114,16 @@ void setup() {
 void draw() 
 {
   background(255);
+    fill(156, 0, 7);
+
   // translate(width/2,height/2);
  
-  strokeWeight(8);
+  strokeWeight(3);
   // circumscribingCircle.draw();
   
   ////////////////////////////////////////////
   // draw Guides
   
-  strokeWeight(2);
   // ellipseMode(CENTER);
   // ellipse(letterWidth/2, letterHeight/2, letterWidth/4, letterHeight/4);
   
@@ -154,7 +155,6 @@ void draw()
   // RCommand.setSegmentLength(frameCount % 50);
   ////////////////////////////////////////////
 
-
   RCommand.setSegmentator(RCommand.UNIFORMLENGTH);
   RPoint[] pnts = diff.getPoints();
   ellipse(pnts[0].x, pnts[0].y, 5, 5);
@@ -162,5 +162,23 @@ void draw()
   {    
     line( pnts[i-1].x, pnts[i-1].y, pnts[i].x, pnts[i].y );
     ellipse(pnts[i].x, pnts[i].y, 5, 5);
- } 
+  } 
+ 
+  
+  /* IO HAVOC -- add red mesh
+    RMesh mesh = diff.toMesh();
+    for ( int i = 0; i < mesh.strips.length; i++ )
+    {
+        RPoint[] pnts = mesh.strips[i].getPoints();
+            
+        beginShape(TRIANGLE_STRIP);
+            for ( int ii = 0; ii < pnts.length; ii++ )
+            {
+                vertex( pnts[ii].x, pnts[ii].y );
+            }
+        endShape();
+    }
+ */
+ 
+ 
 }
