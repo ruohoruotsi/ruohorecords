@@ -11,7 +11,7 @@ Version :   v0.5
 
 import geomerative.*;
 
-////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////
 // Globals
 final int letterWidth = 400;
 final int letterHeight = 400;
@@ -19,7 +19,7 @@ final int letterHeight = 400;
 final int canvasWidth = 700;
 final int canvasHeight = 700;
 
-////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////
 // Shapes
 RShape circle;
 RShape rectangle;
@@ -27,7 +27,9 @@ RShape triangle;
 RShape circumscribingCircle;
 RShape diff;
 
-////////////////////////////////////////////
+int upperLeft = 0;
+
+////////////////////////////////////////////////////////////////////////////////////////
 // Control
 Boolean down = true;
 
@@ -35,12 +37,12 @@ void setup() {
   
   smooth(8);
   // noStroke();
-  strokeWeight(5);
+  strokeWeight(3);
   size(canvasWidth, canvasHeight, P2D);
   background(255);
   frameRate(15);
   
-  ////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////
   // initialize the Geomerative library
   RG.init(this);
   
@@ -73,10 +75,11 @@ void setup() {
   int translateHeight = (canvasHeight - letterHeight)/2;
   diff.translate(translateWidth, translateHeight);
   
+  upperLeft  = (letterWidth - circleWidth)/2 + (canvasWidth - letterWidth)/2;
   // fill(156, 0, 7);
   // diff.draw();   
   
-  ////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////
   // draw Guides
   /*
   strokeWeight(2);
@@ -87,7 +90,7 @@ void setup() {
   line(0, canvasHeight/2, canvasWidth, canvasHeight/2); // horizontal guide
   */
   // end draw Guides
-  ////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////
   
   
   /*
@@ -115,13 +118,11 @@ void draw()
 {
   background(255);
     fill(156, 0, 7);
-
-  // translate(width/2,height/2);
  
-  strokeWeight(3);
+  strokeWeight(2);
   // circumscribingCircle.draw();
   
-  ////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////
   // draw Guides
   
   // ellipseMode(CENTER);
@@ -131,11 +132,16 @@ void draw()
   //line(0, canvasHeight/2, canvasWidth, canvasHeight/2); // horizontal guide
   
   // end draw Guides
-  ////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////
   
   
+  ////////////////////////////////////////////////////////////////////////////////////////
+  // V1 variable segments/dots around the outline
+  // RCommand.setSegmentLength(frameCount % 50);
   ////////////////////////////////////////////
-  // V2
+  
+  ////////////////////////////////////////////
+  // V2 variable segments/dots around the outline
   int maxFrames = 60;
   int multiplier = 1;
   int seglenA = frameCount % maxFrames;
@@ -148,12 +154,7 @@ void draw()
     
   RCommand.setSegmentator(RCommand.UNIFORMLENGTH);
   System.out.println(seglenA);
-  ////////////////////////////////////////////
-
-  ////////////////////////////////////////////
-  // V1
-  // RCommand.setSegmentLength(frameCount % 50);
-  ////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////
 
   RCommand.setSegmentator(RCommand.UNIFORMLENGTH);
   RPoint[] pnts = diff.getPoints();
@@ -164,7 +165,8 @@ void draw()
     ellipse(pnts[i].x, pnts[i].y, 5, 5);
   } 
  
-  
+ 
+  ////////////////////////////////////////////////////////////////////////////////////////
   /* IO HAVOC -- add red mesh
     RMesh mesh = diff.toMesh();
     for ( int i = 0; i < mesh.strips.length; i++ )
@@ -179,6 +181,33 @@ void draw()
         endShape();
     }
  */
+ ////////////////////////////////////////////////////////////////////////////////////////
  
  
+ ////////////////////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////////////////////
+  /// Excellent starter
+  RPoint[] myPoints = diff.getPoints();
+  int startx = (canvasWidth)/2; 
+  int starty = (canvasHeight - letterHeight)/2;
+  beginShape();
+  for (int i=0; i<myPoints.length; i++) {
+    
+    float jitter = random(0, 30);
+    
+    // starting point OMG!!
+    // line(myPoints[i].x, myPoints[i].y, 10, 10);
+    line(myPoints[i].x, myPoints[i].y, upperLeft, starty);
+
+    
+    vertex(myPoints[i].x, myPoints[i].y);//PLAY WITH ADDING OR SUBSTRACTING JITTER
+    vertex(myPoints[i].x+jitter, myPoints[i].y+jitter);
+    vertex(myPoints[i].x-jitter, myPoints[i].y-jitter);
+    
+    //line(myPoints[i].x, myPoints[i].y,30,-280);
+    //line(myPoints[i].x, myPoints[i].y,20,myPoints[i].y);
+    //ellipse(myPoints[i].x+10,myPoints[i].y,3,3);
+  }
+  endShape();
+ ////////////////////////////////////////////////////////////////////////////////////////
 }
