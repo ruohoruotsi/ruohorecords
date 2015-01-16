@@ -28,6 +28,7 @@ RShape circumscribingCircle;
 RShape diff;
 
 int upperLeft = 0;
+int lowerRight = 0;  
 
 ////////////////////////////////////////////////////////////////////////////////////////
 // Control
@@ -40,7 +41,7 @@ void setup() {
   strokeWeight(3);
   size(canvasWidth, canvasHeight, P2D);
   background(255);
-  frameRate(15);
+  frameRate(0.8);
   
   ////////////////////////////////////////////////////////////////////////////////////////
   // initialize the Geomerative library
@@ -76,6 +77,9 @@ void setup() {
   diff.translate(translateWidth, translateHeight);
   
   upperLeft  = (letterWidth - circleWidth)/2 + (canvasWidth - letterWidth)/2;
+  lowerRight = circleWidth + (letterWidth - circleWidth)/2 + (canvasWidth - letterWidth)/2;
+    System.out.println("UR:" + lowerRight);
+
   // fill(156, 0, 7);
   // diff.draw();   
   
@@ -191,12 +195,16 @@ void draw()
   int startx = (canvasWidth)/2; 
   int starty = (canvasHeight - letterHeight)/2;
   beginShape();
-  for (int i=0; i<myPoints.length; i++) {
+  for (int i = 0; i < myPoints.length; i++) {
     
     float jitter = random(0, 30);
     
     // starting point OMG!!
     // line(myPoints[i].x, myPoints[i].y, 10, 10);
+    if(myPoints[i].x == lowerRight) {
+     fill(156, 0, 7);
+      ellipse(myPoints[i].x, myPoints[i].y,13,13);
+    }
     line(myPoints[i].x, myPoints[i].y, upperLeft, starty);
 
     
