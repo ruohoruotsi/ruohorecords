@@ -31,7 +31,7 @@ void setup() {
   size(canvasWidth, canvasHeight, P2D);
   
   background(255);
-  frameRate(0.8);
+  frameRate(1.8);
   
   ////////////////////////////////////////////////////////////////////////////////////////
   // initialize the Geomerative library
@@ -45,10 +45,6 @@ void setup() {
  
   rrlogo = new RLogotype(400, 400);
   
-  
-
-  
-  
   // saveFrame("grab.png");
 }
 
@@ -56,10 +52,10 @@ void setup() {
 void draw() 
 {
   background(255);
-    fill(156, 0, 7);
+  fill(156, 0, 7);
  
   strokeWeight(2);
-  // circumscribingCircle.draw();
+  circumscribingCircle.draw();
   
   ////////////////////////////////////////////////////////////////////////////////////////
   // draw Guides
@@ -75,7 +71,9 @@ void draw()
   
   
   // rrlogo.draw();
-  rrlogo.drawDottedOutline();
+  rrlogo.drawBlackLines();
+  // rrlogo.drawRedMesh();
+  // rrlogo.drawDottedOutline();
 }
 
 
@@ -152,6 +150,17 @@ class RLogotype {
     RCommand.setSegmentator(RCommand.UNIFORMLENGTH);
     System.out.println(seglenA);
   }  
+  
+  
+   void drawPointCircles() {
+     RPoint[] pnts = diff.getPoints();
+      ellipse(pnts[0].x, pnts[0].y, 5, 5);
+      for ( int i = 1; i < pnts.length; i++ )
+      {    
+        line( pnts[i-1].x, pnts[i-1].y, pnts[i].x, pnts[i].y );
+        ellipse(pnts[i].x, pnts[i].y, 5, 5);
+      } 
+   }
 
   ////////////////////////////////////////////////////////////////////////////////////////
  
@@ -160,6 +169,7 @@ class RLogotype {
     geomerativeVariableSegmentation(60, 1);
   
     // Draw individual circles at each segment break
+    
     RPoint[] pnts = diff.getPoints();
     ellipse(pnts[0].x, pnts[0].y, 5, 5);
     for ( int i = 1; i < pnts.length; i++ )
@@ -169,27 +179,12 @@ class RLogotype {
     } 
   
    
-    ////////////////////////////////////////////////////////////////////////////////////////
-    /* IO HAVOC -- add red mesh
-      RMesh mesh = diff.toMesh();
-      for ( int i = 0; i < mesh.strips.length; i++ )
-      {
-          RPoint[] pnts = mesh.strips[i].getPoints();
-              
-          beginShape(TRIANGLE_STRIP);
-              for ( int ii = 0; ii < pnts.length; ii++ )
-              {
-                  vertex( pnts[ii].x, pnts[ii].y );
-              }
-          endShape();
-      }
-   */
    ////////////////////////////////////////////////////////////////////////////////////////
    
    
    ////////////////////////////////////////////////////////////////////////////////////////
    ////////////////////////////////////////////////////////////////////////////////////////
-    /// Excellent starter
+   /// Excellent starter
     RPoint[] myPoints = diff.getPoints();
     int startx = (canvasWidth)/2; 
     int starty = (canvasHeight - letterHeight)/2;
@@ -219,6 +214,57 @@ class RLogotype {
    ////////////////////////////////////////////////////////////////////////////////////////
   }
   
+  void drawBlackLines() {
+  
+    geomerativeVariableSegmentation(60, 1);
+    drawPointCircles();
+
+    /// Excellent starter
+    RPoint[] myPoints = diff.getPoints();
+    int startx = (canvasWidth)/2; 
+    int starty = (canvasHeight - letterHeight)/2;
+    beginShape();
+    for (int i = 0; i < myPoints.length; i++) {
+      
+      float jitter = random(0, 30);
+      
+      // starting point OMG!!
+      // line(myPoints[i].x, myPoints[i].y, 10, 10);
+      if(myPoints[i].x == lowerRight) {
+       fill(156, 0, 7);
+        ellipse(myPoints[i].x, myPoints[i].y,13,13);
+      }
+      line(myPoints[i].x, myPoints[i].y, upperLeft, starty);
+  
+      vertex(myPoints[i].x, myPoints[i].y);//PLAY WITH ADDING OR SUBSTRACTING JITTER
+      vertex(myPoints[i].x+jitter, myPoints[i].y+jitter);
+      vertex(myPoints[i].x-jitter, myPoints[i].y-jitter);
+      
+      //line(myPoints[i].x, myPoints[i].y,30,-280);
+      //line(myPoints[i].x, myPoints[i].y,20,myPoints[i].y);
+      //ellipse(myPoints[i].x+10,myPoints[i].y,3,3);
+    }
+    endShape();  
+    
+  }
+  
+  void drawRedMesh() {
+    
+    geomerativeVariableSegmentation(60, 1);
+   
+    /* IO HAVOC -- add red mesh */
+    RMesh mesh = diff.toMesh();
+    for ( int i = 0; i < mesh.strips.length; i++ ) {
+      RPoint[] pnts = mesh.strips[i].getPoints();
+      
+      beginShape(TRIANGLE_STRIP);
+      for ( int ii = 0; ii < pnts.length; ii++ ){
+          vertex( pnts[ii].x, pnts[ii].y );  
+      }
+      endShape();
+      }
+  }
+    
   void drawDottedOutline() {
     
     geomerativeStaticSegmentation(25);
