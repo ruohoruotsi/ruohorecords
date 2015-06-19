@@ -31,7 +31,7 @@ void setup() {
   size(canvasWidth, canvasHeight, P2D);
   
   background(255);
-  frameRate(1.8);
+  frameRate(3.8);
   
   ////////////////////////////////////////////////////////////////////////////////////////
   // initialize the Geomerative library
@@ -43,7 +43,8 @@ void setup() {
   circumscribingCircle = RShape.createEllipse(ccircleWidth/2, ccircleWidth/2, ccircleWidth, ccircleWidth);
   circumscribingCircle.translate(distanceIn/2, distanceIn/2);
  
-  rrlogo = new RLogotype(400, 400);
+ 
+  rrlogo = new RLogotype(400, 500);
   
   // saveFrame("grab.png");
 }
@@ -52,19 +53,16 @@ void setup() {
 void draw() 
 {
   background(255);
-  fill(156, 0, 7);
- 
-  strokeWeight(2);
-  circumscribingCircle.draw();
-  
+  fill(196, 0, 7);
+
   ////////////////////////////////////////////////////////////////////////////////////////
   // draw Guides
   
-  // ellipseMode(CENTER);
-  // ellipse(letterWidth/2, letterHeight/2, letterWidth/4, letterHeight/4);
+  strokeWeight(2);
+  circumscribingCircle.draw();
   
-  //line(canvasWidth/2, 0, canvasWidth/2, canvasHeight);  // vertical guide
-  //line(0, canvasHeight/2, canvasWidth, canvasHeight/2); // horizontal guide
+  line(canvasWidth/2, 0, canvasWidth/2, canvasHeight);  // vertical guide
+  line(0, canvasHeight/2, canvasWidth, canvasHeight/2); // horizontal guide
   
   // end draw Guides
   ////////////////////////////////////////////////////////////////////////////////////////
@@ -100,7 +98,7 @@ class RLogotype {
     // Union shapes
     int circleWidth = letterWidth * 8 / 10;
     
-    rectangle = RShape.createRectangle(0, 0, circleWidth/2, circleWidth); 
+    rectangle = RShape.createRectangle(0, 0, circleWidth, circleWidth/2); 
     circle = RShape.createEllipse(circleWidth/2, circleWidth/2, circleWidth , circleWidth);
    
     triangle = new RShape();
@@ -110,7 +108,9 @@ class RLogotype {
     // Diff
     diff = triangle.union(circle).union(rectangle);
     // diff = rectangle.union(circle);
-  
+//    diff = triangle.union(rectangle);
+//    diff = rectangle;
+    
     // Translate to center
     int translateWidth = (letterWidth - circleWidth)/2 + (canvasWidth - letterWidth)/2;
     int translateHeight = (canvasHeight - letterHeight)/2;
@@ -228,11 +228,11 @@ class RLogotype {
       
       float jitter = random(0, 30);
       
-      // starting point OMG!!
+      // starting point OMG!! <-- focus of shadows and innerlines
       // line(myPoints[i].x, myPoints[i].y, 10, 10);
       if(myPoints[i].x == lowerRight) {
-       fill(156, 0, 7);
-        ellipse(myPoints[i].x, myPoints[i].y,13,13);
+       // fill(156, 0, 7);
+       ellipse(myPoints[i].x, myPoints[i].y,2,2);
       }
       line(myPoints[i].x, myPoints[i].y, upperLeft, starty);
   
