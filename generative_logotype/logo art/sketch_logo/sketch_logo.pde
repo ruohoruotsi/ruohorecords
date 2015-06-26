@@ -28,7 +28,9 @@ void setup() {
   smooth(8);
   // noStroke();
   strokeWeight(3);
-  size(canvasWidth, canvasHeight, P2D);
+  // size(canvasWidth, canvasHeight, P2D);
+  size(700, 700, P2D);
+
 
   background(255);
   frameRate(3.8);
@@ -45,7 +47,7 @@ void setup() {
 
 
   rrlogo = new RLogotype(400, 500);
-  // rrlogo.setupA();
+  //rrlogo.setupA();
   rrlogo.setupB();
 
   // saveFrame("grab.png");
@@ -68,7 +70,6 @@ void draw()
 
   // end draw Guides
   ////////////////////////////////////////////////////////////////////////////////////////
-
 
   // rrlogo.draw();
   // rrlogo.drawBlackLines();
@@ -149,9 +150,10 @@ class RLogotype {
     triangle.addLineTo(0, letterHeight);
     
     // Diff
-    diff = triangle.union(circle).union(rectangle);
+    // diff = triangle.union(circle).union(rectangle);
     // diff = rectangle.union(circle);
-  
+    diff = circle;
+    
     // Translate to center
     int translateWidth = (letterWidth - circleWidth)/2 + (canvasWidth - letterWidth)/2;
     int translateHeight = (canvasHeight - letterHeight)/2;
@@ -325,4 +327,3 @@ class RLogotype {
     }
   }
 }
-
