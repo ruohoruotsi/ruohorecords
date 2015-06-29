@@ -57,7 +57,7 @@ void setup() {
 void draw() 
 {
   background(255);
-  fill(196, 0, 7);
+  //fill(196, 0, 7);
 
   ////////////////////////////////////////////////////////////////////////////////////////
   // draw Guides
@@ -139,8 +139,8 @@ class RLogotype {
 
   void setupB() {
 
-     // Union shapes
-    int circleWidth = letterWidth * 8 / 10;
+    // Union shapes
+    int circleWidth = letterWidth * 10 / 10;
     
     rectangle = RShape.createRectangle(0, 0, circleWidth/2, circleWidth); 
     circle = RShape.createEllipse(circleWidth/2, circleWidth/2, circleWidth , circleWidth);
@@ -150,10 +150,9 @@ class RLogotype {
     triangle.addLineTo(0, letterHeight);
     
     // Diff
-    // diff = triangle.union(circle).union(rectangle);
+    diff = triangle.union(circle).union(rectangle);
     // diff = rectangle.union(circle);
-    diff = circle;
-    
+  
     // Translate to center
     int translateWidth = (letterWidth - circleWidth)/2 + (canvasWidth - letterWidth)/2;
     int translateHeight = (canvasHeight - letterHeight)/2;
