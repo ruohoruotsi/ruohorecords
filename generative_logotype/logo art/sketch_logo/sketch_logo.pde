@@ -26,29 +26,21 @@ Boolean down = true;
 void setup() {
 
   smooth(8);
-  // noStroke();
   strokeWeight(3);
+  
   // size(canvasWidth, canvasHeight, P2D);
   size(700, 700, P2D);
 
-
   background(255);
-  frameRate(3.8);
+  frameRate(8);
 
   ////////////////////////////////////////////////////////////////////////////////////////
   // initialize the Geomerative library
   RG.init(this);
 
-  // Circumscribing circle
-  //int distanceIn = 100;
-  //int ccircleWidth = canvasWidth - distanceIn;
-  //circumscribingCircle = RShape.createEllipse(ccircleWidth/2, ccircleWidth/2, ccircleWidth, ccircleWidth);
-  //circumscribingCircle.translate(distanceIn/2, distanceIn/2);
-
-
   rrlogo = new RLogotype(400, 500);
-  //rrlogo.setupA();
-  rrlogo.setupB();
+  //rrlogo.setupShortFatR();
+  rrlogo.setupRC();
 
   // saveFrame("grab.png");
 }
@@ -61,13 +53,9 @@ void draw()
 
   ////////////////////////////////////////////////////////////////////////////////////////
   // draw Guides
-
   strokeWeight(2);
-  //circumscribingCircle.draw();
-
   line(canvasWidth/2, 0, canvasWidth/2, canvasHeight);  // vertical guide
   line(0, canvasHeight/2, canvasWidth, canvasHeight/2); // horizontal guide
-
   // end draw Guides
   ////////////////////////////////////////////////////////////////////////////////////////
 
@@ -98,7 +86,7 @@ class RLogotype {
     letterHeight = height;
   }
 
-  void setupA() {
+  void setupShortFatR() {
 
     // Union shapes
     int circleWidth = letterWidth * 7 / 10;
@@ -108,36 +96,31 @@ class RLogotype {
     circle = RShape.createEllipse(rectangleWidth, circleWidth/2, circleWidth, circleWidth);
 
     triangle = new RShape();
-    int triangleDim = circleWidth;
+    int triangleDim = circleWidth + 50;
     triangle.addLineTo(triangleDim / 2, 0);
     triangle.addLineTo(triangleDim, triangleDim);
     triangle.addLineTo(0, triangleDim);
 
     // Diff
     diff = triangle.union(circle).union(rectangle);
-    // diff = rectangle.union(circle);
-    // diff = triangle.union(rectangle);  
-    // diff = triangle;
+    //diff = rectangle.union(circle);
+    //diff = triangle.union(rectangle);  
+    //diff = triangle;
     //  diff = circle;
-
-    // Translate to center
-    // int translateWidth = (letterWidth - rectangleWidth)/2 + (canvasWidth - letterWidth)/2;
-    // int translateHeight = (canvasHeight - letterHeight)/2;
-
+    
     int translateWidth = letterWidth / 2;
     int translateHeight =  letterWidth / 2; 
 
     diff.translate(translateWidth, translateHeight);
 
     // Compute and store important points in the shape
-    //    upperLeft  = (letterWidth - circleWidth)/2 + (canvasWidth - letterWidth)/2;
-    //    lowerRight = circleWidth + (letterWidth - circleWidth)/2 + (canvasWidth - letterWidth)/2;
     upperLeft  = (letterWidth - circleWidth)/2 + (canvasWidth - letterWidth)/2;
     lowerRight = circleWidth + (letterWidth - circleWidth)/2 + (canvasWidth - letterWidth)/2;
+    
     // System.out.println("UR:" + lowerRight);
   }
 
-  void setupB() {
+  void setupRC() {
 
     // Union shapes
     int circleWidth = letterWidth;
@@ -159,6 +142,7 @@ class RLogotype {
     // Compute and store important points in the shape
     upperLeft  = (letterWidth - circleWidth)/2 + (canvasWidth - letterWidth)/2;
     lowerRight = circleWidth + (letterWidth - circleWidth)/2 + (canvasWidth - letterWidth)/2;
+    
     // System.out.println("UR:" + lowerRight);
   }
 
@@ -218,10 +202,6 @@ class RLogotype {
       ellipse(pnts[i].x, pnts[i].y, 5, 5);
     } 
 
-
-    ////////////////////////////////////////////////////////////////////////////////////////
-
-
     ////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////
     /// Excellent starter
@@ -234,12 +214,13 @@ class RLogotype {
       float jitter = random(0, 30);
 
       // starting point OMG!!
-      // line(myPoints[i].x, myPoints[i].y, 10, 10);
+      //line(myPoints[i].x, myPoints[i].y, 10, 10);
       if (myPoints[i].x == lowerRight) {
         fill(156, 0, 7);
         ellipse(myPoints[i].x, myPoints[i].y, 13, 13);
       }
       line(myPoints[i].x, myPoints[i].y, upperLeft, starty);
+      line(myPoints[i].x, myPoints[i].y, lowerRight, starty);
 
 
       vertex(myPoints[i].x, myPoints[i].y);//PLAY WITH ADDING OR SUBSTRACTING JITTER
