@@ -40,10 +40,10 @@ void setup() {
   RG.init(this);
 
   // Circumscribing circle
-  int distanceIn = 100;
-  int ccircleWidth = canvasWidth - distanceIn;
-  circumscribingCircle = RShape.createEllipse(ccircleWidth/2, ccircleWidth/2, ccircleWidth, ccircleWidth);
-  circumscribingCircle.translate(distanceIn/2, distanceIn/2);
+  //int distanceIn = 100;
+  //int ccircleWidth = canvasWidth - distanceIn;
+  //circumscribingCircle = RShape.createEllipse(ccircleWidth/2, ccircleWidth/2, ccircleWidth, ccircleWidth);
+  //circumscribingCircle.translate(distanceIn/2, distanceIn/2);
 
 
   rrlogo = new RLogotype(400, 500);
@@ -63,7 +63,7 @@ void draw()
   // draw Guides
 
   strokeWeight(2);
-  circumscribingCircle.draw();
+  //circumscribingCircle.draw();
 
   line(canvasWidth/2, 0, canvasWidth/2, canvasHeight);  // vertical guide
   line(0, canvasHeight/2, canvasWidth, canvasHeight/2); // horizontal guide
@@ -71,9 +71,9 @@ void draw()
   // end draw Guides
   ////////////////////////////////////////////////////////////////////////////////////////
 
-  // rrlogo.draw();
+  rrlogo.draw();
   // rrlogo.drawBlackLines();
-  rrlogo.drawRedMesh();
+  // rrlogo.drawRedMesh();
   // rrlogo.drawDottedOutline();
 }
 
@@ -140,8 +140,7 @@ class RLogotype {
   void setupB() {
 
     // Union shapes
-    int circleWidth = letterWidth * 10 / 10;
-    
+    int circleWidth = letterWidth;
     rectangle = RShape.createRectangle(0, 0, circleWidth/2, circleWidth); 
     circle = RShape.createEllipse(circleWidth/2, circleWidth/2, circleWidth , circleWidth);
    
@@ -151,7 +150,6 @@ class RLogotype {
     
     // Diff
     diff = triangle.union(circle).union(rectangle);
-    // diff = rectangle.union(circle);
   
     // Translate to center
     int translateWidth = (letterWidth - circleWidth)/2 + (canvasWidth - letterWidth)/2;
@@ -162,7 +160,6 @@ class RLogotype {
     upperLeft  = (letterWidth - circleWidth)/2 + (canvasWidth - letterWidth)/2;
     lowerRight = circleWidth + (letterWidth - circleWidth)/2 + (canvasWidth - letterWidth)/2;
     // System.out.println("UR:" + lowerRight);
-   
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////
