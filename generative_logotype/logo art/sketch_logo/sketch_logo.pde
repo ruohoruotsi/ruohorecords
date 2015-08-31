@@ -75,7 +75,7 @@ class RLogotype {
   RShape triangle;
   RShape diff;
 
-  int upperLeft = 0;
+  int upperLeftX = 0;
   int lowerRight = 0;  
   int letterWidth = 0;
   int letterHeight = 0;
@@ -114,7 +114,7 @@ class RLogotype {
     diff.translate(translateWidth, translateHeight);
 
     // Compute and store important points in the shape
-    upperLeft  = (letterWidth - circleWidth)/2 + (canvasWidth - letterWidth)/2;
+    upperLeftX  = (letterWidth - circleWidth)/2 + (canvasWidth - letterWidth)/2;
     lowerRight = circleWidth + (letterWidth - circleWidth)/2 + (canvasWidth - letterWidth)/2;
     
     // System.out.println("UR:" + lowerRight);
@@ -140,10 +140,11 @@ class RLogotype {
     diff.translate(translateWidth, translateHeight);
     
     // Compute and store important points in the shape
-    upperLeft  = (letterWidth - circleWidth)/2 + (canvasWidth - letterWidth)/2;
+    upperLeftX  = (letterWidth - circleWidth)/2 + (canvasWidth - letterWidth)/2;
     lowerRight = circleWidth + (letterWidth - circleWidth)/2 + (canvasWidth - letterWidth)/2;
-    
-    // System.out.println("UR:" + lowerRight);
+    //lowerLeftY  = (letterWidth - circleWidth)/2 + (canvasWidth - letterWidth)/2;
+
+    System.out.println("UR:" + lowerRight);
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////
@@ -202,12 +203,11 @@ class RLogotype {
       ellipse(pnts[i].x, pnts[i].y, 5, 5);
     } 
 
-    ////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////
     /// Excellent starter
     RPoint[] myPoints = diff.getPoints();
     int startx = (canvasWidth)/2; 
-    int starty = (canvasHeight - letterHeight)/2;
+    int upperLeftY = (canvasHeight - letterHeight)/2;
+    
     beginShape();
     for (int i = 0; i < myPoints.length; i++) {
 
@@ -217,23 +217,23 @@ class RLogotype {
       //line(myPoints[i].x, myPoints[i].y, 10, 10);
       if (myPoints[i].x == lowerRight) {
         fill(156, 0, 7);
-        ellipse(myPoints[i].x, myPoints[i].y, 13, 13);
+        ellipse(myPoints[i].x, myPoints[i].y, 3, 3);
       }
-      line(myPoints[i].x, myPoints[i].y, upperLeft, starty);
-      line(myPoints[i].x, myPoints[i].y, lowerRight, starty);
+      line(myPoints[i].x, myPoints[i].y, upperLeftX, upperLeftY);
+      line(myPoints[i].x, myPoints[i].y, upperLeftX, upperLeftY);
 
-
-      vertex(myPoints[i].x, myPoints[i].y);//PLAY WITH ADDING OR SUBSTRACTING JITTER
-      vertex(myPoints[i].x+jitter, myPoints[i].y+jitter);
-      vertex(myPoints[i].x-jitter, myPoints[i].y-jitter);
+      vertex(myPoints[i].x, myPoints[i].y); // Play with adding or subtracting jitter
+      //vertex(myPoints[i].x+jitter, myPoints[i].y+jitter);
+      //vertex(myPoints[i].x-jitter, myPoints[i].y-jitter);
 
       //line(myPoints[i].x, myPoints[i].y,30,-280);
       //line(myPoints[i].x, myPoints[i].y,20,myPoints[i].y);
       //ellipse(myPoints[i].x+10,myPoints[i].y,3,3);
     }
     endShape();
-    ////////////////////////////////////////////////////////////////////////////////////////
   }
+
+  ////////////////////////////////////////////////////////////////////////////////////////
 
   void drawBlackLines() {
 
