@@ -22,25 +22,37 @@ RLogotype rrlogo;
 // Control
 Boolean down = true;
 
+// frame params
+int[] list;
+int count = 0;
+int max = 600;
+int distance;
+ArrayList<Particle> particles;
+PVector axis;
+
 
 void setup() {
 
   smooth(8);
-  strokeWeight(3);
+  strokeWeight(1);
   
   // size(canvasWidth, canvasHeight, P2D);
   size(700, 700, P2D);
 
   background(255);
-  frameRate(8);
+  frameRate(80);
 
   ////////////////////////////////////////////////////////////////////////////////////////
   // initialize the Geomerative library
   RG.init(this);
 
   rrlogo = new RLogotype(400, 500);
+
   //rrlogo.setupShortFatR();
   rrlogo.setupRC();
+  
+  // For frame example
+  rrlogo.setupFrame();
 
   // saveFrame("grab.png");
 }
@@ -48,21 +60,22 @@ void setup() {
 
 void draw() 
 {
-  background(255);
-  //fill(196, 0, 7);
+ background(255);
+ //fill(196, 0, 7);
 
-  ////////////////////////////////////////////////////////////////////////////////////////
-  // draw Guides
-  strokeWeight(2);
-  line(canvasWidth/2, 0, canvasWidth/2, canvasHeight);  // vertical guide
-  line(0, canvasHeight/2, canvasWidth, canvasHeight/2); // horizontal guide
-  // end draw Guides
-  ////////////////////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////////////////////////////////////////////////////
+ // draw Guides
+ strokeWeight(2);
+ line(canvasWidth/2, 0, canvasWidth/2, canvasHeight);  // vertical guide
+ line(0, canvasHeight/2, canvasWidth, canvasHeight/2); // horizontal guide
+ // end draw Guides
+ ////////////////////////////////////////////////////////////////////////////////////////
 
-  rrlogo.draw();
-  // rrlogo.drawBlackLines();
-  // rrlogo.drawRedMesh();
-  // rrlogo.drawDottedOutline();
+ // rrlogo.draw();
+ // rrlogo.drawBlackLines();
+ // rrlogo.drawRedMesh();
+ // rrlogo.drawDottedOutline();
+ rrlogo.drawFrame();
 }
 
 
@@ -302,5 +315,93 @@ class RLogotype {
       RPoint curPoint = wavePolygon.contours[0].points[i];
       ellipse(curPoint.x, curPoint.y, 5, 5);
     }
+  }
+  
+  ////////////////////////////////////////////////////////////////////////////////////////
+  
+  void setupFrame() {
+   
+    rrlogo.diff.setFill(0);
+    rrlogo.diff.draw();
+    
+    distance = 13;
+    particles = new ArrayList<Particle>();
+    list = new int[width*height];
+  
+    loadPixels();
+    for(int y = 0; y <= height-1; y++) {
+    
+      for(int x = 0; x <= width-1; x++) {
+    
+        color pb = pixels[y*width + x];
+        //System.out.println("pb = :" + pb + " " + red(pb));
+      
+        // create a MASK of 0s and 1s
+        if(red(pb) < 5) {  // Foreground
+          list[y*width+x] = 0;  
+          //System.out.println("list index == 0" + " " + y + " " + x + " " + red(pb));
+
+      } else {  
+          list[y*width+x] = 1;  // Background red(pb) == 255, as in background(255,250,245);
+          //System.out.println("list index == 1" + " " + y + " " + x + " " + red(pb));
+        }
+      }
+    }
+  }
+  
+  void drawFrame() {
+    
+    if(count < max){
+      int i = 0;
+      
+      while(i < 3) {  
+        axis = new PVector(int(random(100, width-100)),int(random(100, height-100)));
+        
+        // list[index] == 0 means that it was in the "mask"
+        if(list[int(axis.y*width + axis.x)] == 0 && 
+           list[int(axis.y*width + axis.x+1)] == 0 && 
+           list[int(axis.y*width + axis.x-1)] == 0 && 
+           list[int((axis.y+1)*width + axis.x)] == 0 && 
+           list[int((axis.y+1)*width + axis.x)] == 0) {
+             
+            particles.add(new Particle(axis.x,axis.y));
+            i++;
+            count++;
+       }
+      }
+    }
+    
+    background(#FFFAF5);
+      
+    for (int i = 0; i < particles.size(); i++) {
+      Particle p=particles.get(i);
+      p.update();
+      for(int j=i+1;j<particles.size();j++){
+        Particle pp=particles.get(j);
+        if (dist(p.location.x , p.location.y , pp.location.x , pp.location.y) < distance) {
+          line(p.location.x , p.location.y , pp.location.x , pp.location.y);
+        }
+      }
+    } 
+    
+  }
+ 
+}
+
+
+class Particle {
+  PVector location;
+  PVector velocity;
+  //PVector plocation;
+
+  Particle(float x, float y) {
+    location = new PVector(x,y);
+    velocity = new PVector(random(1),1);
+  }
+  
+  void update() {
+    location.add(velocity);
+    if ((list[int(location.y)*width+int(location.x+velocity.x)]==1)   ||   (list[int(location.y)*width+int(location.x-velocity.x)]==1)) {  velocity.x *= -1;  }
+    if ((list[int(location.y+velocity.y)*width+int(location.x)]==1) || (list[int(location.y-velocity.y)*width+int(location.x)]==1)) {  velocity.y *= -1;  }
   }
 }

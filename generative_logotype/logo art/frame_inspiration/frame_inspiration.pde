@@ -53,7 +53,7 @@ void setup() {
     }
   }
   
-  updatePixels();
+  //updatePixels();
 }
 
 void draw() {
@@ -116,4 +116,3 @@ class Particle {
     if ((list[int(location.y+velocity.y)*width+int(location.x)]==1) || (list[int(location.y-velocity.y)*width+int(location.x)]==1)) {  velocity.y *= -1;  }
   }
 }
-
