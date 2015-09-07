@@ -25,7 +25,6 @@ Boolean down = true;
 // frame params
 int[] list;
 int count = 0;
-int max = 600;
 int distance;
 ArrayList<Particle> particles;
 PVector axis;
@@ -73,6 +72,7 @@ void draw()
  // rrlogo.drawRedMesh();
  // rrlogo.drawDottedOutline();
  rrlogo.drawFrame();
+
 }
 
 
@@ -321,7 +321,7 @@ class RLogotype {
     rrlogo.diff.setFill(0);
     rrlogo.diff.draw();
     
-    distance = 13;
+    distance = 15;
     particles = new ArrayList<Particle>();
     list = new int[width*height];
   
@@ -348,11 +348,15 @@ class RLogotype {
   
   void drawFrame() {
     
+    // constants
+    int max = 2000;
+    int randVal = 100;
+    
     if(count < max){
       int i = 0;
       
       while(i < 3) {  
-        axis = new PVector(int(random(100, width-100)),int(random(100, height-100)));
+        axis = new PVector(int(random(randVal, width-randVal)),int(random(randVal, height-randVal)));
         
         // list[index] == 0 means that it was in the "mask"
         if(list[int(axis.y*width + axis.x)] == 0 && 
@@ -369,10 +373,12 @@ class RLogotype {
     }
           
     for (int i = 0; i < particles.size(); i++) {
-      Particle p=particles.get(i);
+      Particle p = particles.get(i);
       p.update();
-      for(int j=i+1;j<particles.size();j++){
-        Particle pp=particles.get(j);
+      
+      for(int j = i+1; j < particles.size(); j++){
+        Particle pp = particles.get(j);
+        
         if (dist(p.location.x , p.location.y , pp.location.x , pp.location.y) < distance) {
           line(p.location.x , p.location.y , pp.location.x , pp.location.y);
         }
@@ -385,9 +391,9 @@ class RLogotype {
 
 
 class Particle {
+  
   PVector location;
   PVector velocity;
-  //PVector plocation;
 
   Particle(float x, float y) {
     location = new PVector(x,y);
