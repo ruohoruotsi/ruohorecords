@@ -32,14 +32,11 @@ PVector axis;
 
 
 void setup() {
-
-  smooth(8);
-  strokeWeight(1);
   
   // size(canvasWidth, canvasHeight, P2D);
   size(700, 700, P2D);
 
-  background(255);
+  smooth(8);
   frameRate(80);
 
   ////////////////////////////////////////////////////////////////////////////////////////
@@ -51,7 +48,7 @@ void setup() {
   //rrlogo.setupShortFatR();
   rrlogo.setupRC();
   
-  // For frame example
+  // uncomment, for frame example
   rrlogo.setupFrame();
 
   // saveFrame("grab.png");
@@ -64,10 +61,10 @@ void draw()
  //fill(196, 0, 7);
 
  ////////////////////////////////////////////////////////////////////////////////////////
- // draw Guides
- strokeWeight(2);
- line(canvasWidth/2, 0, canvasWidth/2, canvasHeight);  // vertical guide
- line(0, canvasHeight/2, canvasWidth, canvasHeight/2); // horizontal guide
+ // draw Guid es
+ //strokeWeight(2);
+ //line(canvasWidth/2, 0, canvasWidth/2, canvasHeight);  // vertical guide
+ //line(0, canvasHeight/2, canvasWidth, canvasHeight/2); // horizontal guide
  // end draw Guides
  ////////////////////////////////////////////////////////////////////////////////////////
 
@@ -370,9 +367,7 @@ class RLogotype {
        }
       }
     }
-    
-    background(#FFFAF5);
-      
+          
     for (int i = 0; i < particles.size(); i++) {
       Particle p=particles.get(i);
       p.update();
