@@ -70,8 +70,8 @@ void setup() {
   voronoi = new Voronoi(DSIZE);
   gfx = new ToxiclibsSupport(this);
 
-  // rrlogo.drawToxiclibsVoronoi();
   rrlogo.drawDelaunayTriangulation();
+  // rrlogo.drawToxiclibsVoronoi();
 }
 
 
@@ -407,13 +407,11 @@ class RLogotype {
       P[i] = new pt(curPoint.x, curPoint.y);
     }
     
-      fill(222, 222, 222);
+      fill(255);
       rrlogo.diff.draw();  
-     
       noFill();
     
       drawTriangles(wavePolygon.contours[0].points.length, P);
-      noFill();
   }
   
   //*********************************************
@@ -424,19 +422,52 @@ class RLogotype {
   boolean numbers = true;         // toggles display of vertex numbers 
 
   void drawTriangles(int vn, pt[] P) { 
-     pt X = new pt(0,0);
-     float r = 1;
-     for (int i =0; i<vn-2; i++) {for (int j=i+1; j<vn-1; j++) {for (int k=j+1; k<vn; k++) {
-       boolean found=false; 
-       for (int m=0; m<vn; m++) {
-         X=centerCC (P[i], P[j], P[k]);  r = X.disTo(P[i]);
-         if ((m!=i)&&(m!=j)&&(m!=k)&&(X.disTo(P[m])<=r)) {found=true;}
+     
+    pt X = new pt(0,0);
+    float r = 1;
+     
+    for (int i = 0; i < vn-2; i++) {
+      for (int j = i+1; j < vn-1; j++) {
+        for (int k = j+1; k < vn; k++) {
+          boolean found = false; 
+       
+          for (int m=0; m<vn; m++) {
+             X = centerCC (P[i], P[j], P[k]);  
+             r = X.disTo(P[i]);
+             if ((m!=i) && (m!=j) && (m!=k) && (X.disTo(P[m])<=r)) {
+             found = true;
+           }
          };
          
        if (!found) {
-           strokeWeight(1); stroke(green); ellipse(X.x,X.y,2*r,2*r); 
-           if (dots) {stroke(blue); X.show(2); };
-           strokeWeight(2); stroke(red); beginShape(POLYGON);  P[i].vert(); P[j].vert(); P[k].vert(); endShape(); 
+           strokeWeight(1); 
+           
+           if(X.x > 500) {
+             //stroke(red); ellipse(X.x, X.y, 2*r, 2*r); 
+             continue;
+           } else {
+             stroke(green); ellipse(X.x, X.y, 2*r, 2*r); 
+           }
+           
+           
+           if(rrlogo.diff.contains(X.x, X.y)){
+            
+             print("Contains");
+           }
+           else {
+              println("Xxxxxxxxxxxxxxx");
+              println("( " + X.x + "," + X.y + ")");
+              continue;
+           }
+           
+           if (dots) {
+            stroke(blue); X.show(2); 
+           };
+           strokeWeight(2); stroke(red); 
+           
+           beginShape(POLYGON);  
+           P[i].vert(); P[j].vert(); P[k].vert(); 
+           endShape(); 
          };
         }; }; }; // end triple loop
      };  
