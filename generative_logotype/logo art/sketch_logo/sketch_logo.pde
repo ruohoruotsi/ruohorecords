@@ -10,7 +10,9 @@
  */
 
 import geomerative.*;
-
+import toxi.geom.*;
+import toxi.geom.mesh2d.*;
+import toxi.processing.*;
 
 // Globals
 final int canvasWidth = 700;
@@ -28,6 +30,17 @@ int count = 0;
 int distance;
 ArrayList<Particle> particles;
 PVector axis;
+int[] strokeRGBA;
+
+// toxiclibs voronoi params
+// radius of the root triangle which encompasses (MUST) all other points
+float DSIZE = 10000;
+// a Voronoi diagram relies on a Delaunay triangulation behind the scenes
+// we simply use this as a front end
+Voronoi voronoi;
+ToxiclibsSupport gfx;
+// render switch
+boolean doIgnoreRoot = true;
 
 
 void setup() {
@@ -36,7 +49,7 @@ void setup() {
   size(700, 700, P2D);
 
   smooth(8);
-  frameRate(80);
+  frameRate(30);
 
   ////////////////////////////////////////////////////////////////////////////////////////
   // initialize the Geomerative library
@@ -48,15 +61,23 @@ void setup() {
   rrlogo.setupRC();
   
   // uncomment, for frame example
-  rrlogo.setupFrame();
+  // rrlogo.setupFrame();
 
   // saveFrame("grab.png");
+  
+  
+  // Voronoi
+  voronoi = new Voronoi(DSIZE);
+  gfx = new ToxiclibsSupport(this);
+
+  // rrlogo.drawToxiclibsVoronoi();
+  rrlogo.drawDelaunayTriangulation();
 }
 
 
 void draw() 
 {
- background(255);
+ // background(255);
  //fill(196, 0, 7);
 
  ////////////////////////////////////////////////////////////////////////////////////////
@@ -71,8 +92,11 @@ void draw()
  // rrlogo.drawBlackLines();
  // rrlogo.drawRedMesh();
  // rrlogo.drawDottedOutline();
- rrlogo.drawFrame();
+ 
+ // rrlogo.drawDelaunayTriangulation();
+ // rrlogo.drawToxiclibsVoronoi();
 
+ // rrlogo.drawFrame();
 }
 
 
@@ -199,7 +223,7 @@ class RLogotype {
 
   ////////////////////////////////////////////////////////////////////////////////////////
 
-  void draw() {
+  void draw(){
 
     geomerativeVariableSegmentation(60, 1);
 
@@ -313,6 +337,127 @@ class RLogotype {
       ellipse(curPoint.x, curPoint.y, 5, 5);
     }
   }
+  ////////////////////////////////////////////////////////////////////////////////////////
+  
+  void drawToxiclibsVoronoi() {
+
+    geomerativeStaticSegmentation(20);
+
+    // turn the RShape into an RPolygon
+    RPolygon wavePolygon = rrlogo.diff.toPolygon();
+
+    // we have just 1 RContour in the RPolygon because we had one RPath in the RShape
+    // otherwise you need to loop through the polygon contours like shown in typography/font_to_points_dots
+    for (int i = 0; i < wavePolygon.contours[0].points.length; i++)
+    {
+      RPoint curPoint = wavePolygon.contours[0].points[i];
+      ellipse(curPoint.x, curPoint.y, 5, 5);
+      
+      // add points from around the logo
+      //voronoi.addPoint(new Vec2D(curPoint.x, curPoint.y));
+    }
+    
+      background(255);
+      
+      fill(222, 222, 222);
+      rrlogo.diff.draw();  
+     
+
+      stroke(0);
+      noFill();
+      stroke(0, 0, 255, 50);
+    
+      beginShape(TRIANGLES);
+      // get the delaunay triangles
+      for (Triangle2D t : voronoi.getTriangles()) {
+        // ignore any triangles which share a vertex with the initial root triangle
+        if (!doIgnoreRoot || (abs(t.a.x)!=DSIZE && abs(t.a.y)!=DSIZE)) {
+          gfx.triangle(t, false);
+        }
+      }
+      endShape();
+    
+      fill(255, 0, 255);
+      noStroke();
+      for (Vec2D c : voronoi.getSites()) {
+        ellipse(c.x, c.y, 5, 5);
+      }
+           
+
+  }
+  
+  
+  ////////////////////////////////////////////////////////////////////////////////////////
+  
+  void drawDelaunayTriangulation() {
+
+    geomerativeStaticSegmentation(50);
+    // geomerativeVariableSegmentation(60, 1);
+
+    // turn the RShape into an RPolygon
+    RPolygon wavePolygon = rrlogo.diff.toPolygon();
+
+    // we have just 1 RContour in the RPolygon because we had one RPath in the RShape
+    // otherwise you need to loop through the polygon contours like shown in typography/font_to_points_dots
+    pt[] P = new pt [wavePolygon.contours[0].points.length];
+    for (int i = 0; i < wavePolygon.contours[0].points.length; i++)
+    {
+      RPoint curPoint = wavePolygon.contours[0].points[i];
+      ellipse(curPoint.x, curPoint.y, 5, 5);
+      P[i] = new pt(curPoint.x, curPoint.y);
+    }
+    
+      fill(222, 222, 222);
+      rrlogo.diff.draw();  
+     
+      noFill();
+    
+      drawTriangles(wavePolygon.contours[0].points.length, P);
+      noFill();
+  }
+  
+  //*********************************************
+  // **** COMPUTES AND DRAWS DELAUNAY TRIANGLES
+  //*********************************************
+  color red = color(200, 10, 10); color blue = color(10, 10, 200); color green = color(0, 150, 0); 
+  boolean dots = true;           // toggles display circle centers
+  boolean numbers = true;         // toggles display of vertex numbers 
+
+  void drawTriangles(int vn, pt[] P) { 
+     pt X = new pt(0,0);
+     float r = 1;
+     for (int i =0; i<vn-2; i++) {for (int j=i+1; j<vn-1; j++) {for (int k=j+1; k<vn; k++) {
+       boolean found=false; 
+       for (int m=0; m<vn; m++) {
+         X=centerCC (P[i], P[j], P[k]);  r = X.disTo(P[i]);
+         if ((m!=i)&&(m!=j)&&(m!=k)&&(X.disTo(P[m])<=r)) {found=true;}
+         };
+         
+       if (!found) {
+           strokeWeight(1); stroke(green); ellipse(X.x,X.y,2*r,2*r); 
+           if (dots) {stroke(blue); X.show(2); };
+           strokeWeight(2); stroke(red); beginShape(POLYGON);  P[i].vert(); P[j].vert(); P[k].vert(); endShape(); 
+         };
+        }; }; }; // end triple loop
+     };  
+     
+     
+  //*********************************************
+  // **** COMPUTE CIRCUMCENTER
+  //*********************************************
+  pt centerCC (pt A, pt B, pt C) {    // computes the center of a circumscirbing circle to triangle (A,B,C)
+    vec AB =  A.vecTo(B);  float ab2 = dot(AB,AB);
+    vec AC =  A.vecTo(C); AC.left();  float ac2 = dot(AC,AC);
+    float d = 2*dot(AB,AC);
+    AB.left();
+    AB.back(); AB.mul(ac2);
+    AC.mul(ab2);
+    AB.add(AC);
+    AB.div(d);
+    pt X =  A.makeCopy();
+    X.addVec(AB);
+    return(X);
+    };
   
   ////////////////////////////////////////////////////////////////////////////////////////
   
@@ -321,7 +466,7 @@ class RLogotype {
     rrlogo.diff.setFill(0);
     rrlogo.diff.draw();
     
-    distance = 15;
+    distance = 10;
     particles = new ArrayList<Particle>();
     list = new int[width*height];
   
@@ -349,7 +494,7 @@ class RLogotype {
   void drawFrame() {
     
     // constants
-    int max = 2000;
+    int max = 3000;
     int randVal = 100;
     
     if(count < max){
@@ -380,15 +525,23 @@ class RLogotype {
         Particle pp = particles.get(j);
         
         if (dist(p.location.x , p.location.y , pp.location.x , pp.location.y) < distance) {
+          // stroke colour ROJO
+          //stroke(int(random(150, 255)), int(random(0, 50)), int(random(0, 50)));
           line(p.location.x , p.location.y , pp.location.x , pp.location.y);
         }
       }
     } 
     
   }
+  
+ ////////////////////////////////////////////////////////////////////////////////////////
+ 
  
 }
 
+void mousePressed() {
+  voronoi.addPoint(new Vec2D(mouseX, mouseY));
+}
 
 class Particle {
   
