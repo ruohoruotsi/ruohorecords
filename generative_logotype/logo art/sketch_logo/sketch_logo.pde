@@ -41,7 +41,7 @@ Voronoi voronoi;
 ToxiclibsSupport gfx;
 // render switch
 boolean doIgnoreRoot = true;
-
+pt[] P = new pt [2048];
 
 void setup() {
   
@@ -49,7 +49,7 @@ void setup() {
   size(700, 700, P2D);
 
   smooth(8);
-  frameRate(30);
+  frameRate(3);
 
   ////////////////////////////////////////////////////////////////////////////////////////
   // initialize the Geomerative library
@@ -70,7 +70,7 @@ void setup() {
   voronoi = new Voronoi(DSIZE);
   gfx = new ToxiclibsSupport(this);
 
-  rrlogo.drawDelaunayTriangulation();
+  // rrlogo.drawDelaunayTriangulation();
   // rrlogo.drawToxiclibsVoronoi();
 }
 
@@ -93,7 +93,7 @@ void draw()
  // rrlogo.drawRedMesh();
  // rrlogo.drawDottedOutline();
  
- // rrlogo.drawDelaunayTriangulation();
+ rrlogo.drawDelaunayTriangulation();
  // rrlogo.drawToxiclibsVoronoi();
 
  // rrlogo.drawFrame();
@@ -223,17 +223,44 @@ class RLogotype {
 
   ////////////////////////////////////////////////////////////////////////////////////////
 
-  void draw(){
+  void testNewSegmentation(int maxFrames, int multiplier) {
 
-    geomerativeVariableSegmentation(60, 1);
+    // V1 variable segments/dots around the outline
+    // RCommand.setSegmentLength(frameCount % 50);
+
+    // V2 variable segments/dots around the outline
+    int seglenA = frameCount % maxFrames;
+    print("seglenA: " + seglenA);
+    
+    if (seglenA == 0) down = !down;  
+    if (down) {
+      print("   down: " + down);
+      RCommand.setSegmentLength(seglenA * multiplier);
+    } else { 
+      print(" not down: " + !down);
+      RCommand.setSegmentLength((maxFrames - seglenA) * multiplier);
+    }
+
+    RCommand.setSegmentator(RCommand.UNIFORMLENGTH);
+    println("");
+  }  
+
+  void draw(){
+    
+    background(255);
+    testNewSegmentation(10, 50);
+
+    fill(222, 222, 222);
+    rrlogo.diff.draw();  
 
     // Draw individual circles at each segment break
 
     RPoint[] pnts = diff.getPoints();
     ellipse(pnts[0].x, pnts[0].y, 5, 5);
-    for ( int i = 1; i < pnts.length; i++ )
+    int k = 1;
+    for ( int i = k; i < pnts.length; i++ )
     {    
-      line( pnts[i-1].x, pnts[i-1].y, pnts[i].x, pnts[i].y );
+      line( pnts[i-k].x, pnts[i-k].y, pnts[i].x, pnts[i].y );
       ellipse(pnts[i].x, pnts[i].y, 5, 5);
     } 
 
@@ -256,13 +283,13 @@ class RLogotype {
       line(myPoints[i].x, myPoints[i].y, upperLeftX, upperLeftY);
       line(myPoints[i].x, myPoints[i].y, upperLeftX, upperLeftY);
 
-      vertex(myPoints[i].x, myPoints[i].y); // Play with adding or subtracting jitter
+      //vertex(myPoints[i].x, myPoints[i].y); // Play with adding or subtracting jitter
       //vertex(myPoints[i].x+jitter, myPoints[i].y+jitter);
       //vertex(myPoints[i].x-jitter, myPoints[i].y-jitter);
 
       //line(myPoints[i].x, myPoints[i].y,30,-280);
       //line(myPoints[i].x, myPoints[i].y,20,myPoints[i].y);
-      //ellipse(myPoints[i].x+10,myPoints[i].y,3,3);
+      //ellipse(myPoints[i].x + 10, myPoints[i].y, 3, 3);
     }
     endShape();
   }
@@ -388,22 +415,47 @@ class RLogotype {
   
   
   ////////////////////////////////////////////////////////////////////////////////////////
+   void testDelaunaySegmentation(int maxFrames, int multiplier) {
+
+    // V1 variable segments/dots around the outline
+    // RCommand.setSegmentLength(frameCount % 50);
+
+    // V2 variable segments/dots around the outline
+    int seglenA = 12 + (frameCount % maxFrames);
+    print("seglenA: " + seglenA);
+    
+    if (seglenA == 13) down = !down;  
+    if (down) {
+     print("   down: " + down);
+     RCommand.setSegmentLength(seglenA * multiplier);
+    } else { 
+     print(" not down: " + !down);
+     RCommand.setSegmentLength((maxFrames - seglenA) * multiplier);
+    }
+
+    //RCommand.setSegmentLength(seglenA);
+    RCommand.setSegmentator(RCommand.UNIFORMLENGTH);
+    println(" ");
+  } 
   
   void drawDelaunayTriangulation() {
 
-    geomerativeStaticSegmentation(50);
-    // geomerativeVariableSegmentation(60, 1);
+    background(255);
+    testDelaunaySegmentation(30, 10);
 
     // turn the RShape into an RPolygon
     RPolygon wavePolygon = rrlogo.diff.toPolygon();
 
     // we have just 1 RContour in the RPolygon because we had one RPath in the RShape
     // otherwise you need to loop through the polygon contours like shown in typography/font_to_points_dots
-    pt[] P = new pt [wavePolygon.contours[0].points.length];
+    //pt[] P = new pt [wavePolygon.contours[0].points.length];
     for (int i = 0; i < wavePolygon.contours[0].points.length; i++)
     {
       RPoint curPoint = wavePolygon.contours[0].points[i];
       ellipse(curPoint.x, curPoint.y, 5, 5);
+      
+      
+      ///// IOHAVOC populate P[i] autrement ...same storage 
       P[i] = new pt(curPoint.x, curPoint.y);
     }
     
@@ -411,6 +463,8 @@ class RLogotype {
       rrlogo.diff.draw();  
       noFill();
     
+      println("wavePolygon.contours[0].points.length: " + wavePolygon.contours[0].points.length);
+
       drawTriangles(wavePolygon.contours[0].points.length, P);
   }
   
@@ -452,11 +506,11 @@ class RLogotype {
            
            if(rrlogo.diff.contains(X.x, X.y)){
             
-             print("Contains");
+             //print("Contains");
            }
            else {
-              println("Xxxxxxxxxxxxxxx");
-              println("( " + X.x + "," + X.y + ")");
+              //println("Xxxxxxxxxxxxxxx");
+              //println("( " + X.x + "," + X.y + ")");
               continue;
            }
            
