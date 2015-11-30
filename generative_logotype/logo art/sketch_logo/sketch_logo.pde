@@ -47,6 +47,8 @@ void setup() {
   
   // size(canvasWidth, canvasHeight, P2D);
   size(700, 700, P2D);
+  pixelDensity(2);
+  // fullScreen();
 
   smooth(8);
   frameRate(3);
@@ -385,10 +387,8 @@ class RLogotype {
     }
     
       background(255);
-      
       fill(222, 222, 222);
       rrlogo.diff.draw();  
-     
 
       stroke(0);
       noFill();
@@ -418,30 +418,31 @@ class RLogotype {
    void testDelaunaySegmentation(int maxFrames, int multiplier) {
 
     // V1 variable segments/dots around the outline
-    // RCommand.setSegmentLength(frameCount % 50);
+    //RCommand.setSegmentLength(12 + frameCount % 50);
 
-    // V2 variable segments/dots around the outline
-    int seglenA = 12 + (frameCount % maxFrames);
-    print("seglenA: " + seglenA);
+    //// V2 variable segments/dots around the outline
+    int seglenA = frameCount % maxFrames;
+    print("seglenA: " + seglenA + " ");
     
-    if (seglenA == 13) down = !down;  
+    if (seglenA == 0) down = !down;  
     if (down) {
      print("   down: " + down);
-     RCommand.setSegmentLength(seglenA * multiplier);
+     RCommand.setSegmentLength(seglenA * multiplier + 12);
     } else { 
      print(" not down: " + !down);
-     RCommand.setSegmentLength((maxFrames - seglenA) * multiplier);
+     int val = (maxFrames - seglenA) * multiplier;
+     print (" val " + val);
+     RCommand.setSegmentLength(val + 12);
     }
 
     //RCommand.setSegmentLength(seglenA);
     RCommand.setSegmentator(RCommand.UNIFORMLENGTH);
-    println(" ");
   } 
   
   void drawDelaunayTriangulation() {
 
-    background(255);
-    testDelaunaySegmentation(30, 10);
+    background(200);
+    testDelaunaySegmentation(80, 5);
 
     // turn the RShape into an RPolygon
     RPolygon wavePolygon = rrlogo.diff.toPolygon();
@@ -455,8 +456,10 @@ class RLogotype {
       ellipse(curPoint.x, curPoint.y, 5, 5);
       
       
+      
       ///// IOHAVOC populate P[i] autrement ...same storage 
       P[i] = new pt(curPoint.x, curPoint.y);
+      println(curPoint.x + "  " + curPoint.y);
     }
     
       fill(255);
@@ -466,6 +469,9 @@ class RLogotype {
       println("wavePolygon.contours[0].points.length: " + wavePolygon.contours[0].points.length);
 
       drawTriangles(wavePolygon.contours[0].points.length, P);
+      
+    fill(0);
+    ellipse(450, 475, 5, 5);
   }
   
   //*********************************************
@@ -485,11 +491,12 @@ class RLogotype {
         for (int k = j+1; k < vn; k++) {
           boolean found = false; 
        
-          for (int m=0; m<vn; m++) {
+          for (int m = 0; m < vn; m++) {
              X = centerCC (P[i], P[j], P[k]);  
              r = X.disTo(P[i]);
-             if ((m!=i) && (m!=j) && (m!=k) && (X.disTo(P[m])<=r)) {
-             found = true;
+             
+             if ((m != i) && (m != j) && (m != k) && (X.disTo(P[m]) <= r)) {
+               found = true;
            }
          };
          
@@ -500,12 +507,11 @@ class RLogotype {
              //stroke(red); ellipse(X.x, X.y, 2*r, 2*r); 
              continue;
            } else {
-             stroke(green); ellipse(X.x, X.y, 2*r, 2*r); 
+             stroke(color(80, 0, 80)); ellipse(X.x, X.y, 1*r, 1*r); 
            }
            
            
            if(rrlogo.diff.contains(X.x, X.y)){
-            
              //print("Contains");
            }
            else {
