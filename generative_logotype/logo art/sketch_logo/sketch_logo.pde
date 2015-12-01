@@ -43,47 +43,43 @@ ToxiclibsSupport gfx;
 boolean doIgnoreRoot = true;
 pt[] P = new pt [2048];
 
+
 void setup() {
   
-  // size(canvasWidth, canvasHeight, P2D);
-  size(700, 700, P2D);
-  pixelDensity(2);
-  // fullScreen();
-
+  size(700, 700, FX2D);
+  pixelDensity(2);  // fullScreen(); // (1) pixelDensity(2); 
   smooth(8);
-  frameRate(3);
 
   ////////////////////////////////////////////////////////////////////////////////////////
   // initialize the Geomerative library
   RG.init(this);
-
   rrlogo = new RLogotype(400, 500);
-
-  //rrlogo.setupShortFatR();
-  rrlogo.setupRC();
   
-  // uncomment, for frame example
-  // rrlogo.setupFrame();
+  // setup
+  // rrlogo.setupShortFatR();
+  rrlogo.setupRC();
+  //////////////////////////////////////////////////////////////////////////////////////////
 
+  // (2) Uncomment, for frame example
+  // rrlogo.setupFrame();
+  // frameRate(13);
   // saveFrame("grab.png");
   
   
   // Voronoi
-  voronoi = new Voronoi(DSIZE);
-  gfx = new ToxiclibsSupport(this);
+  //voronoi = new Voronoi(DSIZE);
+  //gfx = new ToxiclibsSupport(this);
 
-  // rrlogo.drawDelaunayTriangulation();
+  rrlogo.drawDelaunayTriangulation();
   // rrlogo.drawToxiclibsVoronoi();
 }
 
 
 void draw() 
 {
- // background(255);
- //fill(196, 0, 7);
 
  ////////////////////////////////////////////////////////////////////////////////////////
- // draw Guid es
+ // draw Guides
  //strokeWeight(2);
  //line(canvasWidth/2, 0, canvasWidth/2, canvasHeight);  // vertical guide
  //line(0, canvasHeight/2, canvasWidth, canvasHeight/2); // horizontal guide
@@ -95,10 +91,12 @@ void draw()
  // rrlogo.drawRedMesh();
  // rrlogo.drawDottedOutline();
  
- rrlogo.drawDelaunayTriangulation();
- // rrlogo.drawToxiclibsVoronoi();
+  rrlogo.drawDelaunayTriangulation();
+  // rrlogo.drawToxiclibsVoronoi();
 
- // rrlogo.drawFrame();
+  // (3) Frame needs/expects these
+  // background(255);
+  // rrlogo.drawFrame();
 }
 
 
@@ -585,17 +583,17 @@ class RLogotype {
   void drawFrame() {
     
     // constants
-    int max = 3000;
+    int max = 3000; //<>//
     int randVal = 100;
     
-    if(count < max){
+    if(count < max){ //<>//
       int i = 0;
       
       while(i < 3) {  
         axis = new PVector(int(random(randVal, width-randVal)),int(random(randVal, height-randVal)));
         
         // list[index] == 0 means that it was in the "mask"
-        if(list[int(axis.y*width + axis.x)] == 0 && 
+        if(list[int(axis.y*width + axis.x)] == 0 &&  //<>//
            list[int(axis.y*width + axis.x+1)] == 0 && 
            list[int(axis.y*width + axis.x-1)] == 0 && 
            list[int((axis.y+1)*width + axis.x)] == 0 && 
@@ -615,7 +613,7 @@ class RLogotype {
       for(int j = i+1; j < particles.size(); j++){
         Particle pp = particles.get(j);
         
-        if (dist(p.location.x , p.location.y , pp.location.x , pp.location.y) < distance) {
+        if (dist(p.location.x , p.location.y , pp.location.x , pp.location.y) < distance) { //<>//
           // stroke colour ROJO
           //stroke(int(random(150, 255)), int(random(0, 50)), int(random(0, 50)));
           line(p.location.x , p.location.y , pp.location.x , pp.location.y);
