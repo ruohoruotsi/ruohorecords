@@ -24,21 +24,6 @@ RLogotype rrlogo;
 // Control
 Boolean down = true;
 
-// frame params
-int[] list;
-int count = 0;
-int distance;
-PVector axis;
-int[] strokeRGBA;
-
-// toxiclibs voronoi params
-// radius of the root triangle which encompasses (MUST) all other points
-float DSIZE = 10000;
-// a Voronoi diagram relies on a Delaunay triangulation behind the scenes
-// we simply use this as a front end
-Voronoi voronoi;
-ToxiclibsSupport gfx;
-
 // render switch
 boolean doIgnoreRoot = true;
 pt[] P = new pt [2048];
@@ -49,21 +34,13 @@ void setup() {
   size(700, 700, FX2D);
   pixelDensity(2);  // fullScreen();
   smooth(8);
-  frameRate(3);
+  frameRate(8);
 
   ////////////////////////////////////////////////////////////////////////////////////////
   // initialize the Geomerative library
   RG.init(this);
   rrlogo = new RLogotype(400, 500);
   rrlogo.setupRC();
-  //////////////////////////////////////////////////////////////////////////////////////////
-
-  // Voronoi
-  voronoi = new Voronoi(DSIZE);
-  gfx = new ToxiclibsSupport(this);
-
-  // rrlogo.drawDelaunayTriangulation();
-  // rrlogo.drawToxiclibsVoronoi();
 }
 
 
@@ -79,10 +56,6 @@ void draw()
 
  // the main drawing
  rrlogo.drawDelaunayTriangulation();
-
- // DEBUG
- // rrlogo.drawDottedOutline();
- // rrlogo.drawToxiclibsVoronoi();
 }
 
 
@@ -135,100 +108,7 @@ class RLogotype {
 
   ////////////////////////////////////////////////////////////////////////////////////////
 
-  void geomerativeStaticSegmentation(int segLen) {
-
-    // tell geomerative how to convert the outline
-    RCommand.setSegmentLength(segLen);
-    RCommand.setSegmentator(RCommand.UNIFORMLENGTH);
-  }
-
-  void geomerativeVariableSegmentation(int maxFrames, int multiplier) {
-
-    // tell geomerative how to convert the outline
-
-    // V1 variable segments/dots around the outline
-    // RCommand.setSegmentLength(frameCount % 50);
-
-    // V2 variable segments/dots around the outline
-    int seglenA = frameCount % maxFrames;
-    if (seglenA == 0) down = !down;  
-    if (down) {
-      RCommand.setSegmentLength(seglenA * multiplier);
-    } else {   
-      RCommand.setSegmentLength((maxFrames - seglenA) * multiplier);
-    }
-
-    RCommand.setSegmentator(RCommand.UNIFORMLENGTH);
-    System.out.println(seglenA);
-  }  
-
-  ////////////////////////////////////////////////////////////////////////////////////////
-
-  void drawDottedOutline() {
-
-    geomerativeStaticSegmentation(25);
-
-    // turn the RShape into an RPolygon
-    RPolygon wavePolygon = rrlogo.diff.toPolygon();
-
-    // we have just 1 RContour in the RPolygon because we had one RPath in the RShape
-    // otherwise you need to loop through the polygon contours like shown in typography/font_to_points_dots
-    for (int i = 0; i < wavePolygon.contours[0].points.length; i++)
-    {
-      RPoint curPoint = wavePolygon.contours[0].points[i];
-      ellipse(curPoint.x, curPoint.y, 5, 5);
-    }
-  }
-  ////////////////////////////////////////////////////////////////////////////////////////
-  
-  void drawToxiclibsVoronoi() {
-
-    geomerativeStaticSegmentation(20);
-
-    // turn the RShape into an RPolygon
-    RPolygon wavePolygon = rrlogo.diff.toPolygon();
-
-    // we have just 1 RContour in the RPolygon because we had one RPath in the RShape
-    // otherwise you need to loop through the polygon contours like shown in typography/font_to_points_dots
-    for (int i = 0; i < wavePolygon.contours[0].points.length; i++)
-    {
-      RPoint curPoint = wavePolygon.contours[0].points[i];
-      ellipse(curPoint.x, curPoint.y, 5, 5);
-      
-      // add points from around the logo
-      // voronoi.addPoint(new Vec2D(curPoint.x, curPoint.y));
-    }
-    
-      background(255);
-      fill(222, 222, 222);
-      rrlogo.diff.draw();  
-
-      stroke(0);
-      noFill();
-      stroke(0, 0, 255, 50);
-    
-      beginShape(TRIANGLES);
-      // get the delaunay triangles
-      for (Triangle2D t : voronoi.getTriangles()) {
-        // ignore any triangles which share a vertex with the initial root triangle
-        if (!doIgnoreRoot || (abs(t.a.x)!=DSIZE && abs(t.a.y)!=DSIZE)) {
-          gfx.triangle(t, false);
-        }
-      }
-      endShape();
-    
-      fill(255, 0, 255);
-      noStroke();
-      for (Vec2D c : voronoi.getSites()) {
-        ellipse(c.x, c.y, 5, 5);
-      }
-           
-
-  }
-  
-  
-  ////////////////////////////////////////////////////////////////////////////////////////
-   void testDelaunaySegmentation(int maxFrames, int multiplier) {
+   void geomerativeVariableSegmentation(int maxFrames, int multiplier) {
 
     // V1 variable segments/dots around the outline
     //RCommand.setSegmentLength(12 + frameCount % 50);
@@ -254,8 +134,9 @@ class RLogotype {
   
   void drawDelaunayTriangulation() {
 
+    // clear background on each frame redraw
     background(200);
-    testDelaunaySegmentation(80, 5);
+    geomerativeVariableSegmentation(100, 1);
 
     // turn the RShape into an RPolygon
     RPolygon wavePolygon = rrlogo.diff.toPolygon();
@@ -273,6 +154,7 @@ class RLogotype {
       println(curPoint.x + "  " + curPoint.y);
     }
     
+    // R outline
     fill(255);
     rrlogo.diff.draw();  
     noFill();
@@ -280,8 +162,9 @@ class RLogotype {
     println("wavePolygon.contours[0].points.length: " + wavePolygon.contours[0].points.length);
     drawTriangles(wavePolygon.contours[0].points.length, P);
       
-    fill(0);
-    ellipse(450, 475, 5, 5);
+    // Crux point, that we were using to filter out certain kinds of polygons  
+    // fill(0);
+    // ellipse(450, 475, 5, 5);
   }
   
   //*********************************************
@@ -289,7 +172,7 @@ class RLogotype {
   //*********************************************
   color red = color(200, 10, 10); color blue = color(10, 10, 200); color green = color(0, 150, 0); 
   boolean dots = true;           // toggles display circle centers
-  boolean numbers = true;         // toggles display of vertex numbers 
+  boolean numbers = true;        // toggles display of vertex numbers 
 
   void drawTriangles(int vn, pt[] P) { 
      
@@ -331,7 +214,8 @@ class RLogotype {
               continue;
            } */
            
-           // stroke(green); ellipse(X.x,X.y,2*r,2*r); 
+           // triangle circumscribing circles
+           stroke(green); ellipse(X.x,X.y,2*r,2*r); 
            stroke(color(80, 0, 80)); ellipse(X.x, X.y, 1*r, 1*r); 
 
            
@@ -339,11 +223,12 @@ class RLogotype {
             stroke(blue); 
             X.show(2); 
            };
+           
            strokeWeight(2); 
            stroke(red); 
            
            beginShape(POLYGON);  
-           P[i].vert(); P[j].vert(); P[k].vert(); 
+           P[i].vert(); P[j].vert(); P[k].vert();  //<>//
            endShape(); 
          };
         }; }; }; // end triple loop
@@ -366,10 +251,4 @@ class RLogotype {
     X.addVec(AB);
     return(X);
     }; //<>//
-}
-
-////////////////////////////////////////////////////////////////////////////////////////
-
-void mousePressed() {
-  voronoi.addPoint(new Vec2D(mouseX, mouseY));
 }
