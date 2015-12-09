@@ -7,7 +7,7 @@
  Version :   v0.5
  
  //////////////////////////////////////////////
- */
+*/
 
 import geomerative.*;
 import toxi.geom.*;
@@ -38,6 +38,7 @@ float DSIZE = 10000;
 // we simply use this as a front end
 Voronoi voronoi;
 ToxiclibsSupport gfx;
+
 // render switch
 boolean doIgnoreRoot = true;
 pt[] P = new pt [2048];
@@ -195,7 +196,7 @@ class RLogotype {
       ellipse(curPoint.x, curPoint.y, 5, 5);
       
       // add points from around the logo
-      //voronoi.addPoint(new Vec2D(curPoint.x, curPoint.y));
+      // voronoi.addPoint(new Vec2D(curPoint.x, curPoint.y));
     }
     
       background(255);
@@ -265,22 +266,19 @@ class RLogotype {
     for (int i = 0; i < wavePolygon.contours[0].points.length; i++)
     {
       RPoint curPoint = wavePolygon.contours[0].points[i];
-      ellipse(curPoint.x, curPoint.y, 5, 5);
+      ellipse(curPoint.x, curPoint.y, 5, 5);  // dots that circulate the perimeter
       
-      
-      
-      ///// IOHAVOC populate P[i] autrement ...same storage 
+      ///// IOHAVOC populate P[i] autrement ... same storage 
       P[i] = new pt(curPoint.x, curPoint.y);
       println(curPoint.x + "  " + curPoint.y);
     }
     
-      fill(255);
-      rrlogo.diff.draw();  
-      noFill();
-    
-      println("wavePolygon.contours[0].points.length: " + wavePolygon.contours[0].points.length);
-
-      drawTriangles(wavePolygon.contours[0].points.length, P);
+    fill(255);
+    rrlogo.diff.draw();  
+    noFill();
+  
+    println("wavePolygon.contours[0].points.length: " + wavePolygon.contours[0].points.length);
+    drawTriangles(wavePolygon.contours[0].points.length, P);
       
     fill(0);
     ellipse(450, 475, 5, 5);
@@ -315,8 +313,9 @@ class RLogotype {
        if (!found) {
            strokeWeight(1); 
            
+           /*
            if(X.x > 500) {
-             //stroke(red); ellipse(X.x, X.y, 2*r, 2*r); 
+             stroke(red); ellipse(X.x, X.y, 2*r, 2*r); 
              continue;
            } else {
              stroke(color(80, 0, 80)); ellipse(X.x, X.y, 1*r, 1*r); 
@@ -330,12 +329,18 @@ class RLogotype {
               //println("Xxxxxxxxxxxxxxx");
               //println("( " + X.x + "," + X.y + ")");
               continue;
-           }
+           } */
+           
+           // stroke(green); ellipse(X.x,X.y,2*r,2*r); 
+           stroke(color(80, 0, 80)); ellipse(X.x, X.y, 1*r, 1*r); 
+
            
            if (dots) {
-            stroke(blue); X.show(2); 
+            stroke(blue); 
+            X.show(2); 
            };
-           strokeWeight(2); stroke(red); 
+           strokeWeight(2); 
+           stroke(red); 
            
            beginShape(POLYGON);  
            P[i].vert(); P[j].vert(); P[k].vert(); 
@@ -360,8 +365,7 @@ class RLogotype {
     pt X =  A.makeCopy();
     X.addVec(AB);
     return(X);
-    };
- //<>// //<>// //<>// //<>//
+    }; //<>//
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
