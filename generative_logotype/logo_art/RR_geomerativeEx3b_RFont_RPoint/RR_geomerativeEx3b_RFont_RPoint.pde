@@ -14,7 +14,8 @@ Boolean down = true;
 
 void setup()
 {
-    size(600, 400);
+    size(600, 400,FX2D);
+    pixelDensity(2);  // fullScreen();
     smooth();
     
     RG.init(this);
