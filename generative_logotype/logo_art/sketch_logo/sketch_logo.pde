@@ -24,8 +24,7 @@ RLogotype rrlogo;
 // Control
 Boolean down = true;
 
-// render switch
-boolean doIgnoreRoot = true;
+// global array of points
 pt[] P = new pt [2048];
 
 
@@ -103,7 +102,9 @@ class RLogotype {
     lowerRight = circleWidth + (letterWidth - circleWidth)/2 + (canvasWidth - letterWidth)/2;
     //lowerLeftY  = (letterWidth - circleWidth)/2 + (canvasWidth - letterWidth)/2;
 
+    System.out.println("upperLeftX:" + upperLeftX);
     System.out.println("UR:" + lowerRight);
+
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////
@@ -135,7 +136,7 @@ class RLogotype {
   void drawDelaunayTriangulation() {
 
     // clear background on each frame redraw
-    background(200);
+    background(255);
     geomerativeVariableSegmentation(100, 1);
 
     // turn the RShape into an RPolygon
@@ -144,7 +145,8 @@ class RLogotype {
     // we have just 1 RContour in the RPolygon because we had one RPath in the RShape
     // otherwise you need to loop through the polygon contours like shown in typography/font_to_points_dots
     //pt[] P = new pt [wavePolygon.contours[0].points.length];
-    for (int i = 0; i < wavePolygon.contours[0].points.length; i++)
+    int i = 0;
+    for ( i = 0; i < wavePolygon.contours[0].points.length; i++)
     {
       RPoint curPoint = wavePolygon.contours[0].points[i];
       ellipse(curPoint.x, curPoint.y, 5, 5);  // dots that circulate the perimeter
@@ -153,9 +155,12 @@ class RLogotype {
       P[i] = new pt(curPoint.x, curPoint.y);
       println(curPoint.x + "  " + curPoint.y);
     }
+    P[0] = new pt(300, 300);
+    //P[1] = new pt(550, 600);
+    P[1] = new pt(150, 100);
     
     // R outline
-    fill(255);
+    fill(200, 120);      // add an alpha
     rrlogo.diff.draw();  
     noFill();
   
@@ -181,54 +186,60 @@ class RLogotype {
      
     for (int i = 0; i < vn-2; i++) {
       for (int j = i+1; j < vn-1; j++) {
-        for (int k = j+1; k < vn; k++) {
+        for (int k = j+1;  k < vn;  k++) {
+          
           boolean found = false; 
-       
           for (int m = 0; m < vn; m++) {
              X = centerCC (P[i], P[j], P[k]);  
              r = X.disTo(P[i]);
-             
              if ((m != i) && (m != j) && (m != k) && (X.disTo(P[m]) <= r)) {
                found = true;
-           }
-         };
+             }
+           };
          
-       if (!found) {
+         if (!found) {
            strokeWeight(1); 
            
-           /*
-           if(X.x > 500) {
-             stroke(red); ellipse(X.x, X.y, 2*r, 2*r); 
-             continue;
+           //*****************************************
+           if(X.x > 700) {
+             stroke(green); ellipse(X.x, X.y, 2*r, 2*r); 
+             // continue;
            } else {
-             stroke(color(80, 0, 80)); ellipse(X.x, X.y, 1*r, 1*r); 
+             // stroke(color(80, 0, 80)); ellipse(X.x, X.y, 1*r, 1*r); 
            }
            
            
            if(rrlogo.diff.contains(X.x, X.y)){
              //print("Contains");
+             stroke(color(80, 80, 80)); ellipse(X.x, X.y, 1*r, 1*r); 
            }
            else {
               //println("Xxxxxxxxxxxxxxx");
               //println("( " + X.x + "," + X.y + ")");
-              continue;
-           } */
-           
+              // continue;
+           } 
+         
+           /*****************************************
            // triangle circumscribing circles
            stroke(green); ellipse(X.x,X.y,2*r,2*r); 
            stroke(color(80, 0, 80)); ellipse(X.x, X.y, 1*r, 1*r); 
-
+           */
+           
+           
            
            if (dots) {
             stroke(blue); 
-            X.show(2); 
+            X.show(3); // little blue dots
            };
            
            strokeWeight(2); 
            stroke(red); 
            
            beginShape(POLYGON);  
-           P[i].vert(); P[j].vert(); P[k].vert();  //<>//
+           // P[i].vert(); P[j].vert(); P[k].vert();  //<>//
+           P[i].vert(); 
+           P[j].vert(); 
+           P[k].vert(); 
            endShape(); 
          };
         }; }; }; // end triple loop
@@ -239,6 +250,7 @@ class RLogotype {
   // **** COMPUTE CIRCUMCENTER
   //*********************************************
   pt centerCC (pt A, pt B, pt C) {    // computes the center of a circumscirbing circle to triangle (A,B,C)
+    
     vec AB =  A.vecTo(B);  float ab2 = dot(AB,AB);
     vec AC =  A.vecTo(C); AC.left();  float ac2 = dot(AC,AC);
     float d = 2*dot(AB,AC);
