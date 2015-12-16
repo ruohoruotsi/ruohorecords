@@ -20,6 +20,11 @@ final int canvasHeight = 700;
 
 RShape circumscribingCircle;
 RLogotype rrlogo;
+RLogotype rrlogoMask;
+
+// PGraphics layers
+PGraphics maskHole;
+PGraphics maskBorder;
 
 // Control
 Boolean down = true;
@@ -27,24 +32,36 @@ Boolean down = true;
 // global array of points
 pt[] P = new pt [2048];
 
-
+int pd = 1; // pixelDensity multiplier
+int pdG = 1;
 void setup() {
   
   size(700, 700, FX2D);
-  pixelDensity(2);  // fullScreen();
+  pixelDensity(pd);  // fullScreen();
   smooth(8);
-  frameRate(8);
+  frameRate(80);
 
   ////////////////////////////////////////////////////////////////////////////////////////
   // initialize the Geomerative library
   RG.init(this);
   rrlogo = new RLogotype(400, 500);
   rrlogo.setupRC();
+  
+  rrlogoMask = new RLogotype(400, 500);
+  rrlogoMask.setupRCMask();
+  
+  maskHole = createGraphics(pdG*width, pdG*height);
+  maskBorder = createGraphics(pdG*width, pdG*height);
+
 }
 
 
 void draw() 
 {
+  
+  println("maskHole.width = " + maskHole.width);
+  println("maskHole.height = " + maskHole.height);
+  
  ////////////////////////////////////////////////////////////////////////////////////////
  // draw Guides
  // strokeWeight(2);
@@ -53,8 +70,36 @@ void draw()
  // end draw Guides
  ////////////////////////////////////////////////////////////////////////////////////////
 
- // the main drawing
- rrlogo.drawDelaunayTriangulation();
+  background(255);
+ 
+  // (1) Main drawing to the canvas
+  rrlogo.drawDelaunayTriangulation();
+
+  // (2) Draw the hole (R shape) into a pgraphics (black == transparent, white == opaque)
+  maskHole.beginDraw();
+  maskHole.background(255);  // white
+  maskHole.stroke(0);        // black
+  maskHole.fill(0);          // black
+  maskHole.smooth(8); maskHole.strokeWeight(2);
+  rrlogoMask.diff.draw(maskHole);  
+  maskHole.endDraw();
+  
+  // (3) Draw the border into a pgraphics, basically big reddish rect
+  maskBorder.beginDraw();
+  maskBorder.background(255);    // white
+  color c = color(220, 30, 67);  // reddish
+  maskBorder.stroke(c);          // reddish
+  maskBorder.fill(c);            // reddish
+  maskBorder.smooth(8); maskBorder.strokeWeight(12);
+  //maskBorder.rect(0, 0, pd*width -20, pd*height -20);
+  maskBorder.rect(0, 0, 100, 100);
+  maskBorder.endDraw();
+
+  // blend(maskHole, 0, 0, pd*width, pd*height, 0, 0, pd*width, pd*height, MULTIPLY);
+
+  // (3) apply/blend the mask hole to the border (to create a transparent cutout)
+  maskBorder.mask(maskHole);
+  image(maskBorder, 0, 0, pd*width, pd*height);
 }
 
 
@@ -106,6 +151,26 @@ class RLogotype {
     System.out.println("UR:" + lowerRight);
 
   }
+  
+    void setupRCMask() {
+
+    // Union shapes
+    int circleWidth = letterWidth;
+    rectangle = RShape.createRectangle(0, 0, circleWidth/2, circleWidth); 
+    circle = RShape.createEllipse(circleWidth/2, circleWidth/2, circleWidth , circleWidth);
+   
+    triangle = new RShape();
+    triangle.addLineTo(circleWidth, letterHeight);
+    triangle.addLineTo(0, letterHeight);
+    
+    // Diff
+    diff = triangle.union(circle).union(rectangle);
+  
+    // Translate to center
+    int translateWidth = (letterWidth - circleWidth)/2 + (canvasWidth - letterWidth)/2;
+    int translateHeight = (canvasHeight - letterHeight)/2;
+    diff.translate(translateWidth, translateHeight);
+  }
 
   ////////////////////////////////////////////////////////////////////////////////////////
 
@@ -136,7 +201,7 @@ class RLogotype {
   void drawDelaunayTriangulation() {
 
     // clear background on each frame redraw
-    background(255);
+    // background(255);
     geomerativeVariableSegmentation(100, 1);
 
     // turn the RShape into an RPolygon
@@ -153,23 +218,19 @@ class RLogotype {
       
       ///// IOHAVOC populate P[i] autrement ... same storage 
       P[i] = new pt(curPoint.x, curPoint.y);
-      println(curPoint.x + "  " + curPoint.y);
+      // println(curPoint.x + "  " + curPoint.y);
     }
     P[0] = new pt(300, 300);
     //P[1] = new pt(550, 600);
     P[1] = new pt(150, 100);
     
     // R outline
-    fill(200, 120);      // add an alpha
+    fill(200);      // add an alpha 150 is good 
     rrlogo.diff.draw();  
     noFill();
   
     println("wavePolygon.contours[0].points.length: " + wavePolygon.contours[0].points.length);
     drawTriangles(wavePolygon.contours[0].points.length, P);
-      
-    // Crux point, that we were using to filter out certain kinds of polygons  
-    // fill(0);
-    // ellipse(450, 475, 5, 5);
   }
   
   //*********************************************
@@ -197,7 +258,7 @@ class RLogotype {
              }
            };
          
-         if (!found) {
+         if (!found) { //<>//
            strokeWeight(1); 
            
            //*****************************************
@@ -223,7 +284,7 @@ class RLogotype {
            // triangle circumscribing circles
            stroke(green); ellipse(X.x,X.y,2*r,2*r); 
            stroke(color(80, 0, 80)); ellipse(X.x, X.y, 1*r, 1*r); 
-           */
+           */ //<>//
            
            
            
