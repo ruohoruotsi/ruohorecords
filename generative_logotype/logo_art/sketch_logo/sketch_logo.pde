@@ -20,7 +20,6 @@ final int canvasHeight = 700;
 
 RShape circumscribingCircle;
 RLogotype rrlogo;
-RLogotype rrlogoMask;
 
 // PGraphics layers
 PGraphics maskHole;
@@ -39,20 +38,16 @@ void setup() {
   size(700, 700, FX2D);
   pixelDensity(pd);  // fullScreen();
   smooth(8);
-  frameRate(80);
+  frameRate(1);
 
   ////////////////////////////////////////////////////////////////////////////////////////
   // initialize the Geomerative library
   RG.init(this);
   rrlogo = new RLogotype(400, 500);
   rrlogo.setupRC();
-  
-  rrlogoMask = new RLogotype(400, 500);
-  rrlogoMask.setupRCMask();
-  
+
   maskHole = createGraphics(pdG*width, pdG*height);
   maskBorder = createGraphics(pdG*width, pdG*height);
-
 }
 
 
@@ -81,13 +76,13 @@ void draw()
   maskHole.stroke(0);        // black
   maskHole.fill(0);          // black
   maskHole.smooth(8); maskHole.strokeWeight(2);
-  rrlogoMask.diff.draw(maskHole);  
+  rrlogo.diff.draw(maskHole);  
   maskHole.endDraw();
   
   // (3) Draw the border into a pgraphics, basically big reddish rect
   maskBorder.beginDraw();
   maskBorder.background(255);    // white
-  color c = color(220, 30, 67);  // reddish
+  color c = color(200, 10, 10);
   maskBorder.stroke(c);          // reddish
   maskBorder.fill(c);            // reddish
   maskBorder.smooth(8); maskBorder.strokeWeight(2);
@@ -148,27 +143,6 @@ class RLogotype {
 
     System.out.println("upperLeftX:" + upperLeftX);
     System.out.println("UR:" + lowerRight);
-
-  }
-  
-    void setupRCMask() {
-
-    // Union shapes
-    int circleWidth = letterWidth;
-    rectangle = RShape.createRectangle(0, 0, circleWidth/2, circleWidth); 
-    circle = RShape.createEllipse(circleWidth/2, circleWidth/2, circleWidth , circleWidth);
-   
-    triangle = new RShape();
-    triangle.addLineTo(circleWidth, letterHeight);
-    triangle.addLineTo(0, letterHeight);
-    
-    // Diff
-    diff = triangle.union(circle).union(rectangle);
-  
-    // Translate to center
-    int translateWidth = (letterWidth - circleWidth)/2 + (canvasWidth - letterWidth)/2;
-    int translateHeight = (canvasHeight - letterHeight)/2;
-    diff.translate(translateWidth, translateHeight);
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////
@@ -201,7 +175,9 @@ class RLogotype {
 
     // clear background on each frame redraw
     // background(255);
-    geomerativeVariableSegmentation(100, 1);
+    // geomerativeVariableSegmentation(100, 1);
+    geomerativeVariableSegmentation(10, 10);
+
 
     // turn the RShape into an RPolygon
     RPolygon wavePolygon = rrlogo.diff.toPolygon();
@@ -221,7 +197,7 @@ class RLogotype {
     }
     P[0] = new pt(300, 300);
     //P[1] = new pt(550, 600);
-    P[1] = new pt(150, 100);
+    // P[1] = new pt(150, 100);
     
     // R outline
     fill(200);      // add an alpha 150 is good 
@@ -258,11 +234,11 @@ class RLogotype {
            };
          
          if (!found) { //<>//
-           strokeWeight(1);  //<>//
+           strokeWeight(2); 
            
            //*****************************************
            if(X.x > 700) {
-             stroke(green); ellipse(X.x, X.y, 2*r, 2*r); 
+             // stroke(green); ellipse(X.x, X.y, 2*r, 2*r); 
              // continue;
            } else {
              // stroke(color(80, 0, 80)); ellipse(X.x, X.y, 1*r, 1*r); 
@@ -282,9 +258,9 @@ class RLogotype {
            /*****************************************
            // triangle circumscribing circles
            stroke(green); ellipse(X.x,X.y,2*r,2*r); 
-           stroke(color(80, 0, 80)); ellipse(X.x, X.y, 1*r, 1*r); 
-           */ //<>//
-            //<>//
+           stroke(color(80, 0, 80)); ellipse(X.x, X.y, 1*r, 1*r);  //<>//
+           // */
+           
            
            
            if (dots) {
@@ -292,7 +268,7 @@ class RLogotype {
             X.show(3); // little blue dots
            };
            
-           strokeWeight(2); 
+           strokeWeight(5); 
            stroke(red); 
            
            beginShape(POLYGON);  
@@ -308,7 +284,7 @@ class RLogotype {
      
   //*********************************************
   // **** COMPUTE CIRCUMCENTER
-  //*********************************************
+  //********************************************* //<>//
   pt centerCC (pt A, pt B, pt C) {    // computes the center of a circumscirbing circle to triangle (A,B,C)
     
     vec AB =  A.vecTo(B);  float ab2 = dot(AB,AB);
