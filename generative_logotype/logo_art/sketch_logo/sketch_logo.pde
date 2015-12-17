@@ -90,16 +90,15 @@ void draw()
   color c = color(220, 30, 67);  // reddish
   maskBorder.stroke(c);          // reddish
   maskBorder.fill(c);            // reddish
-  maskBorder.smooth(8); maskBorder.strokeWeight(12);
-  //maskBorder.rect(0, 0, pd*width -20, pd*height -20);
-  maskBorder.rect(0, 0, 100, 100);
+  maskBorder.smooth(8); maskBorder.strokeWeight(2);
+  maskBorder.rect(0, 0, pd*width, pd*height);
   maskBorder.endDraw();
 
-  // blend(maskHole, 0, 0, pd*width, pd*height, 0, 0, pd*width, pd*height, MULTIPLY);
 
   // (3) apply/blend the mask hole to the border (to create a transparent cutout)
   maskBorder.mask(maskHole);
   image(maskBorder, 0, 0, pd*width, pd*height);
+  //blend(maskBorder, 0, 0, pd*width, pd*height, 0, 0, pd*width, pd*height, MULTIPLY);
 }
 
 
@@ -259,7 +258,7 @@ class RLogotype {
            };
          
          if (!found) { //<>//
-           strokeWeight(1); 
+           strokeWeight(1);  //<>//
            
            //*****************************************
            if(X.x > 700) {
@@ -285,7 +284,7 @@ class RLogotype {
            stroke(green); ellipse(X.x,X.y,2*r,2*r); 
            stroke(color(80, 0, 80)); ellipse(X.x, X.y, 1*r, 1*r); 
            */ //<>//
-           
+            //<>//
            
            
            if (dots) {
