@@ -11,8 +11,10 @@ class pt { float x,y;
   void setFromMouse() { x = mouseX; y = mouseY; }; 
 
   // DISPLAY, PRINT 
-  void vert() {vertex(x,y);};
+  //void vert() {vertex(x,y);};
+  void vert(processing.core.PGraphics g) {g.vertex(x,y);};
   void show(int r) { ellipse(x, y, r, r); }; 
+  void show(int r, processing.core.PGraphics g) { g.ellipse(x, y, r, r); }; 
   void label(String s, vec D) {text(s, x+D.x,y+D.y);  };
   void showLineTo (pt P) {line(x,y,P.x,P.y); }; 
   void write() {println("("+x+","+y+")");};
