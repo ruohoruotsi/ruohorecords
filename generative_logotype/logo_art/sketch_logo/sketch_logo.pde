@@ -15,11 +15,8 @@ import toxi.geom.mesh2d.*;
 import toxi.processing.*;
 
 // Globals
-//final int canvasWidth = 700;
-//final int canvasHeight = 700;
-
-RShape circumscribingCircle;
 RLogotype rrlogo;
+pt[] P = new pt [2048]; // points to delaunay triangulate
 
 // PGraphics layers
 PGraphics rrGraphics;  
@@ -31,31 +28,27 @@ color rrred = color(120, 10, 10);
 color rrblue = color(255, 70, 50); 
 color rrgreen = color(0, 150, 0); 
 
-
 // Control
 Boolean down = true;
 
-// global array of points
-pt[] P = new pt [2048];
-
 int pd = 1; // pixelDensity multiplier
-int pdG = 2;
+int pdG = 2; // pgraphics pixelDensity multiplier
 
 void setup() {
 
   size(700, 700, FX2D); //<>//
   pixelDensity(pd);  // fullScreen();
   smooth(8);
-  frameRate(1);
+  frameRate(8);
 
   rrGraphics = createGraphics(pdG * width, pdG * height);
-  maskHole = createGraphics(pdG*width, pdG*height);
-  maskBorder = createGraphics(pdG*width, pdG*height);
+  maskHole   = createGraphics(pdG * width, pdG * height);
+  maskBorder = createGraphics(pdG * width, pdG * height);
   
   ////////////////////////////////////////////////////////////////////////////////////////
   // initialize the Geomerative library
   RG.init(this);
-  rrlogo = new RLogotype(400*pdG, 500*pdG, rrGraphics);
+  rrlogo = new RLogotype(400 * pdG, 500 * pdG, rrGraphics);
   rrlogo.setupRC();
 }
 
@@ -75,11 +68,17 @@ void draw()
   // (1) Main drawing to the PGraphics 
   rrGraphics.beginDraw();
   rrGraphics.background(255); // clear background on each frame redraw
-  rrGraphics.strokeWeight(4);  
+  rrGraphics.strokeWeight(4*pdG);  
   rrGraphics.stroke(255);  
   rrlogo.drawDelaunayTriangulation();
   rrGraphics.endDraw();
   // rrGraphics.save("highRes.tif");
+  
+  //PImage img = rrGraphics.get(0, 0, rrGraphics.width, rrGraphics.height); //snap an image from the off-screen graphics  
+  //println("rrrgraphics.width: " + rrGraphics.width + " height: " + rrGraphics.height);
+  //println("main screen width: " + width            + " height: " + height);
+  //img.resize(width, height); // resize to fit the on-screen display 
+  //image(img, 0, 0); // display the resized image on screen  
   
   // (2) Draw the hole (R shape) into a pgraphics (black == transparent, white == opaque)
   maskHole.beginDraw();
@@ -87,7 +86,7 @@ void draw()
   maskHole.fill(0);          // black
   maskHole.smooth(8); 
   maskHole.noStroke();
-  //rrlogo.diff.draw(maskHole);  
+  rrlogo.diff.draw(maskHole);  
   maskHole.endDraw();
 
   // (3) Draw the border into a pgraphics, basically big reddish rect
@@ -96,7 +95,7 @@ void draw()
   maskBorder.fill(255);        // reddish
   maskBorder.smooth(8); 
   maskBorder.noStroke();
-  maskBorder.rect(0, 0, pd*width, pd*height);
+  maskBorder.rect(0, 0, pdG * width, pdG * height);
   maskBorder.endDraw();
 
   // (3) apply/blend the mask hole to the border (to create a transparent cutout)
@@ -104,24 +103,25 @@ void draw()
   // image(maskBorder, 0, 0, pd*width, pd*height);
   // blend(maskBorder, 0, 0, pd*width, pd*height, 0, 0, pd*width, pd*height, SUBTRACT);
 
-  // maskBorder.mask(maskHole);
-  // image(maskBorder, 0, 0, pd*width, pd*height);
+  //// working
+  //PImage img = rrGraphics.get(0, 0, rrGraphics.width, rrGraphics.height);
+  //img.resize(width, height); // resize to fit the on-screen display 
+  //image(img, 0, 0); // display the resized image on screen  
+  //maskBorder.mask(maskHole);
+  //image(maskBorder, 0, 0, pdG*width, pdG*height);
+  
+  // working ALT
+  rrGraphics.blend(maskHole, 0, 0, pdG*width, pdG*height, 0, 0, pdG*width, pdG*height, ADD);
+  image(rrGraphics, 0, 0, width, height);
+  // rrGraphics.save("rrGraphics-highRes.tif");
 
-  PImage img = rrGraphics.get(0, 0, rrGraphics.width, rrGraphics.height); //snap an image from the off-screen graphics  
-  println("rrrgraphics.width: " + rrGraphics.width + " height: " + rrGraphics.height);
-  println("main screen width: " + width            + " height: " + height);
-  img.resize(width, height); // resize to fit the on-screen display 
-  image(img, 0, 0); // display the resized image on screen  
+  // rrGraphics.mask(maskHole);
+  // image(rrGraphics, 0, 0, pdG*width, pdG*height);
+  // maskBorder.save("maskBorder-highRes.tif");
 
   // saveFrame("line-######.png");
 }
-
-void keyPressed() {  
-  // big.endDraw(); // finish drawing  
-  // big.save("highRes.tif"); //save to file - use .tif as format for high-res  
-  println(" ");
-  println("Saved"); // nice with some feedback
-}  
+ 
 
 class RLogotype {
 
@@ -142,8 +142,6 @@ class RLogotype {
     letterWidth = logoWidth;
     letterHeight = logoHeight;
     g = pg;
-    println("letterWidth: " + letterWidth);
-    println("letterHeight: " + letterHeight);
   }
 
   void setupRC() {
@@ -218,8 +216,15 @@ class RLogotype {
     // geomerativeVariableSegmentation(100, 1);
     // geomerativeVariableSegmentation(60, 1);
     
-     geomerativeVariableSegmentation(60, 10);
+     //geomerativeVariableSegmentation(60, 1);
+     // geomerativeVariableSegmentation(60, 10);
     //geomerativeStaticSegmentation(98);
+    
+    // IOHAVOC backtobasics
+    int val = 110 + frameCount % 30;
+    println("segmentLength == " + val);
+    RCommand.setSegmentLength(val);
+    RCommand.setSegmentator(RCommand.UNIFORMLENGTH);
 
     // turn the RShape into an RPolygon
     RPolygon wavePolygon = rrlogo.diff.toPolygon();
@@ -245,7 +250,7 @@ class RLogotype {
     // P[1] = new pt(450, 475);  
 
     // R outline
-    g.fill(rrred);      // add an alpha 150 is good 
+    g.fill(getColorPalette());      // add an alpha 150 is good 
     rrlogo.diff.draw(g);  
     g.noFill();
 
@@ -279,12 +284,12 @@ class RLogotype {
           boolean found = false; 
           for (int m = 0; m < vn; m++) {
             X = centerCC (P[i], P[j], P[k]);  
-            r = X.disTo(P[i]);
+            r = X.disTo(P[i]); //<>//
             if ((m != i) && (m != j) && (m != k) && (X.disTo(P[m]) <= r)) {
               found = true;
             }
           };
-          //<>// //<>//
+          //<>//
           if (!found) { //<>//
             //strokeWeight(2); 
 
@@ -309,21 +314,9 @@ class RLogotype {
               //X.show(4, g); // little blue dots
             };
 
-            // g.strokeWeight(5);
-            //g.stroke(rrred); 
-
             // draw actual tiangles
-            color c = getColorPalette();
-            // fill(random(200, 255) , random(20), random(20)); 
-            // fill(c, 0);      // add an alpha 150 is good 
-
-            // g.stroke(0);
             g.beginShape(); 
-            g.fill(c);      // add an alpha 150 is good 
-
-            //g.vertex(0, 0); 
-            //g.vertex(100, 100); 
-
+            g.fill(getColorPalette());      // add an alpha 150 is good 
             P[i].vert(g); 
             P[j].vert(g); 
             P[k].vert(g); 
