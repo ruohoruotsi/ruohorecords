@@ -1,4 +1,4 @@
-/* //<>// //<>//
+/* //<>// //<>// //<>//
 //////////////////////////////////////////////
  --------- generative logotypography ----------
  //////////////////////////////////////////////
@@ -25,8 +25,6 @@ PGraphics maskBorder;
 
 // Colors
 color rrred = color(120, 10, 10); 
-color rrblue = color(255, 70, 50); 
-color rrgreen = color(0, 150, 0); 
 
 // Control
 Boolean down = true;
@@ -36,7 +34,7 @@ int pdG = 2; // pgraphics pixelDensity multiplier
 
 void setup() {
 
-  size(700, 700, FX2D); //<>//
+  size(700, 700, FX2D);
   pixelDensity(pd);  // fullScreen();
   smooth(8);
   frameRate(8);
@@ -44,7 +42,7 @@ void setup() {
   rrGraphics = createGraphics(pdG * width, pdG * height);
   maskHole   = createGraphics(pdG * width, pdG * height);
   maskBorder = createGraphics(pdG * width, pdG * height);
-  
+
   ////////////////////////////////////////////////////////////////////////////////////////
   // initialize the Geomerative library
   RG.init(this);
@@ -64,22 +62,22 @@ void draw()
   ////////////////////////////////////////////////////////////////////////////////////////
 
   background(255);  // clear main background
-  
+
   // (1) Main drawing to the PGraphics 
   rrGraphics.beginDraw();
   rrGraphics.background(255); // clear background on each frame redraw
   rrGraphics.strokeWeight(4*pdG);  
-  rrGraphics.stroke(255);  
+  rrGraphics.stroke(255);       // make stroke black/white
   rrlogo.drawDelaunayTriangulation();
   rrGraphics.endDraw();
   // rrGraphics.save("highRes.tif");
-  
+
   //PImage img = rrGraphics.get(0, 0, rrGraphics.width, rrGraphics.height); //snap an image from the off-screen graphics  
   //println("rrrgraphics.width: " + rrGraphics.width + " height: " + rrGraphics.height);
   //println("main screen width: " + width            + " height: " + height);
   //img.resize(width, height); // resize to fit the on-screen display 
   //image(img, 0, 0); // display the resized image on screen  
-  
+
   // (2) Draw the hole (R shape) into a pgraphics (black == transparent, white == opaque)
   maskHole.beginDraw();
   maskHole.background(255);  // white
@@ -95,7 +93,7 @@ void draw()
   maskBorder.fill(255);        // reddish
   maskBorder.smooth(8); 
   maskBorder.noStroke();
-  maskBorder.rect(0, 0, pdG * width, pdG * height);
+  //maskBorder.rect(0, 0, pdG * width, pdG * height);
   maskBorder.endDraw();
 
   // (3) apply/blend the mask hole to the border (to create a transparent cutout)
@@ -109,19 +107,40 @@ void draw()
   //image(img, 0, 0); // display the resized image on screen  
   //maskBorder.mask(maskHole);
   //image(maskBorder, 0, 0, pdG*width, pdG*height);
-  
+
   // working ALT
+  //maskBorder.mask(maskHole);
+  drawBorder();
+
   rrGraphics.blend(maskHole, 0, 0, pdG*width, pdG*height, 0, 0, pdG*width, pdG*height, ADD);
+  rrGraphics.blend(maskBorder, 0, 0, pdG*width, pdG*height, 0, 0, pdG*width, pdG*height, MULTIPLY);
+
   image(rrGraphics, 0, 0, width, height);
-  // rrGraphics.save("rrGraphics-highRes.tif");
-
-  // rrGraphics.mask(maskHole);
-  // image(rrGraphics, 0, 0, pdG*width, pdG*height);
-  // maskBorder.save("maskBorder-highRes.tif");
-
+  // save("rrGraphics-highRes.tif");
   // saveFrame("line-######.png");
 }
- 
+
+
+void drawBorder() {
+  maskBorder.beginDraw();
+  maskBorder.fill(255); // white
+
+  int interlineDist = 10;
+  for (int i = 0; i < 5; i++)
+  {
+    maskBorder.strokeWeight(3);
+    maskBorder.stroke(getColorPalette());  // 
+    maskBorder.rect(0 + i*interlineDist, 0 + i*interlineDist, 
+      maskBorder.width - 2*i*interlineDist, maskBorder.height - 2*i*interlineDist);
+  }
+  maskBorder.endDraw();
+}
+
+  color getColorPalette() {
+    int anchor = 50 + int(random(-20, 50));
+    color rrred = color(anchor, int(random(0, 20)), int(random(0, 20))); 
+    return rrred;
+  }
 
 class RLogotype {
 
@@ -215,11 +234,11 @@ class RLogotype {
 
     // geomerativeVariableSegmentation(100, 1);
     // geomerativeVariableSegmentation(60, 1);
-    
-     //geomerativeVariableSegmentation(60, 1);
-     // geomerativeVariableSegmentation(60, 10);
+
+    //geomerativeVariableSegmentation(60, 1);
+    // geomerativeVariableSegmentation(60, 10);
     //geomerativeStaticSegmentation(98);
-    
+
     // IOHAVOC backtobasics
     int val = 110 + frameCount % 30;
     println("segmentLength == " + val);
@@ -258,14 +277,6 @@ class RLogotype {
     drawTriangles(wavePolygon.contours[0].points.length, P, g);
   }
 
-
-  color getColorPalette() {
-    int anchor = 50 + int(random(-20, 50));
-    // color rrred = color(anchor, 10, 10); 
-    color rrred = color(anchor, int(random(0, 20)), int(random(0, 20))); 
-    return rrred;
-  }
-
   //*********************************************
   // **** COMPUTES AND DRAWS DELAUNAY TRIANGLES
   //*********************************************
@@ -273,7 +284,7 @@ class RLogotype {
   boolean numbers = true;        // toggles display of vertex numbers 
 
   void drawTriangles(int vn, pt[] P, processing.core.PGraphics g) { 
-
+ //<>//
     pt X = new pt(0, 0);
     float r = 1;
 
@@ -284,7 +295,7 @@ class RLogotype {
           boolean found = false; 
           for (int m = 0; m < vn; m++) {
             X = centerCC (P[i], P[j], P[k]);  
-            r = X.disTo(P[i]); //<>//
+            r = X.disTo(P[i]);
             if ((m != i) && (m != j) && (m != k) && (X.disTo(P[m]) <= r)) {
               found = true;
             }
@@ -302,16 +313,18 @@ class RLogotype {
               // continue;
             } 
 
-            /*****************************************
-             // triangle circumscribing circles
-             g.stroke(rrgreen); g.ellipse(X.x,X.y,2*r,2*r); 
-             g.stroke(color(80, 0, 80)); g.ellipse(X.x, X.y, 1*r, 1*r); 
-             // */
+            //*****************************************
+            // triangle circumscribing circles
+            //g.stroke(rrgreen); 
+            //g.ellipse(X.x,X.y,2*r,2*r); 
+            //g.stroke(color(80, 0, 80)); 
+            // g.ellipse(X.x, X.y, 1*r, 1*r); 
+            //
 
             if (dots) {
-              //g.strokeWeight(1);
+              //g.strokeWeight(8);
               //g.stroke(rrblue); 
-              //X.show(4, g); // little blue dots
+              // X.show(4, g); // little blue dots
             };
 
             // draw actual tiangles
@@ -321,7 +334,7 @@ class RLogotype {
             P[j].vert(g); 
             P[k].vert(g); 
 
-            g.endShape(); 
+            g.endShape();
           };
         };
       };
