@@ -1,5 +1,5 @@
-/* //<>// //<>// //<>//
-//////////////////////////////////////////////
+/* //<>// //<>// //<>// //<>//
+ //////////////////////////////////////////////
  --------- generative logotypography ----------
  //////////////////////////////////////////////
  Title   :   sketch_logo
@@ -37,7 +37,7 @@ void setup() {
   size(700, 700, FX2D);
   pixelDensity(pd);  // fullScreen();
   smooth(8);
-  frameRate(8);
+  frameRate(1);
 
   rrGraphics = createGraphics(pdG * width, pdG * height);
   maskHole   = createGraphics(pdG * width, pdG * height);
@@ -70,13 +70,6 @@ void draw()
   rrGraphics.stroke(255);       // make stroke black/white
   rrlogo.drawDelaunayTriangulation();
   rrGraphics.endDraw();
-  // rrGraphics.save("highRes.tif");
-
-  //PImage img = rrGraphics.get(0, 0, rrGraphics.width, rrGraphics.height); //snap an image from the off-screen graphics  
-  //println("rrrgraphics.width: " + rrGraphics.width + " height: " + rrGraphics.height);
-  //println("main screen width: " + width            + " height: " + height);
-  //img.resize(width, height); // resize to fit the on-screen display 
-  //image(img, 0, 0); // display the resized image on screen  
 
   // (2) Draw the hole (R shape) into a pgraphics (black == transparent, white == opaque)
   maskHole.beginDraw();
@@ -87,44 +80,101 @@ void draw()
   rrlogo.diff.draw(maskHole);  
   maskHole.endDraw();
 
-  // (3) Draw the border into a pgraphics, basically big reddish rect
-  maskBorder.beginDraw();
-  maskBorder.background(255);    // white
-  maskBorder.fill(255);        // reddish
-  maskBorder.smooth(8); 
-  maskBorder.noStroke();
-  //maskBorder.rect(0, 0, pdG * width, pdG * height);
-  maskBorder.endDraw();
-
-  // (3) apply/blend the mask hole to the border (to create a transparent cutout)
-  // maskBorder.mask(maskHole);
-  // image(maskBorder, 0, 0, pd*width, pd*height);
-  // blend(maskBorder, 0, 0, pd*width, pd*height, 0, 0, pd*width, pd*height, SUBTRACT);
-
-  //// working
-  //PImage img = rrGraphics.get(0, 0, rrGraphics.width, rrGraphics.height);
-  //img.resize(width, height); // resize to fit the on-screen display 
-  //image(img, 0, 0); // display the resized image on screen  
-  //maskBorder.mask(maskHole);
-  //image(maskBorder, 0, 0, pdG*width, pdG*height);
-
-  // working ALT
-  //maskBorder.mask(maskHole);
-  drawBorder();
-
+  // (3) apply/blend the mask, draw on the border and blend in onto the rrgraphics
   rrGraphics.blend(maskHole, 0, 0, pdG*width, pdG*height, 0, 0, pdG*width, pdG*height, ADD);
+  // drawMultiLineBorder();
+  drawTriangleBorder();
   rrGraphics.blend(maskBorder, 0, 0, pdG*width, pdG*height, 0, 0, pdG*width, pdG*height, MULTIPLY);
 
   image(rrGraphics, 0, 0, width, height);
+  // rrGraphics.save("highRes.tif");
+
   // save("rrGraphics-highRes.tif");
   // saveFrame("line-######.png");
 }
 
 
-void drawBorder() {
-  maskBorder.beginDraw();
-  maskBorder.fill(255); // white
+void drawTriangleBorder () {
 
+  maskBorder.beginDraw();
+  maskBorder.background(255);
+  maskBorder.stroke(getColorPalette());
+  maskBorder.beginShape(TRIANGLE_STRIP);
+  int borderWidth = 75;
+
+  // top
+  RShape topBorder = RShape.createRectangle(0, 0, maskBorder.width, borderWidth); 
+  // left
+  RShape leftBorder = RShape.createRectangle(0, 0, borderWidth, maskBorder.height);  
+  // right
+  RShape rightBorder = RShape.createRectangle(maskBorder.width - borderWidth, 0, maskBorder.width - borderWidth, maskBorder.height);
+  // bottom 
+  RShape bottomBorder = RShape.createRectangle(0, maskBorder.height - borderWidth, maskBorder.width, maskBorder.height);
+
+  // segment into dots and draw
+  int val = 110 + frameCount % 30;
+  println("segmentLength == " + val);
+  RCommand.setSegmentLength(val);
+  RCommand.setSegmentator(RCommand.UNIFORMLENGTH);
+  RPolygon topPolygon = topBorder.toPolygon();
+  RPolygon leftPolygon = leftBorder.toPolygon();
+  RPolygon rightPolygon = rightBorder.toPolygon();
+  //rightBorder.draw(maskBorder);
+
+  RPolygon bottomPolygon = bottomBorder.toPolygon();
+
+  println(" right: " + rightPolygon.contours[0].points.length);
+  println(" bottom: " + bottomPolygon.contours[0].points.length);
+
+  int i = 0;
+  for ( i = 0; i < leftPolygon.contours[0].points.length; i++)
+  {
+      RPoint leftPoints = leftPolygon.contours[0].points[i];
+      maskBorder.triangle(leftPoints.x, leftPoints.y, 
+                          leftPoints.x + 10, leftPoints.y, 
+                          leftPoints.x + 10, leftPoints.y + 15);
+      //maskBorder.vertex(leftPoints.x, leftPoints.y);
+      //maskBorder.vertex(leftPoints.x - borderWidth, leftPoints.y);
+  }
+  maskBorder.endShape();
+  maskBorder.beginShape(TRIANGLE_STRIP);
+
+  for ( i = 0; i < (topPolygon.contours[0].points.length/2) ; i++)
+  {
+      RPoint topPoints = topPolygon.contours[0].points[i];
+      maskBorder.vertex(topPoints.x, topPoints.y);
+      maskBorder.vertex(topPoints.x, topPoints.y + borderWidth);
+  }
+  maskBorder.endShape();
+  maskBorder.beginShape(TRIANGLE_STRIP);
+  
+  for ( i = 0; i < rightPolygon.contours[0].points.length; i++)
+  {
+      RPoint rightPoints = rightPolygon.contours[0].points[i];
+      maskBorder.vertex(rightPoints.x, rightPoints.y);
+      maskBorder.vertex(rightPoints.x  + borderWidth, rightPoints.y);
+  }
+  
+  maskBorder.endShape();
+  maskBorder.beginShape(TRIANGLE_STRIP);
+  
+  for ( i = 0; i < bottomPolygon.contours[0].points.length/2; i++)
+  {
+      RPoint bottomPoints = bottomPolygon.contours[0].points[i];
+      //maskBorder.ellipse(bottomPoints.x, bottomPoints.y, 5, 5);
+      maskBorder.vertex(bottomPoints.x, bottomPoints.y);
+      maskBorder.vertex(bottomPoints.x, bottomPoints.y + borderWidth);
+  }
+
+  maskBorder.endShape();
+  maskBorder.endDraw();
+}
+
+
+void drawMultiLineBorder() {
+  maskBorder.beginDraw();
+
+  maskBorder.fill(255); // white
   int interlineDist = 10;
   for (int i = 0; i < 5; i++)
   {
@@ -133,14 +183,15 @@ void drawBorder() {
     maskBorder.rect(0 + i*interlineDist, 0 + i*interlineDist, 
       maskBorder.width - 2*i*interlineDist, maskBorder.height - 2*i*interlineDist);
   }
+
   maskBorder.endDraw();
 }
 
-  color getColorPalette() {
-    int anchor = 50 + int(random(-20, 50));
-    color rrred = color(anchor, int(random(0, 20)), int(random(0, 20))); 
-    return rrred;
-  }
+color getColorPalette() {
+  int anchor = 50 + int(random(-20, 50));
+  color rrred = color(anchor, int(random(0, 20)), int(random(0, 20))); 
+  return rrred;
+}
 
 class RLogotype {
 
@@ -239,12 +290,12 @@ class RLogotype {
     // geomerativeVariableSegmentation(60, 10);
     //geomerativeStaticSegmentation(98);
 
-    // IOHAVOC backtobasics
+    // IOHAVOC backtobasics //<>//
     int val = 110 + frameCount % 30;
     println("segmentLength == " + val);
     RCommand.setSegmentLength(val);
     RCommand.setSegmentator(RCommand.UNIFORMLENGTH);
-
+    //<>//
     // turn the RShape into an RPolygon
     RPolygon wavePolygon = rrlogo.diff.toPolygon();
 
@@ -284,7 +335,7 @@ class RLogotype {
   boolean numbers = true;        // toggles display of vertex numbers 
 
   void drawTriangles(int vn, pt[] P, processing.core.PGraphics g) { 
- //<>//
+
     pt X = new pt(0, 0);
     float r = 1;
 
@@ -295,16 +346,16 @@ class RLogotype {
           boolean found = false; 
           for (int m = 0; m < vn; m++) {
             X = centerCC (P[i], P[j], P[k]);  
-            r = X.disTo(P[i]);
-            if ((m != i) && (m != j) && (m != k) && (X.disTo(P[m]) <= r)) {
+            r = X.disTo(P[i]); //<>//
+            if ((m != i) && (m != j) && (m != k) && (X.disTo(P[m]) <= r)) { //<>//
               found = true;
             }
           };
-          //<>//
+          //<>// //<>//
           if (!found) { //<>//
             //strokeWeight(2); 
 
-            if (rrlogo.diff.contains(X.x, X.y)) {
+            if (rrlogo.diff.contains(X.x, X.y)) { //<>//
               //print("Contains"); //<>// //<>//
               // stroke(color(80, 80, 80)); ellipse(X.x, X.y, 1*r, 1*r);
             } else {
@@ -357,7 +408,7 @@ class RLogotype {
     AB.back(); 
     AB.mul(ac2);
     AC.mul(ab2);
-    AB.add(AC);
+    AB.add(AC); //<>//
     AB.div(d);
     pt X =  A.makeCopy();
     X.addVec(AB);
