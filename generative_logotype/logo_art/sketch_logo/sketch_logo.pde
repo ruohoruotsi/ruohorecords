@@ -91,16 +91,21 @@ void draw()
 
   // save("rrGraphics-highRes.tif");
   // saveFrame("line-######.png");
+  
+  // print("frameCount: " + frameCount + " SINE: " + (1 +sin(frameCount * 0.1))); 
+  
 }
 
 
 void drawTriangleBorder () {
-
+  
   maskBorder.beginDraw();
+  
   maskBorder.background(255);
-  maskBorder.stroke(getColorPalette());
-  maskBorder.beginShape(TRIANGLE_STRIP);
-  int borderWidth = 75;
+  //maskBorder.noStroke();
+  maskBorder.fill(getColorPalette());
+  int borderWidth = 40;
+  int cdotsize = 15;
 
   // top
   RShape topBorder = RShape.createRectangle(0, 0, maskBorder.width, borderWidth); 
@@ -112,60 +117,82 @@ void drawTriangleBorder () {
   RShape bottomBorder = RShape.createRectangle(0, maskBorder.height - borderWidth, maskBorder.width, maskBorder.height);
 
   // segment into dots and draw
-  int val = 110 + frameCount % 30;
+  int val = 80 + frameCount % 30;
   println("segmentLength == " + val);
   RCommand.setSegmentLength(val);
   RCommand.setSegmentator(RCommand.UNIFORMLENGTH);
+
   RPolygon topPolygon = topBorder.toPolygon();
   RPolygon leftPolygon = leftBorder.toPolygon();
   RPolygon rightPolygon = rightBorder.toPolygon();
-  //rightBorder.draw(maskBorder);
-
   RPolygon bottomPolygon = bottomBorder.toPolygon();
 
-  println(" right: " + rightPolygon.contours[0].points.length);
-  println(" bottom: " + bottomPolygon.contours[0].points.length);
-
-  int i = 0;
-  for ( i = 0; i < leftPolygon.contours[0].points.length; i++)
+  int i = 0;  
+  maskBorder.beginShape();
+  for ( i = leftPolygon.contours[0].points.length/2; 
+        i < leftPolygon.contours[0].points.length; i++)
   {
-      RPoint leftPoints = leftPolygon.contours[0].points[i];
-      maskBorder.triangle(leftPoints.x, leftPoints.y, 
-                          leftPoints.x + 10, leftPoints.y, 
-                          leftPoints.x + 10, leftPoints.y + 15);
-      //maskBorder.vertex(leftPoints.x, leftPoints.y);
-      //maskBorder.vertex(leftPoints.x - borderWidth, leftPoints.y);
+    // left side triangles pointing right
+    RPoint leftPoints = leftPolygon.contours[0].points[i];
+    maskBorder.fill(getColorPalette());
+    maskBorder.triangle(leftPoints.x, leftPoints.y, 
+                       leftPoints.x + borderWidth, leftPoints.y + borderWidth, 
+                       leftPoints.x, leftPoints.y + 2*borderWidth);
+    
+    // draw white center dots                   
+    maskBorder.fill(255);
+    maskBorder.ellipse(leftPoints.x + borderWidth/3, leftPoints.y + borderWidth, cdotsize, cdotsize);
+    maskBorder.fill(getColorPalette());
   }
-  maskBorder.endShape();
-  maskBorder.beginShape(TRIANGLE_STRIP);
-
-  for ( i = 0; i < (topPolygon.contours[0].points.length/2) ; i++)
+  //maskBorder.endShape();
+  
+  //maskBorder.beginShape();
+  for ( i = 0; i < (topPolygon.contours[0].points.length/2); i++)
   {
-      RPoint topPoints = topPolygon.contours[0].points[i];
-      maskBorder.vertex(topPoints.x, topPoints.y);
-      maskBorder.vertex(topPoints.x, topPoints.y + borderWidth);
+    // top side triangles pointing down
+    RPoint topPoints = topPolygon.contours[0].points[i];
+    maskBorder.triangle(topPoints.x, topPoints.y, 
+                       topPoints.x + 2*borderWidth, topPoints.y, 
+                       topPoints.x + borderWidth, topPoints.y + borderWidth);
+                       
+    // draw white center dots                   
+    maskBorder.fill(255);
+    maskBorder.ellipse(topPoints.x + borderWidth, topPoints.y + borderWidth/3, cdotsize, cdotsize);
+    maskBorder.fill(getColorPalette());                             
   }
-  maskBorder.endShape();
-  maskBorder.beginShape(TRIANGLE_STRIP);
+  //maskBorder.endShape();
   
-  for ( i = 0; i < rightPolygon.contours[0].points.length; i++)
-  {
-      RPoint rightPoints = rightPolygon.contours[0].points[i];
-      maskBorder.vertex(rightPoints.x, rightPoints.y);
-      maskBorder.vertex(rightPoints.x  + borderWidth, rightPoints.y);
+  //maskBorder.beginShape();
+  for ( i = (rightPolygon.contours[0].points.length/2 - 1); 
+        i < rightPolygon.contours[0].points.length; i++)  
+ {
+    // right side triangles pointing left
+    RPoint rightPoints = rightPolygon.contours[0].points[i];
+    maskBorder.triangle(rightPoints.x, rightPoints.y, 
+                        rightPoints.x + borderWidth, rightPoints.y - borderWidth, 
+                        rightPoints.x + borderWidth, rightPoints.y + borderWidth);
+                        
+    // draw white center dots                   
+    maskBorder.fill(255);
+    maskBorder.ellipse(rightPoints.x + 2*borderWidth/3, rightPoints.y, cdotsize, cdotsize);
+    maskBorder.fill(getColorPalette());                        
   }
+  //maskBorder.endShape();
   
-  maskBorder.endShape();
-  maskBorder.beginShape(TRIANGLE_STRIP);
-  
+  //maskBorder.beginShape();
   for ( i = 0; i < bottomPolygon.contours[0].points.length/2; i++)
   {
-      RPoint bottomPoints = bottomPolygon.contours[0].points[i];
-      //maskBorder.ellipse(bottomPoints.x, bottomPoints.y, 5, 5);
-      maskBorder.vertex(bottomPoints.x, bottomPoints.y);
-      maskBorder.vertex(bottomPoints.x, bottomPoints.y + borderWidth);
+    RPoint bottomPoints = bottomPolygon.contours[0].points[i];
+    maskBorder.triangle(bottomPoints.x, bottomPoints.y, 
+                        bottomPoints.x - borderWidth, bottomPoints.y + borderWidth,
+                        bottomPoints.x + borderWidth, bottomPoints.y + borderWidth);
+                        
+   // draw white center dots                   
+   maskBorder.fill(255);
+   maskBorder.ellipse(bottomPoints.x, bottomPoints.y + 2*borderWidth/3, cdotsize, cdotsize);
+   maskBorder.fill(getColorPalette());                                          
   }
-
+  
   maskBorder.endShape();
   maskBorder.endDraw();
 }
@@ -263,7 +290,7 @@ class RLogotype {
     if (down) {
       print("   down: " + down + " ");
       RCommand.setSegmentLength(seglenA * multiplier + 12);
-    } else { 
+    } else {  //<>//
       print(" not down: " + !down + " " );
       int val = (maxFrames - seglenA) * multiplier;
       print (" val " + val);
@@ -282,16 +309,10 @@ class RLogotype {
 
 
   void drawDelaunayTriangulation() {
-
-    // geomerativeVariableSegmentation(100, 1);
-    // geomerativeVariableSegmentation(60, 1);
-
-    //geomerativeVariableSegmentation(60, 1);
-    // geomerativeVariableSegmentation(60, 10);
-    //geomerativeStaticSegmentation(98);
-
-    // IOHAVOC backtobasics //<>//
-    int val = 110 + frameCount % 30;
+    
+    // IOHAVOC backtobasics
+    float val = 210 + 80 * sin(frameCount * 0.1);  // sinusoidal, not linear
+    //int val = 110 + frameCount % 30;
     println("segmentLength == " + val);
     RCommand.setSegmentLength(val);
     RCommand.setSegmentator(RCommand.UNIFORMLENGTH);
@@ -325,16 +346,16 @@ class RLogotype {
     g.noFill();
 
     println("wavePolygon.contours[0].points.length: " + wavePolygon.contours[0].points.length);
-    drawTriangles(wavePolygon.contours[0].points.length, P, g);
-  }
+    drawTriangles(wavePolygon.contours[0].points.length, P, g); //<>//
+  } //<>//
 
   //*********************************************
   // **** COMPUTES AND DRAWS DELAUNAY TRIANGLES
-  //*********************************************
+  //********************************************* //<>//
   boolean dots = true;           // toggles display circle centers
   boolean numbers = true;        // toggles display of vertex numbers 
 
-  void drawTriangles(int vn, pt[] P, processing.core.PGraphics g) { 
+  void drawTriangles(int vn, pt[] P, processing.core.PGraphics g) {  //<>//
 
     pt X = new pt(0, 0);
     float r = 1;
@@ -346,16 +367,16 @@ class RLogotype {
           boolean found = false; 
           for (int m = 0; m < vn; m++) {
             X = centerCC (P[i], P[j], P[k]);  
-            r = X.disTo(P[i]); //<>//
-            if ((m != i) && (m != j) && (m != k) && (X.disTo(P[m]) <= r)) { //<>//
+            r = X.disTo(P[i]);
+            if ((m != i) && (m != j) && (m != k) && (X.disTo(P[m]) <= r)) {
               found = true;
             }
           };
-          //<>// //<>//
+          //<>//
           if (!found) { //<>//
             //strokeWeight(2); 
 
-            if (rrlogo.diff.contains(X.x, X.y)) { //<>//
+            if (rrlogo.diff.contains(X.x, X.y)) {
               //print("Contains"); //<>// //<>//
               // stroke(color(80, 80, 80)); ellipse(X.x, X.y, 1*r, 1*r);
             } else {
@@ -387,7 +408,7 @@ class RLogotype {
 
             g.endShape();
           };
-        };
+        }; //<>//
       };
     }; // end triple loop
   };  
@@ -408,7 +429,7 @@ class RLogotype {
     AB.back(); 
     AB.mul(ac2);
     AC.mul(ab2);
-    AB.add(AC); //<>//
+    AB.add(AC);
     AB.div(d);
     pt X =  A.makeCopy();
     X.addVec(AB);
