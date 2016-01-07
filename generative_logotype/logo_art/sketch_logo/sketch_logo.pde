@@ -22,6 +22,7 @@ pt[] P = new pt [2048]; // points to delaunay triangulate
 PGraphics rrGraphics;  
 PGraphics maskHole;
 PGraphics maskBorder;
+PImage colorPaletteImage;
 
 // Colors
 color rrred = color(120, 10, 10); 
@@ -42,6 +43,7 @@ void setup() {
   rrGraphics = createGraphics(pdG * width, pdG * height);
   maskHole   = createGraphics(pdG * width, pdG * height);
   maskBorder = createGraphics(pdG * width, pdG * height);
+  colorPaletteImage = loadImage("paulklee-castle-sun-1928.jpg");
 
   ////////////////////////////////////////////////////////////////////////////////////////
   // initialize the Geomerative library
@@ -70,6 +72,7 @@ void draw()
   rrGraphics.stroke(255);       // make stroke black/white
   rrlogo.drawDelaunayTriangulation();
   rrGraphics.endDraw();
+  
 
   // (2) Draw the hole (R shape) into a pgraphics (black == transparent, white == opaque)
   maskHole.beginDraw();
@@ -80,29 +83,24 @@ void draw()
   rrlogo.diff.draw(maskHole);  
   maskHole.endDraw();
 
+
   // (3) apply/blend the mask, draw on the border and blend in onto the rrgraphics
-  rrGraphics.blend(maskHole, 0, 0, pdG*width, pdG*height, 0, 0, pdG*width, pdG*height, ADD);
-  // drawMultiLineBorder();
   drawTriangleBorder();
+  rrGraphics.blend(maskHole, 0, 0, pdG*width, pdG*height, 0, 0, pdG*width, pdG*height, ADD);
   rrGraphics.blend(maskBorder, 0, 0, pdG*width, pdG*height, 0, 0, pdG*width, pdG*height, MULTIPLY);
-
   image(rrGraphics, 0, 0, width, height);
-  // rrGraphics.save("highRes.tif");
+  // image(maskBorder, 0, 0, width, height);
 
-  // save("rrGraphics-highRes.tif");
+  // rrGraphics.save("highRes.tif");
   // saveFrame("line-######.png");
-  
-  // print("frameCount: " + frameCount + " SINE: " + (1 +sin(frameCount * 0.1))); 
-  
 }
 
 
 void drawTriangleBorder () {
-  
+
   maskBorder.beginDraw();
-  
+
   maskBorder.background(255);
-  //maskBorder.noStroke();
   maskBorder.fill(getColorPalette());
   int borderWidth = 40;
   int cdotsize = 15;
@@ -129,70 +127,69 @@ void drawTriangleBorder () {
 
   int i = 0;  
   maskBorder.beginShape();
+
+  // LEFT
   for ( i = leftPolygon.contours[0].points.length/2; 
-        i < leftPolygon.contours[0].points.length; i++)
+    i < leftPolygon.contours[0].points.length; i++)
   {
     // left side triangles pointing right
     RPoint leftPoints = leftPolygon.contours[0].points[i];
     maskBorder.fill(getColorPalette());
     maskBorder.triangle(leftPoints.x, leftPoints.y, 
-                       leftPoints.x + borderWidth, leftPoints.y + borderWidth, 
-                       leftPoints.x, leftPoints.y + 2*borderWidth);
-    
+      leftPoints.x + borderWidth, leftPoints.y + borderWidth, 
+      leftPoints.x, leftPoints.y + 2*borderWidth);
+
     // draw white center dots                   
     maskBorder.fill(255);
     maskBorder.ellipse(leftPoints.x + borderWidth/3, leftPoints.y + borderWidth, cdotsize, cdotsize);
     maskBorder.fill(getColorPalette());
   }
-  //maskBorder.endShape();
-  
-  //maskBorder.beginShape();
+
+  // TOP
   for ( i = 0; i < (topPolygon.contours[0].points.length/2); i++)
   {
     // top side triangles pointing down
     RPoint topPoints = topPolygon.contours[0].points[i];
     maskBorder.triangle(topPoints.x, topPoints.y, 
-                       topPoints.x + 2*borderWidth, topPoints.y, 
-                       topPoints.x + borderWidth, topPoints.y + borderWidth);
-                       
+      topPoints.x + 2*borderWidth, topPoints.y, 
+      topPoints.x + borderWidth, topPoints.y + borderWidth);
+
     // draw white center dots                   
     maskBorder.fill(255);
     maskBorder.ellipse(topPoints.x + borderWidth, topPoints.y + borderWidth/3, cdotsize, cdotsize);
-    maskBorder.fill(getColorPalette());                             
+    maskBorder.fill(getColorPalette());
   }
-  //maskBorder.endShape();
-  
-  //maskBorder.beginShape();
+
+  // RIGHT
   for ( i = (rightPolygon.contours[0].points.length/2 - 1); 
-        i < rightPolygon.contours[0].points.length; i++)  
- {
+    i < rightPolygon.contours[0].points.length; i++)  
+  {
     // right side triangles pointing left
     RPoint rightPoints = rightPolygon.contours[0].points[i];
     maskBorder.triangle(rightPoints.x, rightPoints.y, 
-                        rightPoints.x + borderWidth, rightPoints.y - borderWidth, 
-                        rightPoints.x + borderWidth, rightPoints.y + borderWidth);
-                        
+      rightPoints.x + borderWidth, rightPoints.y - borderWidth, 
+      rightPoints.x + borderWidth, rightPoints.y + borderWidth);
+
     // draw white center dots                   
     maskBorder.fill(255);
     maskBorder.ellipse(rightPoints.x + 2*borderWidth/3, rightPoints.y, cdotsize, cdotsize);
-    maskBorder.fill(getColorPalette());                        
+    maskBorder.fill(getColorPalette());
   }
-  //maskBorder.endShape();
-  
-  //maskBorder.beginShape();
+
+  // BOTTOM
   for ( i = 0; i < bottomPolygon.contours[0].points.length/2; i++)
   {
     RPoint bottomPoints = bottomPolygon.contours[0].points[i];
     maskBorder.triangle(bottomPoints.x, bottomPoints.y, 
-                        bottomPoints.x - borderWidth, bottomPoints.y + borderWidth,
-                        bottomPoints.x + borderWidth, bottomPoints.y + borderWidth);
-                        
-   // draw white center dots                   
-   maskBorder.fill(255);
-   maskBorder.ellipse(bottomPoints.x, bottomPoints.y + 2*borderWidth/3, cdotsize, cdotsize);
-   maskBorder.fill(getColorPalette());                                          
+      bottomPoints.x - borderWidth, bottomPoints.y + borderWidth, 
+      bottomPoints.x + borderWidth, bottomPoints.y + borderWidth);
+
+    // draw white center dots                   
+    maskBorder.fill(255);
+    maskBorder.ellipse(bottomPoints.x, bottomPoints.y + 2*borderWidth/3, cdotsize, cdotsize);
+    maskBorder.fill(getColorPalette());
   }
-  
+
   maskBorder.endShape();
   maskBorder.endDraw();
 }
@@ -215,9 +212,23 @@ void drawMultiLineBorder() {
 }
 
 color getColorPalette() {
-  int anchor = 50 + int(random(-20, 50));
-  color rrred = color(anchor, int(random(0, 20)), int(random(0, 20))); 
-  return rrred;
+
+  colorPaletteImage.loadPixels(); 
+  int y = int(random(height));
+  int x = int(random(width));
+  int loc = x + y*width;
+
+  // The functions red(), green(), and blue() pull out the 3 color components from a pixel.
+  float r = red(colorPaletteImage.pixels[loc]);
+  float g = green(colorPaletteImage.pixels[loc]);
+  float b = blue(colorPaletteImage.pixels[loc]);
+
+  // Set the display pixel to the image pixel
+  return color(r, g, b);          
+
+  //int anchor = 50 + int(random(-20, 50));
+  //color rrred = color(anchor, int(random(0, 20)), int(random(0, 20))); 
+  //return rrred;
 }
 
 class RLogotype {
@@ -279,7 +290,7 @@ class RLogotype {
 
   void geomerativeVariableSegmentation(int maxFrames, int multiplier) {
 
-    // V1 variable segments/dots around the outline
+    // V1 variable segments/dots around the outline //<>//
     //RCommand.setSegmentLength(12 + frameCount % 50);
 
     //// V2 variable segments/dots around the outline
@@ -290,7 +301,7 @@ class RLogotype {
     if (down) {
       print("   down: " + down + " ");
       RCommand.setSegmentLength(seglenA * multiplier + 12);
-    } else {  //<>//
+    } else { 
       print(" not down: " + !down + " " );
       int val = (maxFrames - seglenA) * multiplier;
       print (" val " + val);
@@ -309,7 +320,7 @@ class RLogotype {
 
 
   void drawDelaunayTriangulation() {
-    
+
     // IOHAVOC backtobasics
     float val = 210 + 80 * sin(frameCount * 0.1);  // sinusoidal, not linear
     //int val = 110 + frameCount % 30;
@@ -335,27 +346,27 @@ class RLogotype {
 
       ///// IOHAVOC populate P[i] autrement ... same storage 
       P[i] = new pt(curPoint.x, curPoint.y);
-      // println("[" + i + "]  " + curPoint.x + "  " + curPoint.y);
-    }
+      // println("[" + i + "]  " + curPoint.x + "  " + curPoint.y); //<>//
+    } //<>//
     P[0] = new pt(300, 500);     // (300,100), (300,300), (300,200), (350, 350)
     // P[1] = new pt(450, 475);  
 
-    // R outline
+    // R outline //<>//
     g.fill(getColorPalette());      // add an alpha 150 is good 
     rrlogo.diff.draw(g);  
     g.noFill();
-
+ //<>//
     println("wavePolygon.contours[0].points.length: " + wavePolygon.contours[0].points.length);
-    drawTriangles(wavePolygon.contours[0].points.length, P, g); //<>//
-  } //<>//
+    drawTriangles(wavePolygon.contours[0].points.length, P, g);
+  }
 
   //*********************************************
   // **** COMPUTES AND DRAWS DELAUNAY TRIANGLES
-  //********************************************* //<>//
+  //*********************************************
   boolean dots = true;           // toggles display circle centers
   boolean numbers = true;        // toggles display of vertex numbers 
 
-  void drawTriangles(int vn, pt[] P, processing.core.PGraphics g) {  //<>//
+  void drawTriangles(int vn, pt[] P, processing.core.PGraphics g) { 
 
     pt X = new pt(0, 0);
     float r = 1;
@@ -397,7 +408,7 @@ class RLogotype {
               //g.strokeWeight(8);
               //g.stroke(rrblue); 
               // X.show(4, g); // little blue dots
-            };
+            }; //<>//
 
             // draw actual tiangles
             g.beginShape(); 
@@ -408,7 +419,7 @@ class RLogotype {
 
             g.endShape();
           };
-        }; //<>//
+        };
       };
     }; // end triple loop
   };  
