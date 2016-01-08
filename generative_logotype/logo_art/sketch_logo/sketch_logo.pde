@@ -1,4 +1,4 @@
-/* //<>// //<>// //<>// //<>//
+/* //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
  //////////////////////////////////////////////
  --------- generative logotypography ----------
  //////////////////////////////////////////////
@@ -52,8 +52,24 @@ void setup() {
   rrlogo.setupRC();
 }
 
+void draw() {
 
-void draw() 
+  background(value);
+  drawMe();
+}
+
+int value = 0;
+void mousePressed() {
+
+  drawMe();
+  if (value == 0) {
+    value = 255;
+  } else {
+    value = 0;
+  }
+}
+
+void drawMe() 
 {
   ////////////////////////////////////////////////////////////////////////////////////////
   // draw Guides
@@ -72,7 +88,7 @@ void draw()
   rrGraphics.stroke(255);       // make stroke black/white
   rrlogo.drawDelaunayTriangulation();
   rrGraphics.endDraw();
-  
+
 
   // (2) Draw the hole (R shape) into a pgraphics (black == transparent, white == opaque)
   maskHole.beginDraw();
@@ -91,7 +107,7 @@ void draw()
   image(rrGraphics, 0, 0, width, height);
   // image(maskBorder, 0, 0, width, height);
 
-  // rrGraphics.save("highRes.tif");
+  rrGraphics.save("highRes.tif");
   // saveFrame("line-######.png");
 }
 
@@ -225,11 +241,37 @@ color getColorPalette() {
 
   // Set the display pixel to the image pixel
   return color(r, g, b);          
-
-  //int anchor = 50 + int(random(-20, 50));
-  //color rrred = color(anchor, int(random(0, 20)), int(random(0, 20))); 
-  //return rrred;
 }
+
+color getRedColorPalette() {
+  int anchor = 50 + int(random(-20, 50));
+  color rr = color(anchor, int(random(0, 20)), int(random(0, 20))); 
+  return rr;
+}
+
+
+PVector CrossProduct(PVector p1, PVector p2) {
+  return p1.cross(p2);
+}
+float DotProduct(PVector p1, PVector p2) {
+  return p1.dot(p2);
+}
+
+//are p1, p2 on same side of a,b?
+boolean SameSide(PVector p1, PVector p2, PVector a, PVector b) {
+  //http://www.blackpawn.com/texts/pointinpoly/default.html
+  PVector cp1 = CrossProduct(PVector.sub(b, a), PVector.sub(p1, a));
+  PVector cp2 = CrossProduct(PVector.sub(b, a), PVector.sub(p2, a));
+  return (DotProduct(cp1, cp2)>=0);
+}
+
+//is p in triangle(a,b,c)?
+boolean PointInTriangle(PVector p, PVector a, PVector b, PVector c) {
+  //http://www.blackpawn.com/texts/pointinpoly/default.html
+  return (SameSide(p, a, b, c) & SameSide(p, b, a, c) & SameSide(p, c, a, b));
+}
+
+
 
 class RLogotype {
 
@@ -288,36 +330,10 @@ class RLogotype {
 
   ////////////////////////////////////////////////////////////////////////////////////////
 
-  void geomerativeVariableSegmentation(int maxFrames, int multiplier) {
-
-    // V1 variable segments/dots around the outline //<>//
-    //RCommand.setSegmentLength(12 + frameCount % 50);
-
-    //// V2 variable segments/dots around the outline
-    int seglenA = frameCount % maxFrames;
-    print("seglenA: " + seglenA + " ");
-
-    if (seglenA == 0) down = !down;  
-    if (down) {
-      print("   down: " + down + " ");
-      RCommand.setSegmentLength(seglenA * multiplier + 12);
-    } else { 
-      print(" not down: " + !down + " " );
-      int val = (maxFrames - seglenA) * multiplier;
-      print (" val " + val);
-      RCommand.setSegmentLength(val + 12);
-    }
-
-    // RCommand.setSegmentLength(seglenA);
-    // RCommand.setSegmentLength(12);
-    RCommand.setSegmentator(RCommand.UNIFORMLENGTH);
-  } 
-
   void geomerativeStaticSegmentation(int segmentLength) {
     RCommand.setSegmentLength(segmentLength);
     RCommand.setSegmentator(RCommand.UNIFORMLENGTH);
   } 
-
 
   void drawDelaunayTriangulation() {
 
@@ -327,16 +343,13 @@ class RLogotype {
     println("segmentLength == " + val);
     RCommand.setSegmentLength(val);
     RCommand.setSegmentator(RCommand.UNIFORMLENGTH);
-    //<>//
+
     // turn the RShape into an RPolygon
     RPolygon wavePolygon = rrlogo.diff.toPolygon();
 
     // we have just 1 RContour in the RPolygon because we had one RPath in the RShape
-    // otherwise you need to loop through the polygon contours like shown in typography/font_to_points_dots
-
-    // add some extra points to the polygon (to anchor it)
-    // wavePolygon.addPoint(new RPoint(300, 498));
-    // wavePolygon.addPoint(new RPoint(450, 475)); // crux point between 
+    // otherwise you need to loop through the polygon contours like shown in 
+    // typography/font_to_points_dots
 
     int i = 0;
     for ( i = 0; i < wavePolygon.contours[0].points.length; i++)
@@ -346,16 +359,16 @@ class RLogotype {
 
       ///// IOHAVOC populate P[i] autrement ... same storage 
       P[i] = new pt(curPoint.x, curPoint.y);
-      // println("[" + i + "]  " + curPoint.x + "  " + curPoint.y); //<>//
-    } //<>//
+      // println("[" + i + "]  " + curPoint.x + "  " + curPoint.y);
+    }
     P[0] = new pt(300, 500);     // (300,100), (300,300), (300,200), (350, 350)
     // P[1] = new pt(450, 475);  
 
-    // R outline //<>//
+    // R outline
     g.fill(getColorPalette());      // add an alpha 150 is good 
     rrlogo.diff.draw(g);  
     g.noFill();
- //<>//
+
     println("wavePolygon.contours[0].points.length: " + wavePolygon.contours[0].points.length);
     drawTriangles(wavePolygon.contours[0].points.length, P, g);
   }
@@ -371,6 +384,8 @@ class RLogotype {
     pt X = new pt(0, 0);
     float r = 1;
 
+    PVector p, a, b, c;
+
     for (int i = 0; i < vn-2; i++) {
       for (int j = i+1; j < vn-1; j++) {
         for (int k = j+1; k < vn; k++) {
@@ -383,16 +398,16 @@ class RLogotype {
               found = true;
             }
           };
-          //<>//
-          if (!found) { //<>//
+
+          if (!found) {
             //strokeWeight(2); 
 
             if (rrlogo.diff.contains(X.x, X.y)) {
-              //print("Contains"); //<>// //<>//
+              //print("Contains");
               // stroke(color(80, 80, 80)); ellipse(X.x, X.y, 1*r, 1*r);
             } else {
               //println("Xxxxxxxxxxxxxxx");
-              //println("( " + X.x + "," + X.y + ")"); //<>//
+              //println("( " + X.x + "," + X.y + ")");
               // continue;
             } 
 
@@ -408,16 +423,52 @@ class RLogotype {
               //g.strokeWeight(8);
               //g.stroke(rrblue); 
               // X.show(4, g); // little blue dots
-            }; //<>//
+            };
 
             // draw actual tiangles
             g.beginShape(); 
-            g.fill(getColorPalette());      // add an alpha 150 is good 
+            g.fill(getRedColorPalette());      // add an alpha 150 is good 
             P[i].vert(g); 
             P[j].vert(g); 
             P[k].vert(g); 
-
             g.endShape();
+
+            println();
+            print("(" + P[i].x + ", " + P[i].y + "),  (" + 
+              P[j].x + ", " + P[j].y + "),  (" +
+              P[k].x + ", " + P[k].y + ")," );
+
+            a = new PVector(P[i].x, P[i].y);
+            b = new PVector(P[j].x, P[j].y);
+            c = new PVector(P[k].x, P[k].y);
+
+            int ii = int(random(5, 50));
+            int jj = int(random(5, 50));
+
+            println("ii: " + ii + " jj: " + jj);
+            g.stroke(getColorPalette(), 250);
+            int shape = int(random(3));
+
+            int imin = (int) min(a.x, min(b.x, c.x));
+            int imax = (int) max(a.x, max(b.x, c.x));
+            int jmin = (int) min(a.y, min(b.y, c.y));
+            int jmax = (int) max(a.y, max(b.y, c.y));
+
+            for (int m = imin; m <= imax; m = m+ii) { 
+              for (int n = jmin; n<= jmax; n = n+jj) { 
+
+                p = new PVector(m, n);
+                if (PointInTriangle(p, a, b, c)) { // blend in   
+                  g.blendMode(SCREEN);
+                  if(shape == 0)  g.point(m, n);
+                  else if (shape == 1) g.rect(m, n, shape, shape);
+                  else g.ellipse(m, n, shape, shape);
+                }
+              }
+            } 
+            
+            println(); println();
+            g.stroke(255);
           };
         };
       };
@@ -445,5 +496,5 @@ class RLogotype {
     pt X =  A.makeCopy();
     X.addVec(AB);
     return(X);
-  }; //<>//
+  };
 }
