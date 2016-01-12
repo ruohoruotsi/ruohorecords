@@ -38,7 +38,7 @@ void setup() {
   size(700, 700, FX2D);
   pixelDensity(pd);  // fullScreen();
   smooth(8);
-  frameRate(1);
+  frameRate(0.5);
 
   rrGraphics = createGraphics(pdG * width, pdG * height);
   maskHole   = createGraphics(pdG * width, pdG * height);
@@ -101,7 +101,8 @@ void drawMe()
 
 
   // (3) apply/blend the mask, draw on the border and blend in onto the rrgraphics
-  drawTriangleBorder();
+  drawTriangleBorder2();
+
   rrGraphics.blend(maskHole, 0, 0, pdG*width, pdG*height, 0, 0, pdG*width, pdG*height, ADD);
   rrGraphics.blend(maskBorder, 0, 0, pdG*width, pdG*height, 0, 0, pdG*width, pdG*height, MULTIPLY);
   image(rrGraphics, 0, 0, width, height);
@@ -111,8 +112,108 @@ void drawMe()
   // saveFrame("line-######.png");
 }
 
-
+/*
 void drawTriangleBorder () {
+ 
+ maskBorder.beginDraw();
+ 
+ maskBorder.background(255);
+ maskBorder.fill(getColorPalette());
+ int borderWidth = 40;
+ int cdotsize = 15;
+ 
+ // top
+ RShape topBorder = RShape.createRectangle(0, 0, maskBorder.width, borderWidth); 
+ // left
+ RShape leftBorder = RShape.createRectangle(0, 0, borderWidth, maskBorder.height);  
+ // right
+ RShape rightBorder = RShape.createRectangle(maskBorder.width - borderWidth, 0, maskBorder.width - borderWidth, maskBorder.height);
+ // bottom 
+ RShape topBorder2 = RShape.createRectangle(0, maskBorder.height - borderWidth, maskBorder.width, maskBorder.height);
+ 
+ // segment into dots and draw
+ int val = 80 + frameCount % 30;
+ println("segmentLength == " + val);
+ RCommand.setSegmentLength(val);
+ RCommand.setSegmentator(RCommand.UNIFORMLENGTH);
+ 
+ RPolygon topPolygon = topBorder.toPolygon();
+ RPolygon leftPolygon = leftBorder.toPolygon();
+ RPolygon leftPolygon2 = rightBorder.toPolygon();
+ RPolygon topPolygon2 = topBorder2.toPolygon();
+ 
+ int i = 0;  
+ maskBorder.beginShape();
+ 
+ // LEFT
+ for ( i = leftPolygon.contours[0].points.length/2; 
+ i < leftPolygon.contours[0].points.length; i++)
+ {
+ // left side triangles pointing right
+ RPoint leftPoints = leftPolygon.contours[0].points[i];
+ maskBorder.fill(getColorPalette());
+ maskBorder.triangle(leftPoints.x, leftPoints.y, 
+ leftPoints.x + borderWidth, leftPoints.y + borderWidth, 
+ leftPoints.x, leftPoints.y + 2*borderWidth);
+ 
+ // draw white center dots                   
+ maskBorder.fill(255);
+ maskBorder.ellipse(leftPoints.x + borderWidth/3, leftPoints.y + borderWidth, cdotsize, cdotsize);
+ maskBorder.fill(getColorPalette());
+ }
+ 
+ // TOP
+ for ( i = 0; i < (topPolygon.contours[0].points.length/2); i++)
+ {
+ // top side triangles pointing down
+ RPoint topPoints = topPolygon.contours[0].points[i];
+ maskBorder.triangle(topPoints.x, topPoints.y, 
+ topPoints.x + 2*borderWidth, topPoints.y, 
+ topPoints.x + borderWidth, topPoints.y + borderWidth);
+ 
+ // draw white center dots                   
+ maskBorder.fill(255);
+ maskBorder.ellipse(topPoints.x + borderWidth, topPoints.y + borderWidth/3, cdotsize, cdotsize);
+ maskBorder.fill(getColorPalette());
+ }
+ 
+ // RIGHT
+ for ( i = (leftPolygon2.contours[0].points.length/2 - 1); 
+ i < leftPolygon2.contours[0].points.length; i++)  
+ {
+ // right side triangles pointing left
+ RPoint rightPoints = leftPolygon2.contours[0].points[i];
+ maskBorder.triangle(rightPoints.x, rightPoints.y, 
+ rightPoints.x + borderWidth, rightPoints.y - borderWidth, 
+ rightPoints.x + borderWidth, rightPoints.y + borderWidth);
+ 
+ // draw white center dots                   
+ maskBorder.fill(255);
+ maskBorder.ellipse(rightPoints.x + 2*borderWidth/3, rightPoints.y, cdotsize, cdotsize);
+ maskBorder.fill(getColorPalette());
+ }
+ 
+ // BOTTOM
+ for ( i = 0; i < topPolygon2.contours[0].points.length/2; i++)
+ {
+ RPoint bottomPoints = topPolygon2.contours[0].points[i];
+ maskBorder.triangle(bottomPoints.x, bottomPoints.y, 
+ bottomPoints.x - borderWidth, bottomPoints.y + borderWidth, 
+ bottomPoints.x + borderWidth, bottomPoints.y + borderWidth);
+ 
+ // draw white center dots                   
+ maskBorder.fill(255);
+ maskBorder.ellipse(bottomPoints.x, bottomPoints.y + 2*borderWidth/3, cdotsize, cdotsize);
+ maskBorder.fill(getColorPalette());
+ }
+ 
+ maskBorder.endShape();
+ maskBorder.endDraw();
+ }
+ */
+
+
+void drawTriangleBorder2 () {
 
   maskBorder.beginDraw();
 
@@ -121,14 +222,29 @@ void drawTriangleBorder () {
   int borderWidth = 40;
   int cdotsize = 15;
 
-  // top
-  RShape topBorder = RShape.createRectangle(0, 0, maskBorder.width, borderWidth); 
+  int pgWidth = maskBorder.width;
+  int pgHeight = maskBorder.height;
+
+  // top 
+  RShape topBorder = RShape.createRectangle(0, 0, pgWidth, borderWidth); 
+  RShape topBorder2 = RShape.createRectangle(0, 0 + borderWidth, pgWidth, borderWidth);
+  //RShape topBorder3 = RShape.createRectangle(0, 0 + borderWidth, pgWidth, borderWidth);
+
   // left
-  RShape leftBorder = RShape.createRectangle(0, 0, borderWidth, maskBorder.height);  
+  RShape leftBorder = RShape.createRectangle(0, 0, borderWidth, pgHeight);  
+  RShape leftBorder2 = RShape.createRectangle(0 + borderWidth, 0, borderWidth, pgHeight);
+  //RShape leftBorder3 = RShape.createRectangle(2*borderWidth, 0, borderWidth, pgHeight);  
+
   // right
-  RShape rightBorder = RShape.createRectangle(maskBorder.width - borderWidth, 0, maskBorder.width - borderWidth, maskBorder.height);
+  RShape rightBorder = RShape.createRectangle(pgWidth - borderWidth, 0, borderWidth, pgHeight);
+  RShape rightBorder2 = RShape.createRectangle(pgWidth - 2*borderWidth, 0, borderWidth, pgHeight);
+  //RShape rightBorder3 = RShape.createRectangle(2*borderWidth, 0, borderWidth, pgHeight);  
+
   // bottom 
-  RShape bottomBorder = RShape.createRectangle(0, maskBorder.height - borderWidth, maskBorder.width, maskBorder.height);
+  RShape bottomBorder = RShape.createRectangle(0, pgHeight - borderWidth, pgWidth, pgHeight);
+  RShape bottomBorder2 = RShape.createRectangle(2*borderWidth, pgHeight - 2*borderWidth, pgWidth - borderWidth, pgHeight);
+  //RShape bottomBorder3 = RShape.createRectangle(2*borderWidth, pgHeight - 2*borderWidth, pgWidth, pgHeight);  
+
 
   // segment into dots and draw
   int val = 80 + frameCount % 30;
@@ -136,17 +252,82 @@ void drawTriangleBorder () {
   RCommand.setSegmentLength(val);
   RCommand.setSegmentator(RCommand.UNIFORMLENGTH);
 
+  // top 
   RPolygon topPolygon = topBorder.toPolygon();
+  RPolygon topPolygon2 = topBorder2.toPolygon();
+  //RPolygon topPolygon3 = topBorder3.toPolygon();
+
+  // left
   RPolygon leftPolygon = leftBorder.toPolygon();
+  RPolygon leftPolygon2 = leftBorder2.toPolygon();
+  //RPolygon leftPolygon3 = leftBorder3.toPolygon();
+
+  // right
   RPolygon rightPolygon = rightBorder.toPolygon();
+  RPolygon rightPolygon2 = rightBorder2.toPolygon();
+  //RPolygon rightPolygon3 = rightBorder3.toPolygon();
+
+  // bottom
   RPolygon bottomPolygon = bottomBorder.toPolygon();
+  RPolygon bottomPolygon2 = bottomBorder2.toPolygon();
+  //RPolygon bottomPolygon3 = bottomBorder3.toPolygon();
+
 
   int i = 0;  
   maskBorder.beginShape();
 
-  // LEFT
+  //////////////////////////////////////////////////////////////////////////
+  // TOP 1
+  for ( i = 0; i < topPolygon.contours[0].points.length/2; i++)
+  {
+    // top side triangles pointing down
+    RPoint topPoints = topPolygon.contours[0].points[i];
+    maskBorder.triangle(topPoints.x, topPoints.y, 
+      topPoints.x + 2*borderWidth, topPoints.y, 
+      topPoints.x + borderWidth, topPoints.y + borderWidth);
+
+    // draw white center dots                   
+    maskBorder.fill(255);
+    maskBorder.ellipse(topPoints.x + borderWidth, topPoints.y + borderWidth/3, cdotsize, cdotsize);
+    maskBorder.fill(getColorPalette());
+  }
+
+  // TOP 2
+  for ( i = 1; i < topPolygon2.contours[0].points.length/2 - 1; i++)
+  {
+    RPoint topPoints2 = topPolygon2.contours[0].points[i];
+    maskBorder.triangle(topPoints2.x, topPoints2.y, 
+      topPoints2.x - borderWidth, topPoints2.y + borderWidth, 
+      topPoints2.x + borderWidth, topPoints2.y + borderWidth);
+
+    // draw white center dots                   
+    maskBorder.fill(255);
+    maskBorder.ellipse(topPoints2.x, topPoints2.y + 2*borderWidth/3, cdotsize, cdotsize);
+    maskBorder.fill(getColorPalette());
+  }
+  /*
+  //// TOP 3
+  for ( i = topPolygon3.contours[0].points.length/2; 
+    i < topPolygon3.contours[0].points.length - 2; i++)  
+  {
+    // right side triangles pointing left
+    RPoint topPoints3 = topPolygon3.contours[0].points[i];
+    maskBorder.triangle(topPoints3.x, topPoints3.y, 
+      topPoints3.x + 2*borderWidth, topPoints3.y, 
+      topPoints3.x + borderWidth, topPoints3.y + borderWidth);
+
+    // draw white center dots                   
+    maskBorder.fill(255);
+    maskBorder.ellipse(topPoints3.x + borderWidth, topPoints3.y + borderWidth/3, cdotsize, cdotsize);
+    maskBorder.fill(getColorPalette());
+  } */
+  //////////////////////////////////////////////////////////////////////////
+
+
+  //////////////////////////////////////////////////////////////////////////
+  // LEFT 1 (left)
   for ( i = leftPolygon.contours[0].points.length/2; 
-    i < leftPolygon.contours[0].points.length; i++)
+    i < leftPolygon.contours[0].points.length - 1; i++)
   {
     // left side triangles pointing right
     RPoint leftPoints = leftPolygon.contours[0].points[i];
@@ -161,21 +342,46 @@ void drawTriangleBorder () {
     maskBorder.fill(getColorPalette());
   }
 
-  // TOP
-  for ( i = 0; i < (topPolygon.contours[0].points.length/2); i++)
+  // LEFT 2 (middle) 
+  for ( i = leftPolygon2.contours[0].points.length/2 + 1; 
+        i < leftPolygon2.contours[0].points.length - 2; i++)  
   {
-    // top side triangles pointing down
-    RPoint topPoints = topPolygon.contours[0].points[i];
-    maskBorder.triangle(topPoints.x, topPoints.y, 
-      topPoints.x + 2*borderWidth, topPoints.y, 
-      topPoints.x + borderWidth, topPoints.y + borderWidth);
+    // right side triangles pointing left
+    RPoint rightPoints = leftPolygon2.contours[0].points[i];
+    //maskBorder.ellipse(rightPoints.x, rightPoints.y, 5,5);
+    maskBorder.triangle(rightPoints.x, rightPoints.y, 
+      rightPoints.x + borderWidth, rightPoints.y - borderWidth, 
+      rightPoints.x + borderWidth, rightPoints.y + borderWidth);
 
     // draw white center dots                   
     maskBorder.fill(255);
-    maskBorder.ellipse(topPoints.x + borderWidth, topPoints.y + borderWidth/3, cdotsize, cdotsize);
+    maskBorder.ellipse(rightPoints.x + 2*borderWidth/3, rightPoints.y, cdotsize, cdotsize);
     maskBorder.fill(getColorPalette());
   }
 
+/*
+  // LEFT 3 (right)
+  for ( i = leftPolygon3.contours[0].points.length/2; 
+    i < leftPolygon3.contours[0].points.length - 2; i++)
+  {
+    // left side triangles pointing right
+    RPoint leftPoints3 = leftPolygon3.contours[0].points[i];
+    maskBorder.fill(getColorPalette());
+    maskBorder.triangle(leftPoints3.x, leftPoints3.y, 
+      leftPoints3.x + borderWidth, leftPoints3.y + borderWidth, 
+      leftPoints3.x, leftPoints3.y + 2*borderWidth);
+
+    // draw white center dots                   
+    maskBorder.fill(255);
+    maskBorder.ellipse(leftPoints3.x + borderWidth/3, leftPoints3.y + borderWidth, cdotsize, cdotsize);
+    maskBorder.fill(getColorPalette());
+  } */
+  //////////////////////////////////////////////////////////////////////////
+
+
+
+
+  //////////////////////////////////////////////////////////////////////////
   // RIGHT
   for ( i = (rightPolygon.contours[0].points.length/2 - 1); 
     i < rightPolygon.contours[0].points.length; i++)  
@@ -191,7 +397,29 @@ void drawTriangleBorder () {
     maskBorder.ellipse(rightPoints.x + 2*borderWidth/3, rightPoints.y, cdotsize, cdotsize);
     maskBorder.fill(getColorPalette());
   }
+  
+  // RIGHT 2 (middle)
+  for ( i = rightPolygon2.contours[0].points.length/2 - 1; 
+   i < rightPolygon2.contours[0].points.length; i++)
+  //for ( i = 0; i < rightPolygon2.contours[0].points.length / 2; i++)
+  {
+    // left side triangles pointing right
+    RPoint rightPoints2 = rightPolygon2.contours[0].points[i];
+    maskBorder.fill(getColorPalette());
+    maskBorder.triangle(rightPoints2.x, rightPoints2.y, 
+      rightPoints2.x + borderWidth, rightPoints2.y + borderWidth, 
+      rightPoints2.x, rightPoints2.y + 2*borderWidth);
 
+    // draw white center dots                   
+    maskBorder.fill(255);
+    maskBorder.ellipse(rightPoints2.x + borderWidth/3, rightPoints2.y + borderWidth, cdotsize, cdotsize);
+    maskBorder.fill(getColorPalette());
+  }
+  
+  //////////////////////////////////////////////////////////////////////////
+
+
+  //////////////////////////////////////////////////////////////////////////
   // BOTTOM
   for ( i = 0; i < bottomPolygon.contours[0].points.length/2; i++)
   {
@@ -205,15 +433,49 @@ void drawTriangleBorder () {
     maskBorder.ellipse(bottomPoints.x, bottomPoints.y + 2*borderWidth/3, cdotsize, cdotsize);
     maskBorder.fill(getColorPalette());
   }
+  
+  // BOTTOM 2
+  for ( i = 0; i < bottomPolygon2.contours[0].points.length/2; i++)
+  {
+    // bottom triangles pointing down
+    RPoint bottomPoints2 = bottomPolygon2.contours[0].points[i];
+    maskBorder.triangle(bottomPoints2.x, bottomPoints2.y, 
+      bottomPoints2.x + 2*borderWidth, bottomPoints2.y, 
+      bottomPoints2.x + borderWidth, bottomPoints2.y + borderWidth);
+
+    // draw white center dots                   
+    maskBorder.fill(255);
+    maskBorder.ellipse(bottomPoints2.x + borderWidth, bottomPoints2.y + borderWidth/3, cdotsize, cdotsize);
+    maskBorder.fill(getColorPalette());
+  }
+
+/*
+  // BOTTOM 3
+    for ( i = 1; i < bottomPolygon3.contours[0].points.length/2; i++)  
+  {
+    RPoint bottom3Points = bottomPolygon3.contours[0].points[i];
+    maskBorder.triangle(bottom3Points.x, bottom3Points.y, 
+      bottom3Points.x - borderWidth, bottom3Points.y + borderWidth, 
+      bottom3Points.x + borderWidth, bottom3Points.y + borderWidth);
+
+    // draw white center dots                   
+    maskBorder.fill(255);
+    maskBorder.ellipse(bottom3Points.x, bottom3Points.y + 2*borderWidth/3, cdotsize, cdotsize);
+    maskBorder.fill(getColorPalette());
+  } */
+  
+  //////////////////////////////////////////////////////////////////////////
+
 
   maskBorder.endShape();
   maskBorder.endDraw();
 }
 
 
-void drawMultiLineBorder() {
-  maskBorder.beginDraw();
 
+
+void drawMultiLineBorder_multicolore() {
+  maskBorder.beginDraw();
   maskBorder.fill(255); // white
   int interlineDist = 10;
   for (int i = 0; i < 5; i++)
@@ -223,12 +485,24 @@ void drawMultiLineBorder() {
     maskBorder.rect(0 + i*interlineDist, 0 + i*interlineDist, 
       maskBorder.width - 2*i*interlineDist, maskBorder.height - 2*i*interlineDist);
   }
+  maskBorder.endDraw();
+}
 
+void drawMultiLineBorder_thick() {
+  maskBorder.beginDraw();
+  maskBorder.fill(255); // white
+  int interlineDist = 10;
+  for (int i = 0; i < 5; i++)
+  {
+    maskBorder.strokeWeight(3);
+    maskBorder.stroke(getColorPalette());  // 
+    maskBorder.rect(0 + i*interlineDist, 0 + i*interlineDist, 
+      maskBorder.width - 2*i*interlineDist, maskBorder.height - 2*i*interlineDist);
+  }
   maskBorder.endDraw();
 }
 
 color getColorPalette() {
-
   colorPaletteImage.loadPixels(); 
   int y = int(random(height));
   int x = int(random(width));
@@ -240,7 +514,7 @@ color getColorPalette() {
   float b = blue(colorPaletteImage.pixels[loc]);
 
   // Set the display pixel to the image pixel
-  return color(r, g, b);          
+  return color(r, g, b);
 }
 
 color getRedColorPalette() {
@@ -248,7 +522,6 @@ color getRedColorPalette() {
   color rr = color(anchor, int(random(0, 20)), int(random(0, 20))); 
   return rr;
 }
-
 
 PVector CrossProduct(PVector p1, PVector p2) {
   return p1.cross(p2);
@@ -448,6 +721,7 @@ class RLogotype {
             println("ii: " + ii + " jj: " + jj);
             g.stroke(getColorPalette(), 250);
             int shape = int(random(3));
+            int sz = int(random(3));
 
             int imin = (int) min(a.x, min(b.x, c.x));
             int imax = (int) max(a.x, max(b.x, c.x));
@@ -460,14 +734,15 @@ class RLogotype {
                 p = new PVector(m, n);
                 if (PointInTriangle(p, a, b, c)) { // blend in   
                   g.blendMode(SCREEN);
-                  if(shape == 0)  g.point(m, n);
-                  else if (shape == 1) g.rect(m, n, shape, shape);
-                  else g.ellipse(m, n, shape, shape);
+                  if (shape == 0)  g.point(m, n);
+                  else if (shape == 1) g.rect(m, n, sz, sz);
+                  else g.ellipse(m, n, sz, sz);
                 }
               }
             } 
-            
-            println(); println();
+
+            println(); 
+            println();
             g.stroke(255);
           };
         };
