@@ -1,4 +1,4 @@
-/* //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
+/* //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
  //////////////////////////////////////////////
  --------- generative logotypography ----------
  //////////////////////////////////////////////
@@ -10,9 +10,6 @@
  */
 
 import geomerative.*;
-import toxi.geom.*;
-import toxi.geom.mesh2d.*;
-import toxi.processing.*;
 
 // Globals
 RLogotype rrlogo;
@@ -38,7 +35,7 @@ void setup() {
   size(700, 700, FX2D);
   pixelDensity(pd);  // fullScreen();
   smooth(8);
-  frameRate(0.5);
+  frameRate(10);
 
   rrGraphics = createGraphics(pdG * width, pdG * height);
   maskHole   = createGraphics(pdG * width, pdG * height);
@@ -219,30 +216,38 @@ void drawTriangleBorder2 () {
 
   maskBorder.background(255);
   maskBorder.fill(getColorPalette());
-  int borderWidth = 40;
-  int cdotsize = 15;
+  int borderWidth = 30;
+  int cdotsize = 10;
 
-  int pgWidth = maskBorder.width;
-  int pgHeight = maskBorder.height;
+  int blackBorderWidth = 20;
+
+  int pgWidth = maskBorder.width - blackBorderWidth;
+  int pgHeight = maskBorder.height - blackBorderWidth;
+  int pgStartWidth = blackBorderWidth;
+  int pgStartHeight = blackBorderWidth;
 
   // top 
-  RShape topBorder = RShape.createRectangle(0, 0, pgWidth, borderWidth); 
-  RShape topBorder2 = RShape.createRectangle(0, 0 + borderWidth, pgWidth, borderWidth);
+  RShape topBorder = RShape.createRectangle(pgStartWidth, pgStartHeight, pgWidth, borderWidth); 
+  RShape topBorder2 = RShape.createRectangle(pgStartWidth, pgStartHeight+ borderWidth, pgWidth, borderWidth);
 
   // left
-  RShape leftBorder = RShape.createRectangle(0, 0, borderWidth, pgHeight);  
-  RShape leftBorder2 = RShape.createRectangle(0 + borderWidth, 0, borderWidth, pgHeight);
+  RShape leftBorder = RShape.createRectangle(pgStartWidth, pgStartHeight, borderWidth, pgHeight);  
+  RShape leftBorder2 = RShape.createRectangle(pgStartWidth + borderWidth, 0, borderWidth, pgHeight);
 
   // right
   RShape rightBorder = RShape.createRectangle(pgWidth - borderWidth, 0, borderWidth, pgHeight);
   RShape rightBorder2 = RShape.createRectangle(pgWidth - 2*borderWidth, 0, borderWidth, pgHeight);
 
   // bottom 
-  RShape bottomBorder = RShape.createRectangle(0, pgHeight - borderWidth, pgWidth, borderWidth);
-  RShape bottomBorder2 = RShape.createRectangle(0, pgHeight - 2*borderWidth, pgWidth, borderWidth);
+  RShape bottomBorder = RShape.createRectangle(pgStartWidth, pgHeight - borderWidth, pgWidth, borderWidth);
+  RShape bottomBorder2 = RShape.createRectangle(pgStartWidth, pgHeight - 2*borderWidth, pgWidth, borderWidth);
 
   // segment into dots and draw
-  int val = 100 + frameCount % 20;
+  // int val = 100 + frameCount % 20;
+  // int val = int(100 + 50 * sin(frameCount * 0.1));  // good
+  int val = int(100 + 20 * sin(frameCount * 0.1));  // sinusoidal, not linear
+  // println(" val = " + sin(frameCount * 0.1));
+
   println("segmentLength == " + val);
   RCommand.setSegmentLength(val);
   RCommand.setSegmentator(RCommand.UNIFORMLENGTH);
@@ -408,6 +413,12 @@ void drawTriangleBorder2 () {
 
   //////////////////////////////////////////////////////////////////////////
 
+  maskBorder.fill(0);
+  maskBorder.rect(0, 0, maskBorder.width, blackBorderWidth);  //top
+  maskBorder.rect(0, 0, blackBorderWidth, maskBorder.height); // left
+  maskBorder.rect(pgWidth, 0, blackBorderWidth, maskBorder.height);  // right
+  maskBorder.rect(0, pgHeight, maskBorder.width, blackBorderWidth);  // bottom
+
   maskBorder.endShape();
   maskBorder.endDraw();
 }
@@ -551,6 +562,7 @@ class RLogotype {
 
     // IOHAVOC backtobasics
     float val = 210 + 80 * sin(frameCount * 0.1);  // sinusoidal, not linear
+
     //int val = 110 + frameCount % 30;
     println("segmentLength == " + val);
     RCommand.setSegmentLength(val);
@@ -577,7 +589,7 @@ class RLogotype {
     // P[1] = new pt(450, 475);  
 
     // R outline
-    g.fill(getColorPalette());      // add an alpha 150 is good 
+    g.fill(getRedColorPalette());      // add an alpha 150 is good 
     rrlogo.diff.draw(g);  
     g.noFill();
 
@@ -645,10 +657,11 @@ class RLogotype {
             P[k].vert(g); 
             g.endShape();
 
+/*
             println();
             print("(" + P[i].x + ", " + P[i].y + "),  (" + 
               P[j].x + ", " + P[j].y + "),  (" +
-              P[k].x + ", " + P[k].y + ")," );
+              P[k].x + ", " + P[k].y + ")," ); */
 
             a = new PVector(P[i].x, P[i].y);
             b = new PVector(P[j].x, P[j].y);
@@ -657,7 +670,7 @@ class RLogotype {
             int ii = int(random(5, 50));
             int jj = int(random(5, 50));
 
-            println("ii: " + ii + " jj: " + jj);
+            // println("ii: " + ii + " jj: " + jj);
             g.stroke(getColorPalette(), 250);
             int shape = int(random(3));
             int sz = int(random(3));
