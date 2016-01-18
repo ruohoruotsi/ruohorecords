@@ -1,4 +1,4 @@
-/* //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
+/* //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
  //////////////////////////////////////////////
  --------- generative logotypography ----------
  //////////////////////////////////////////////
@@ -30,20 +30,12 @@ Boolean down = true;
 int pd = 1; // pixelDensity multiplier
 int pdG = 2; // pgraphics pixelDensity multiplier
 
-// bg variables
-float offset = 50.0;
-float scaleVal = 1400;
-float angleInc = PI/90.0;
-float angle = 0.0;
-
-
-
 void setup() {
 
   size(700, 700, FX2D);
   pixelDensity(pd);  // fullScreen();
   smooth(8);
-  frameRate(1);
+  frameRate(10);
 
   rrGraphics = createGraphics(pdG * width, pdG * height);
   maskHole   = createGraphics(pdG * width, pdG * height);
@@ -60,13 +52,13 @@ void setup() {
 void draw() {
 
   background(value);
-  drawMe();
+  drawLogo();
 }
 
 int value = 0;
 void mousePressed() {
 
-  drawMe();
+  drawLogo();
   if (value == 0) {
     value = 255;
   } else {
@@ -74,27 +66,24 @@ void mousePressed() {
   }
 }
 
-void drawMe() 
-{
-  ////////////////////////////////////////////////////////////////////////////////////////
-  // draw Guides
-  // strokeWeight(2);
-  // line(width/2, 0, width/2, height);  // vertical guide
-  // line(0, height/2, width, height/2); // horizontal guide
-  // end draw Guides
-  ////////////////////////////////////////////////////////////////////////////////////////
 
+////////////////////////////////////////////////////////////////////////////////////////
+// drawLogo: callable from a mouse handle event or the main draw loop
+////////////////////////////////////////////////////////////////////////////////////////
+void drawLogo() 
+{
   background(255);  // clear main background
 
-  // (1) Main drawing to the PGraphics 
+  // (1) Main R drawing to the rrGraphics PGraphics 
   rrGraphics.beginDraw();
   rrGraphics.background(255); // clear background on each frame redraw
   rrGraphics.strokeWeight(4*pdG);  
-  rrGraphics.stroke(255);       // make stroke black/white
+  rrGraphics.stroke(255);    // make stroke white
   rrlogo.drawDelaunayTriangulation();
   rrGraphics.endDraw();
 
-  // (2) Draw the hole (R shape) into a pgraphics (black == transparent, white == opaque)
+  // (2) Draw the hole (R shape) into a masking pgraphics 
+  // (black == transparent, white == opaque)
   maskHole.beginDraw();
   maskHole.background(255);  // white
   maskHole.fill(0);          // black
@@ -103,31 +92,41 @@ void drawMe()
   rrlogo.diff.draw(maskHole);  
   maskHole.endDraw();
 
-  // (3) Apply/blend the mask, draw on the border and blend in onto the rrgraphics
+  // (3) Draw backgrounds on maskBorder PGraphics - then apply/blend the mask 
   drawBorderBackground();
   drawTriangleBorder();
   rrGraphics.blend(maskHole, 0, 0, pdG*width, pdG*height, 0, 0, pdG*width, pdG*height, ADD);
-  // image(maskBorder, 0, 0, width, height);
 
+  // (4) Draw the hole (R shape) inverted (white on black) into the border pgraphics
   maskHole.beginDraw();
-  maskHole.background(0);  // white
-  maskHole.fill(255);          // black
+  maskHole.background(0);  // black
+  maskHole.fill(255);      // white 
   maskHole.noStroke();
   rrlogo.diff.draw(maskHole);  
   maskHole.endDraw();
   maskBorder.blend(maskHole, 0, 0, pdG*width, pdG*height, 0, 0, pdG*width, pdG*height, ADD);
-  //image(maskBorder, 0, 0, width, height);
 
-
-   rrGraphics.blend(maskBorder, 0, 0, pdG*width, pdG*height, 0, 0, pdG*width, pdG*height, MULTIPLY);
+  // (5) Blend border & R PGraphics
+  rrGraphics.blend(maskBorder, 0, 0, pdG*width, pdG*height, 0, 0, pdG*width, pdG*height, MULTIPLY);
   image(rrGraphics, 0, 0, width, height);
 
 
-  rrGraphics.save("highRes.tif");
+  // rrGraphics.save("highRes.tif");
   // saveFrame("line-######.png");
 }
 
+
+////////////////////////////////////////////////////////////////////////////////////////
+// drawBorderBackground: draws the main background for onto a PGraphics
+////////////////////////////////////////////////////////////////////////////////////////
 void drawBorderBackground () {
+
+  // bg variables
+  float offset = 50.0;
+  float scaleVal = 1400;
+  float angleInc = PI/90.0;
+  float angle = 0.0;
+
 
   maskBorder.beginDraw();
   maskBorder.background(255);
@@ -139,36 +138,56 @@ void drawBorderBackground () {
       // 1
       float y = offset + (sin(angle) * scaleVal);
       maskBorder.fill(getColorPalette(), 5);
-      maskBorder.ellipse(x, y, 24, 40);
-      maskBorder.point(x, y);
-
-      // 2
-      y = offset + (cos(angle) * scaleVal);
-      maskBorder.fill(getRedColorPalette(), 5);
-      maskBorder.rect(x, y, 30, 13);
-
-      // 3
-      y = (sin(angle) * scaleVal);
-      maskBorder.fill(getColorPalette(), 5);
-      maskBorder.rect(x, y, 5, 15);
-      angle += angleInc;
+      // maskBorder.ellipse(x, y, 24, 40);
+      // maskBorder.point(x, y);
     }
 
   maskBorder.endDraw();
 }
 
+/*
+void drawBorderBackground () {
+ 
+ maskBorder.beginDraw();
+ maskBorder.background(255);
+ maskBorder.noStroke();
+ 
+ for (float i = 1; i <= 300; i +=5)
+ for (int x = 0; x <= maskBorder.width; x += 5) {
+ 
+ // 1
+ float y = offset + (sin(angle) * scaleVal);
+ maskBorder.fill(getColorPalette(), 5);
+ maskBorder.ellipse(x, y, 24, 40);
+ maskBorder.point(x, y);
+ 
+ // 2
+ y = offset + (cos(angle) * scaleVal);
+ maskBorder.fill(getRedColorPalette(), 5);
+ maskBorder.rect(x, y, 30, 13);
+ 
+ // 3
+ y = (sin(angle) * scaleVal);
+ maskBorder.fill(getColorPalette(), 5);
+ maskBorder.rect(x, y, 5, 15);
+ angle += angleInc;
+ }
+ 
+ maskBorder.endDraw();
+ } */
 
 
+////////////////////////////////////////////////////////////////////////////////////////
+// drawTriangleBorder: draws rotating triangle border 
+////////////////////////////////////////////////////////////////////////////////////////
 void drawTriangleBorder () {
 
   maskBorder.beginDraw();
-
-  // maskBorder.background(255);
   maskBorder.fill(0);
   maskBorder.fill(getColorPalette());
+
   int borderWidth = 30;
   int cdotsize = 10;
-
   int blackBorderWidth = 10;
 
   int pgWidth = maskBorder.width - blackBorderWidth;
@@ -193,10 +212,8 @@ void drawTriangleBorder () {
   RShape bottomBorder2 = RShape.createRectangle(pgStartWidth, pgHeight - 2*borderWidth, pgWidth, borderWidth);
 
   // segment into dots and draw
-  // int val = 100 + frameCount % 20;
   // int val = int(100 + 50 * sin(frameCount * 0.1));  // good
   int val = int(100 + 20 * sin(frameCount * 0.1));  // sinusoidal, not linear
-  // println(" val = " + sin(frameCount * 0.1));
 
   println("segmentLength == " + val);
   RCommand.setSegmentLength(val);
@@ -371,33 +388,35 @@ void drawTriangleBorder () {
 
   /*
   //////////////////////////////////////////////////////////////////////////
-  // double lines 
-  //////////////////////////////////////////////////////////////////////////
-
-  int halfBorderWidth = blackBorderWidth /2 - 5;
-  
-  // outside
-  maskBorder.fill(0);
-  maskBorder.rect(0, 0, maskBorder.width, halfBorderWidth);  //top
-  maskBorder.rect(0, 0, halfBorderWidth, maskBorder.height); // left
-  maskBorder.rect(maskBorder.width - halfBorderWidth, 0, halfBorderWidth, maskBorder.height);  // right
-  maskBorder.rect(0, maskBorder.height - halfBorderWidth, maskBorder.width, halfBorderWidth);  // bottom
-
-  // inside 
-  maskBorder.rect(halfBorderWidth, 3*halfBorderWidth, maskBorder.width, halfBorderWidth);  //top
-  maskBorder.rect(3*halfBorderWidth, 0, halfBorderWidth, maskBorder.height); // left
-  maskBorder.rect(pgWidth, 0, halfBorderWidth, maskBorder.height);  // right
-  maskBorder.rect(0, pgHeight, maskBorder.width, halfBorderWidth);  // bottom
- 
-  //////////////////////////////////////////////////////////////////////////
-  */
-
+   // double lines 
+   //////////////////////////////////////////////////////////////////////////
+   
+   int halfBorderWidth = blackBorderWidth /2 - 5;
+   
+   // outside
+   maskBorder.fill(0);
+   maskBorder.rect(0, 0, maskBorder.width, halfBorderWidth);  //top
+   maskBorder.rect(0, 0, halfBorderWidth, maskBorder.height); // left
+   maskBorder.rect(maskBorder.width - halfBorderWidth, 0, halfBorderWidth, maskBorder.height);  // right
+   maskBorder.rect(0, maskBorder.height - halfBorderWidth, maskBorder.width, halfBorderWidth);  // bottom
+   
+   // inside 
+   maskBorder.rect(halfBorderWidth, 3*halfBorderWidth, maskBorder.width, halfBorderWidth);  //top
+   maskBorder.rect(3*halfBorderWidth, 0, halfBorderWidth, maskBorder.height); // left
+   maskBorder.rect(pgWidth, 0, halfBorderWidth, maskBorder.height);  // right
+   maskBorder.rect(0, pgHeight, maskBorder.width, halfBorderWidth);  // bottom
+   
+   //////////////////////////////////////////////////////////////////////////
+   */
 
   maskBorder.endShape();
   maskBorder.endDraw();
 }
 
 
+////////////////////////////////////////////////////////////////////////////////////////
+// drawMultiLineBorder_*: just a sketch drawing mutiple lines for a border 
+////////////////////////////////////////////////////////////////////////////////////////
 void drawMultiLineBorder_multicolore() {
   maskBorder.beginDraw();
   maskBorder.fill(255); // white
@@ -426,6 +445,9 @@ void drawMultiLineBorder_thick() {
   maskBorder.endDraw();
 }
 
+////////////////////////////////////////////////////////////////////////////////////////
+// Color utils
+////////////////////////////////////////////////////////////////////////////////////////
 color getColorPalette() {
   colorPaletteImage.loadPixels(); 
   int y = int(random(height));
@@ -446,6 +468,11 @@ color getRedColorPalette() {
   color rr = color(anchor, int(random(0, 20)), int(random(0, 20))); 
   return rr;
 }
+
+
+////////////////////////////////////////////////////////////////////////////////////////
+// Utils for inner R triangle patterns:
+////////////////////////////////////////////////////////////////////////////////////////
 
 PVector CrossProduct(PVector p1, PVector p2) {
   return p1.cross(p2);
