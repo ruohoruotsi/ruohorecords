@@ -30,6 +30,11 @@ Boolean down = true;
 int pd = 1; // pixelDensity multiplier
 int pdG = 2; // pgraphics pixelDensity multiplier
 
+// Background
+int celln = 11;
+Cell[][] cells = new Cell[celln][celln];
+
+
 void setup() {
 
   size(700, 700, FX2D);
@@ -47,6 +52,16 @@ void setup() {
   RG.init(this);
   rrlogo = new RLogotype(400 * pdG, 500 * pdG, rrGraphics);
   rrlogo.setupRC();
+
+  ////////////////////////////////////////////////////////////////////////////////////////
+  // bg 
+  for (int i = 0; i < celln; i++)
+    for (int j = 0; j < celln; j++) {
+      cells[i][j] = new Cell(i*(maskBorder.width/celln), 
+        j*(maskBorder.width/celln), 
+        maskBorder.width/celln, 0);
+      cells[i][j].rand();
+    }
 }
 
 void draw() {
@@ -77,7 +92,7 @@ void drawLogo()
   // (1) Main R drawing to the rrGraphics PGraphics 
   rrGraphics.beginDraw();
   rrGraphics.background(255); // clear background on each frame redraw
-  rrGraphics.strokeWeight(4*pdG);  
+  rrGraphics.strokeWeight(8*pdG);  
   rrGraphics.stroke(255);    // make stroke white
   rrlogo.drawDelaunayTriangulation();
   rrGraphics.endDraw();
@@ -94,7 +109,8 @@ void drawLogo()
 
   // (3) Draw backgrounds on maskBorder PGraphics - then apply/blend the mask 
   drawBorderBackground();
-  drawTriangleBorder();
+  // drawTriangleBorder();
+  drawBlackBorder();
   rrGraphics.blend(maskHole, 0, 0, pdG*width, pdG*height, 0, 0, pdG*width, pdG*height, ADD);
 
   // (4) Draw the hole (R shape) inverted (white on black) into the border pgraphics
@@ -111,7 +127,7 @@ void drawLogo()
   image(rrGraphics, 0, 0, width, height);
 
 
-  // rrGraphics.save("highRes.tif");
+  rrGraphics.save("highRes.tif");
   // saveFrame("line-######.png");
 }
 
@@ -119,34 +135,49 @@ void drawLogo()
 ////////////////////////////////////////////////////////////////////////////////////////
 // drawBorderBackground: draws the main background for onto a PGraphics
 ////////////////////////////////////////////////////////////////////////////////////////
+
 void drawBorderBackground () {
 
-  // bg variables
-  float offset = 50.0;
-  float scaleVal = 1400;
-  float angleInc = PI/90.0;
-  float angle = 0.0;
-
+  //for (int i = 0; i < celln; i++)
+  //  for (int j = 0; j < celln; j++)
+  //    cells[i][j].rand();
 
   maskBorder.beginDraw();
-  maskBorder.background(255);
-  maskBorder.noStroke();
+  maskBorder.background(getRedColorPalette());
+  //maskBorder.fill(getColorPalette());
+  maskBorder.strokeWeight(4);
+  maskBorder.stroke(255);
 
-  for (float i = 1; i <= 300; i +=5)
-    for (int x = 0; x <= maskBorder.width; x += 5) {
+  maskBorder.translate((maskBorder.width % celln)/2, (maskBorder.width % celln)/2);
+  for (int i = 0; i < celln; i++)
+    for (int j = 0; j < celln; j++)
+      cells[i][j].display(maskBorder);
 
-      // 1
-      float y = offset + (sin(angle) * scaleVal);
-      maskBorder.fill(getColorPalette(), 5);
-      // maskBorder.ellipse(x, y, 24, 40);
-      // maskBorder.point(x, y);
-    }
-
+  // reset
+  maskBorder.resetMatrix();
   maskBorder.endDraw();
 }
 
 /*
-void drawBorderBackground () {
+void drawRandomSplashBorderBackground () {
+ 
+ // http://www.openprocessing.org/sketch/15068
+ maskBorder.beginDraw();
+ 
+ maskBorder.background(getColorPalette());
+ maskBorder.strokeWeight(2.0);
+ maskBorder.stroke(255, 100);
+ 
+ for ( int x=0; x <= maskBorder.width; x = x+1) {
+ maskBorder.line(0, x, maskBorder.width, random(maskBorder.width));
+ maskBorder.line(x, 0, random(maskBorder.width), maskBorder.width);
+ }
+ 
+ maskBorder.endDraw();
+ }
+ 
+ 
+ void drawBorderBackground () {
  
  maskBorder.beginDraw();
  maskBorder.background(255);
@@ -184,11 +215,11 @@ void drawTriangleBorder () {
 
   maskBorder.beginDraw();
   maskBorder.fill(0);
-  maskBorder.fill(getColorPalette());
+  // maskBorder.fill(getColorPalette());
 
-  int borderWidth = 30;
-  int cdotsize = 10;
+  int borderWidth = 40;
   int blackBorderWidth = 10;
+  int cdotsize = 15;
 
   int pgWidth = maskBorder.width - blackBorderWidth;
   int pgHeight = maskBorder.height - blackBorderWidth;
@@ -213,7 +244,7 @@ void drawTriangleBorder () {
 
   // segment into dots and draw
   // int val = int(100 + 50 * sin(frameCount * 0.1));  // good
-  int val = int(100 + 20 * sin(frameCount * 0.1));  // sinusoidal, not linear
+  int val = int(130 + 20 * sin(frameCount * 0.1));  // sinusoidal, not linear
 
   println("segmentLength == " + val);
   RCommand.setSegmentLength(val);
@@ -248,10 +279,13 @@ void drawTriangleBorder () {
       topPoints.x + 2*borderWidth, topPoints.y, 
       topPoints.x + borderWidth, topPoints.y + borderWidth);
 
-    // draw white center dots                   
-    maskBorder.fill(255);
+    // draw white center dots
+    maskBorder.fill(255); 
+    maskBorder.stroke(255);
     maskBorder.ellipse(topPoints.x + borderWidth, topPoints.y + borderWidth/3, cdotsize, cdotsize);
-    maskBorder.fill(getColorPalette());
+    int c = getColorPalette(); 
+    maskBorder.fill(c);  
+    maskBorder.stroke(c);
   }
 
   // TOP 2
@@ -266,9 +300,10 @@ void drawTriangleBorder () {
     //maskBorder.ellipse(topPoints2.x, topPoints2.y, 5, 5);
 
     // draw white center dots                   
-    maskBorder.fill(255);
+    int c = getColorPalette(); 
+    maskBorder.fill(c);  
+    maskBorder.stroke(c); 
     maskBorder.ellipse(topPoints2.x, topPoints2.y + 2*borderWidth/3, cdotsize, cdotsize);
-    maskBorder.fill(getColorPalette());
   }
   //////////////////////////////////////////////////////////////////////////
 
@@ -285,9 +320,12 @@ void drawTriangleBorder () {
       leftPoints.x, leftPoints.y + 2*borderWidth);
 
     // draw white center dots                   
-    maskBorder.fill(255);
+    maskBorder.fill(255); 
+    maskBorder.stroke(255);
     maskBorder.ellipse(leftPoints.x + borderWidth/3, leftPoints.y + borderWidth, cdotsize, cdotsize);
-    maskBorder.fill(getColorPalette());
+    int c = getColorPalette(); 
+    maskBorder.fill(c);  
+    maskBorder.stroke(c);
   }
 
   // LEFT 2
@@ -301,9 +339,10 @@ void drawTriangleBorder () {
       leftPoints2.x + borderWidth, leftPoints2.y + borderWidth);
 
     // draw white center dots                   
-    maskBorder.fill(255);
+    int c = getColorPalette(); 
+    maskBorder.fill(c);  
+    maskBorder.stroke(c); 
     maskBorder.ellipse(leftPoints2.x + 2*borderWidth/3, leftPoints2.y, cdotsize, cdotsize);
-    maskBorder.fill(getColorPalette());
   }
   //////////////////////////////////////////////////////////////////////////
 
@@ -319,9 +358,12 @@ void drawTriangleBorder () {
       rightPoints.x, rightPoints.y + 2*borderWidth);
 
     //// draw white center dots                   
-    maskBorder.fill(255);
+    maskBorder.fill(255); 
+    maskBorder.stroke(255);
     maskBorder.ellipse(rightPoints.x - borderWidth/3, rightPoints.y + borderWidth, cdotsize, cdotsize);
-    maskBorder.fill(getColorPalette());
+    int c = getColorPalette(); 
+    maskBorder.fill(c);  
+    maskBorder.stroke(c);
   }
 
   // RIGHT 2
@@ -337,9 +379,10 @@ void drawTriangleBorder () {
     //    maskBorder.ellipse(rightPoints2.x, rightPoints2.y, 15, 15);
 
     // draw white center dots                   
-    maskBorder.fill(255);
+    int c = getColorPalette(); 
+    maskBorder.fill(c);  
+    maskBorder.stroke(c); 
     maskBorder.ellipse(rightPoints2.x - 2*borderWidth/3, rightPoints2.y, cdotsize, cdotsize);
-    maskBorder.fill(getColorPalette());
   }
 
   //////////////////////////////////////////////////////////////////////////
@@ -355,9 +398,12 @@ void drawTriangleBorder () {
       bottomPoints.x + borderWidth, bottomPoints.y + borderWidth);
 
     // draw white center dots                   
-    maskBorder.fill(255);
+    maskBorder.fill(255); 
+    maskBorder.stroke(255);
     maskBorder.ellipse(bottomPoints.x, bottomPoints.y + 2*borderWidth/3, cdotsize, cdotsize);
-    maskBorder.fill(getColorPalette());
+    int c = getColorPalette(); 
+    maskBorder.fill(c);  
+    maskBorder.stroke(c);
   }
 
   // BOTTOM 2
@@ -369,18 +415,64 @@ void drawTriangleBorder () {
       bottomPoints2.x - 2*borderWidth, bottomPoints2.y, 
       bottomPoints2.x - borderWidth, bottomPoints2.y + borderWidth);
 
-    //maskBorder.fill(color(255, 0, 0));
-    //maskBorder.ellipse(bottomPoints2.x, bottomPoints2.y, 15, 15);
-
     // draw white center dots                   
-    maskBorder.fill(255);
+    int c = getColorPalette(); 
+    maskBorder.fill(c);  
+    maskBorder.stroke(c); 
     maskBorder.ellipse(bottomPoints2.x - borderWidth, bottomPoints2.y + borderWidth/3, cdotsize, cdotsize);
-    maskBorder.fill(getColorPalette());
   }
 
   //////////////////////////////////////////////////////////////////////////
 
+  /*
   maskBorder.fill(0);
+   maskBorder.stroke(0);  
+   maskBorder.rect(0, 0, maskBorder.width, blackBorderWidth);  //top
+   maskBorder.rect(0, 0, blackBorderWidth, maskBorder.height); // left
+   maskBorder.rect(pgWidth, 0, blackBorderWidth, maskBorder.height);  // right
+   maskBorder.rect(0, pgHeight, maskBorder.width, blackBorderWidth);  // bottom
+   
+   
+   //////////////////////////////////////////////////////////////////////////
+   // double lines 
+   //////////////////////////////////////////////////////////////////////////
+   
+   int halfBorderWidth = blackBorderWidth /2 - 5;
+   
+   // outside
+   maskBorder.fill(0);
+   maskBorder.rect(0, 0, maskBorder.width, halfBorderWidth);  //top
+   maskBorder.rect(0, 0, halfBorderWidth, maskBorder.height); // left
+   maskBorder.rect(maskBorder.width - halfBorderWidth, 0, halfBorderWidth, maskBorder.height);  // right
+   maskBorder.rect(0, maskBorder.height - halfBorderWidth, maskBorder.width, halfBorderWidth);  // bottom
+   
+   // inside 
+   maskBorder.rect(halfBorderWidth, 3*halfBorderWidth, maskBorder.width, halfBorderWidth);  //top
+   maskBorder.rect(3*halfBorderWidth, 0, halfBorderWidth, maskBorder.height); // left
+   maskBorder.rect(pgWidth, 0, halfBorderWidth, maskBorder.height);  // right
+   maskBorder.rect(0, pgHeight, maskBorder.width, halfBorderWidth);  // bottom
+   
+   //////////////////////////////////////////////////////////////////////////
+   */
+
+  maskBorder.endShape();
+  maskBorder.endDraw();
+}
+
+void drawBlackBorder() {
+
+  maskBorder.beginDraw();
+  maskBorder.fill(0);
+  maskBorder.beginShape();
+
+  int blackBorderWidth = 20;
+  int pgWidth = maskBorder.width - blackBorderWidth;
+  int pgHeight = maskBorder.height - blackBorderWidth;
+
+  //////////////////////////////////////////////////////////////////////////
+
+  maskBorder.fill(0);
+  maskBorder.stroke(0);  
   maskBorder.rect(0, 0, maskBorder.width, blackBorderWidth);  //top
   maskBorder.rect(0, 0, blackBorderWidth, maskBorder.height); // left
   maskBorder.rect(pgWidth, 0, blackBorderWidth, maskBorder.height);  // right
@@ -412,6 +504,7 @@ void drawTriangleBorder () {
   maskBorder.endShape();
   maskBorder.endDraw();
 }
+
 
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -672,7 +765,9 @@ class RLogotype {
             int jj = int(random(5, 50));
 
             // println("ii: " + ii + " jj: " + jj);
-            g.stroke(getColorPalette(), 250);
+            g.stroke(getColorPalette(), 255);
+            //g.strokeWeight(2*pdG);  
+
             int shape = int(random(3));
             int sz = int(random(3));
 
@@ -697,6 +792,7 @@ class RLogotype {
             println(); 
             println();
             g.stroke(255);
+            g.strokeWeight(4*pdG);
           };
         };
       };
@@ -725,4 +821,96 @@ class RLogotype {
     X.addVec(AB);
     return(X);
   };
+}
+
+class Cell {
+  float x, y, s, pos = 0, speed = 1.5;
+  int m = 2, type; //0-empty
+  boolean moving = false;
+
+  Cell(float inx, float iny, float ins, int intp) {
+    x = inx; 
+    y = iny;
+    s = ins;
+    type = intp;
+  }
+
+  void change(int t) {
+    if (t == 0) { 
+      pos = type = 0;
+      moving = false;
+    } else
+      if (t != type) {
+        this.swap();
+      }
+  }
+
+  void swap() {
+    if (!moving) {
+      int ptype = type;
+      type = type % m+1;
+      if ((ptype != type) && (ptype != 0)) moving = true;
+    }
+  }
+
+  void rand() {
+    if (type == 0)
+      type = ceil(random(2));
+    else 
+    if (floor(random(2)) == 0) 
+      this.swap();
+  }
+
+  boolean pressed() {
+    return ((mouseX>x) && (mouseX<=x+s) && (mouseY>y) && (mouseY<=y+s));
+  }
+
+  void display(processing.core.PGraphics g) {
+    if (moving) pos += speed;
+
+    if (pos>s) {
+      pos = 0;
+      moving = false;
+    }
+
+    switch(type) {
+    case 0: 
+      break;
+
+    case 1: 
+      if (moving) {
+        g.line(x, y+s-pos, x+s, y+pos);
+        if (pos<s/2) {
+          g.line(x+s, y+s/2+pos, x+s/2-pos, y+s);
+          g.line(x+s/2+pos, y, x, y+s/2-pos);
+        } else { 
+          g.line(x-s/2+pos, y, x+s, y-s/2+pos);
+          g.line(x, y+s*3/2-pos, x+s*3/2-pos, y+s);
+        }
+      } else {
+        g.line(x, y, x+s, y+s);
+        g.line(x+s/2, y, x+s, y+s/2);
+        g.line(x, y+s/2, x+s/2, y+s);
+      }
+      break;
+
+    case 2: 
+      if (moving) {
+
+        g.line(x+pos, y, x+s-pos, y+s);
+        if (pos<s/2) {
+          g.line(x+s/2+pos, y, x+s, y+s/2+pos);
+          g.line(x, y+s/2-pos, x+s/2-pos, y+s);
+        } else {
+          g.line(x+s, y-s/2+pos, x+s*3/2-pos, y+s);
+          g.line(x, y+s*3/2-pos, x-s/2+pos, y);
+        }
+      } else {
+        g.line(x+s, y, x, y+s);
+        g.line(x+s/2, y, x, y+s/2);
+        g.line(x+s/2, y+s, x+s, y+s/2);
+      }
+      break;
+    }
+  }
 }
