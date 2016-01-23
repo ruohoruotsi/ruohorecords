@@ -40,7 +40,7 @@ void setup() {
   size(700, 700, FX2D);
   pixelDensity(pd);  // fullScreen();
   smooth(8);
-  frameRate(10);
+  frameRate(2);
 
   rrGraphics = createGraphics(pdG * width, pdG * height);
   maskHole   = createGraphics(pdG * width, pdG * height);
@@ -127,7 +127,7 @@ void drawLogo()
   image(rrGraphics, 0, 0, width, height);
 
 
-  rrGraphics.save("highRes.tif");
+  // rrGraphics.save("frames/" + frameCount + ".tif");
   // saveFrame("line-######.png");
 }
 
