@@ -109,8 +109,8 @@ void drawLogo()
 
   // (3) Draw backgrounds on maskBorder PGraphics - then apply/blend the mask 
   drawBorderBackground();
-  // drawTriangleBorder();
   drawBlackBorder();
+  drawTriangleBorder();
   rrGraphics.blend(maskHole, 0, 0, pdG*width, pdG*height, 0, 0, pdG*width, pdG*height, ADD);
 
   // (4) Draw the hole (R shape) inverted (white on black) into the border pgraphics
@@ -127,7 +127,7 @@ void drawLogo()
   image(rrGraphics, 0, 0, width, height);
 
 
-  // rrGraphics.save("frames/" + frameCount + ".tif");
+  rrGraphics.save("frames/" + frameCount + ".tif");
   // saveFrame("line-######.png");
 }
 
@@ -138,13 +138,8 @@ void drawLogo()
 
 void drawBorderBackground () {
 
-  //for (int i = 0; i < celln; i++)
-  //  for (int j = 0; j < celln; j++)
-  //    cells[i][j].rand();
-
   maskBorder.beginDraw();
   maskBorder.background(getRedColorPalette());
-  //maskBorder.fill(getColorPalette());
   maskBorder.strokeWeight(4);
   maskBorder.stroke(255);
 
@@ -155,6 +150,110 @@ void drawBorderBackground () {
 
   // reset
   maskBorder.resetMatrix();
+  maskBorder.endDraw();
+}
+
+
+void drawTriangleBorder () {
+
+  maskBorder.beginDraw();
+  maskBorder.fill(0);
+  color trianglePalette = color(88, 38, 33); //color(255, 255, 255); // getRedColorPalette();
+  maskBorder.fill(trianglePalette);
+  maskBorder.stroke(trianglePalette);
+
+  int borderWidth = 15;
+  int blackBorderWidth = 0;
+  
+  int pgWidth = maskBorder.width - blackBorderWidth;
+  int pgHeight = maskBorder.height - blackBorderWidth;
+  int pgStartWidth = blackBorderWidth;
+  int pgStartHeight = blackBorderWidth;
+
+  // top 
+  RShape topBorder = RShape.createRectangle(pgStartWidth, pgStartHeight, pgWidth, borderWidth); 
+  // left
+  RShape leftBorder = RShape.createRectangle(pgStartWidth, pgStartHeight, borderWidth, pgHeight);  
+  // right
+  RShape rightBorder = RShape.createRectangle(pgWidth - borderWidth, 0, borderWidth, pgHeight);
+  // bottom 
+  RShape bottomBorder = RShape.createRectangle(pgStartWidth, pgHeight - borderWidth, pgWidth, borderWidth);
+
+  // segment into dots and draw
+  // int val = int(100 + 50 * sin(frameCount * 0.1));  // good
+  int val = int(35 + 10 * sin(frameCount * 0.1));  // sinusoidal, not linear
+
+  println("segmentLength == " + val);
+  RCommand.setSegmentLength(val);
+  RCommand.setSegmentator(RCommand.UNIFORMLENGTH);
+
+  // top 
+  RPolygon topPolygon = topBorder.toPolygon();
+
+  // left
+  RPolygon leftPolygon = leftBorder.toPolygon();
+
+  // right
+  RPolygon rightPolygon = rightBorder.toPolygon();
+
+  // bottom
+  RPolygon bottomPolygon = bottomBorder.toPolygon();
+
+  int i = 0;  
+  maskBorder.beginShape();
+
+  //////////////////////////////////////////////////////////////////////////
+  // TOP 1
+  for ( i = 0; i < topPolygon.contours[0].points.length / 2; i++)
+  {
+    // top side triangles pointing down
+    RPoint topPoints = topPolygon.contours[0].points[i];
+    maskBorder.triangle(topPoints.x, topPoints.y, 
+      topPoints.x + 2*borderWidth, topPoints.y, 
+      topPoints.x + borderWidth, topPoints.y + borderWidth);
+  }
+  //////////////////////////////////////////////////////////////////////////
+
+
+  //////////////////////////////////////////////////////////////////////////
+  // LEFT 1
+  for ( i = leftPolygon.contours[0].points.length/2; // bottom
+    i < leftPolygon.contours[0].points.length - 1; i++)  // top
+  {
+    // left side triangles pointing right
+    RPoint leftPoints = leftPolygon.contours[0].points[i];
+    maskBorder.triangle(leftPoints.x, leftPoints.y, 
+      leftPoints.x + borderWidth, leftPoints.y + borderWidth, 
+      leftPoints.x, leftPoints.y + 2*borderWidth);
+  }
+  //////////////////////////////////////////////////////////////////////////
+
+
+  //////////////////////////////////////////////////////////////////////////
+  // RIGHT 1
+  for ( i = 1; i < rightPolygon.contours[0].points.length / 2; i++)  
+  {
+    // right side triangles pointing left
+    RPoint rightPoints = rightPolygon.contours[0].points[i];
+    maskBorder.triangle(rightPoints.x, rightPoints.y, 
+      rightPoints.x - borderWidth, rightPoints.y + borderWidth, 
+      rightPoints.x, rightPoints.y + 2*borderWidth);
+  }
+  //////////////////////////////////////////////////////////////////////////
+
+
+  //////////////////////////////////////////////////////////////////////////
+  // BOTTOM
+  for ( i = 1; i < bottomPolygon.contours[0].points.length/2; i++)
+  {
+    RPoint bottomPoints = bottomPolygon.contours[0].points[i];
+    maskBorder.triangle(bottomPoints.x, bottomPoints.y, 
+      bottomPoints.x - borderWidth, bottomPoints.y + borderWidth, 
+      bottomPoints.x + borderWidth, bottomPoints.y + borderWidth);
+  }
+  //////////////////////////////////////////////////////////////////////////
+
+  maskBorder.endShape();
   maskBorder.endDraw();
 }
 
@@ -205,7 +304,7 @@ void drawRandomSplashBorderBackground () {
  }
  
  maskBorder.endDraw();
- } */
+ } 
 
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -424,40 +523,41 @@ void drawTriangleBorder () {
 
   //////////////////////////////////////////////////////////////////////////
 
-  /*
-  maskBorder.fill(0);
-   maskBorder.stroke(0);  
-   maskBorder.rect(0, 0, maskBorder.width, blackBorderWidth);  //top
-   maskBorder.rect(0, 0, blackBorderWidth, maskBorder.height); // left
-   maskBorder.rect(pgWidth, 0, blackBorderWidth, maskBorder.height);  // right
-   maskBorder.rect(0, pgHeight, maskBorder.width, blackBorderWidth);  // bottom
+
+//  maskBorder.fill(0);
+//   maskBorder.stroke(0);  
+//   maskBorder.rect(0, 0, maskBorder.width, blackBorderWidth);  //top
+//   maskBorder.rect(0, 0, blackBorderWidth, maskBorder.height); // left
+//   maskBorder.rect(pgWidth, 0, blackBorderWidth, maskBorder.height);  // right
+//   maskBorder.rect(0, pgHeight, maskBorder.width, blackBorderWidth);  // bottom
    
+   
+//   //////////////////////////////////////////////////////////////////////////
+//   // double lines 
+//   //////////////////////////////////////////////////////////////////////////
+   
+//   int halfBorderWidth = blackBorderWidth /2 - 5;
+   
+//   // outside
+//   maskBorder.fill(0);
+//   maskBorder.rect(0, 0, maskBorder.width, halfBorderWidth);  //top
+//   maskBorder.rect(0, 0, halfBorderWidth, maskBorder.height); // left
+//   maskBorder.rect(maskBorder.width - halfBorderWidth, 0, halfBorderWidth, maskBorder.height);  // right
+//   maskBorder.rect(0, maskBorder.height - halfBorderWidth, maskBorder.width, halfBorderWidth);  // bottom
+   
+//   // inside 
+//   maskBorder.rect(halfBorderWidth, 3*halfBorderWidth, maskBorder.width, halfBorderWidth);  //top
+//   maskBorder.rect(3*halfBorderWidth, 0, halfBorderWidth, maskBorder.height); // left
+//   maskBorder.rect(pgWidth, 0, halfBorderWidth, maskBorder.height);  // right
+//   maskBorder.rect(0, pgHeight, maskBorder.width, halfBorderWidth);  // bottom
    
    //////////////////////////////////////////////////////////////////////////
-   // double lines 
-   //////////////////////////////////////////////////////////////////////////
-   
-   int halfBorderWidth = blackBorderWidth /2 - 5;
-   
-   // outside
-   maskBorder.fill(0);
-   maskBorder.rect(0, 0, maskBorder.width, halfBorderWidth);  //top
-   maskBorder.rect(0, 0, halfBorderWidth, maskBorder.height); // left
-   maskBorder.rect(maskBorder.width - halfBorderWidth, 0, halfBorderWidth, maskBorder.height);  // right
-   maskBorder.rect(0, maskBorder.height - halfBorderWidth, maskBorder.width, halfBorderWidth);  // bottom
-   
-   // inside 
-   maskBorder.rect(halfBorderWidth, 3*halfBorderWidth, maskBorder.width, halfBorderWidth);  //top
-   maskBorder.rect(3*halfBorderWidth, 0, halfBorderWidth, maskBorder.height); // left
-   maskBorder.rect(pgWidth, 0, halfBorderWidth, maskBorder.height);  // right
-   maskBorder.rect(0, pgHeight, maskBorder.width, halfBorderWidth);  // bottom
-   
-   //////////////////////////////////////////////////////////////////////////
-   */
+  
 
   maskBorder.endShape();
   maskBorder.endDraw();
 }
+*/
 
 void drawBlackBorder() {
 
@@ -465,7 +565,7 @@ void drawBlackBorder() {
   maskBorder.fill(0);
   maskBorder.beginShape();
 
-  int blackBorderWidth = 20;
+  int blackBorderWidth = 40;
   int pgWidth = maskBorder.width - blackBorderWidth;
   int pgHeight = maskBorder.height - blackBorderWidth;
 
@@ -821,96 +921,4 @@ class RLogotype {
     X.addVec(AB);
     return(X);
   };
-}
-
-class Cell {
-  float x, y, s, pos = 0, speed = 1.5;
-  int m = 2, type; //0-empty
-  boolean moving = false;
-
-  Cell(float inx, float iny, float ins, int intp) {
-    x = inx; 
-    y = iny;
-    s = ins;
-    type = intp;
-  }
-
-  void change(int t) {
-    if (t == 0) { 
-      pos = type = 0;
-      moving = false;
-    } else
-      if (t != type) {
-        this.swap();
-      }
-  }
-
-  void swap() {
-    if (!moving) {
-      int ptype = type;
-      type = type % m+1;
-      if ((ptype != type) && (ptype != 0)) moving = true;
-    }
-  }
-
-  void rand() {
-    if (type == 0)
-      type = ceil(random(2));
-    else 
-    if (floor(random(2)) == 0) 
-      this.swap();
-  }
-
-  boolean pressed() {
-    return ((mouseX>x) && (mouseX<=x+s) && (mouseY>y) && (mouseY<=y+s));
-  }
-
-  void display(processing.core.PGraphics g) {
-    if (moving) pos += speed;
-
-    if (pos>s) {
-      pos = 0;
-      moving = false;
-    }
-
-    switch(type) {
-    case 0: 
-      break;
-
-    case 1: 
-      if (moving) {
-        g.line(x, y+s-pos, x+s, y+pos);
-        if (pos<s/2) {
-          g.line(x+s, y+s/2+pos, x+s/2-pos, y+s);
-          g.line(x+s/2+pos, y, x, y+s/2-pos);
-        } else { 
-          g.line(x-s/2+pos, y, x+s, y-s/2+pos);
-          g.line(x, y+s*3/2-pos, x+s*3/2-pos, y+s);
-        }
-      } else {
-        g.line(x, y, x+s, y+s);
-        g.line(x+s/2, y, x+s, y+s/2);
-        g.line(x, y+s/2, x+s/2, y+s);
-      }
-      break;
-
-    case 2: 
-      if (moving) {
-
-        g.line(x+pos, y, x+s-pos, y+s);
-        if (pos<s/2) {
-          g.line(x+s/2+pos, y, x+s, y+s/2+pos);
-          g.line(x, y+s/2-pos, x+s/2-pos, y+s);
-        } else {
-          g.line(x+s, y-s/2+pos, x+s*3/2-pos, y+s);
-          g.line(x, y+s*3/2-pos, x-s/2+pos, y);
-        }
-      } else {
-        g.line(x+s, y, x, y+s);
-        g.line(x+s/2, y, x, y+s/2);
-        g.line(x+s/2, y+s, x+s, y+s/2);
-      }
-      break;
-    }
-  }
 }
