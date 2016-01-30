@@ -21,16 +21,27 @@ PGraphics maskHole;
 PGraphics maskBorder;
 PImage colorPaletteImage;
 
-// Colors
-color rrred = color(120, 10, 10); 
-
-// Control
-Boolean down = true;
-
-int pd = 1; // pixelDensity multiplier
+int pd = 1;  // pixelDensity multiplier
 int pdG = 2; // pgraphics pixelDensity multiplier
 
-// Background
+// strokeweight settings 
+// original
+//int outlineStroke  = 8;
+//int internalDotStoke = 2;
+//int innerlineStroke = 4;
+
+// v1.0.1  - vimeo, github
+//int outlineStroke  = 16;
+//int internalDotStoke = 4;
+//int innerlineStroke = 10;
+
+// v1.0.2 - thicker twitter
+int outlineStroke  = 30;
+int internalDotStoke = 4;
+int innerlineStroke = 15;
+
+
+// Background cells
 int celln = 11;
 Cell[][] cells = new Cell[celln][celln];
 
@@ -45,7 +56,8 @@ void setup() {
   rrGraphics = createGraphics(pdG * width, pdG * height);
   maskHole   = createGraphics(pdG * width, pdG * height);
   maskBorder = createGraphics(pdG * width, pdG * height);
-  colorPaletteImage = loadImage("paulklee-castle-sun-1928.jpg");
+  // colorPaletteImage = loadImage("paulklee-castle-sun-1928.jpg");
+  colorPaletteImage = loadImage("paulklee-the-angler-1921.jpg");
 
   ////////////////////////////////////////////////////////////////////////////////////////
   // initialize the Geomerative library
@@ -92,7 +104,7 @@ void drawLogo()
   // (1) Main R drawing to the rrGraphics PGraphics 
   rrGraphics.beginDraw();
   rrGraphics.background(255); // clear background on each frame redraw
-  rrGraphics.strokeWeight(8*pdG);  
+  rrGraphics.strokeWeight(outlineStroke*pdG);  // IOHAVOC - stroke weight for rrlogo outline
   rrGraphics.stroke(255);    // make stroke white
   rrlogo.drawDelaunayTriangulation();
   rrGraphics.endDraw();
@@ -127,7 +139,7 @@ void drawLogo()
   image(rrGraphics, 0, 0, width, height);
 
 
-  rrGraphics.save("frames/" + frameCount + ".tif");
+  // rrGraphics.save("frames/" + frameCount + ".tif");
   // saveFrame("line-######.png");
 }
 
@@ -657,7 +669,7 @@ color getColorPalette() {
 }
 
 color getRedColorPalette() {
-  int anchor = 50 + int(random(-20, 50));
+  int anchor = 50 + int(random(-30, 30));
   color rr = color(anchor, int(random(0, 20)), int(random(0, 20))); 
   return rr;
 }
@@ -785,7 +797,7 @@ class RLogotype {
     // R outline
     g.fill(getRedColorPalette());      // add an alpha 150 is good 
     rrlogo.diff.draw(g);  
-    g.noFill();
+    // g.noFill();
 
     println("wavePolygon.contours[0].points.length: " + wavePolygon.contours[0].points.length);
     drawTriangles(wavePolygon.contours[0].points.length, P, g);
@@ -866,7 +878,7 @@ class RLogotype {
 
             // println("ii: " + ii + " jj: " + jj);
             g.stroke(getColorPalette(), 255);
-            //g.strokeWeight(2*pdG);  
+            g.strokeWeight(internalDotStoke*pdG);  // IOHAVOC - stroke weight for delaunay triangles INSIDE stroke SHAPES
 
             int shape = int(random(3));
             int sz = int(random(3));
@@ -892,7 +904,7 @@ class RLogotype {
             println(); 
             println();
             g.stroke(255);
-            g.strokeWeight(4*pdG);
+            g.strokeWeight(innerlineStroke*pdG);   // IOHAVOC - stroke weight for delaunay triangles inside LINES
           };
         };
       };

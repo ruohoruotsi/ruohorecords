@@ -14,13 +14,13 @@ Boolean down = true;
 
 void setup()
 {
-    size(600, 400,FX2D);
+    size(1024, 400,FX2D);
     pixelDensity(2);  // fullScreen();
     smooth();
     
     RG.init(this);
 
-    font = new RFont( "lucon.ttf", 72, RFont.CENTER);
+    font = new RFont( "lucon.ttf", 112, RFont.CENTER);
 
     frameRate(5);
 }
@@ -30,7 +30,7 @@ void draw()
     background(255);
     translate(width/2,height/2);
     
-    RGroup grp = font.toGroup("ruoho ruotsi");
+    RGroup grp = font.toGroup("rebeiro films");
   
     int maxFrames = 50;
     int multiplier = 1;
