@@ -21,7 +21,12 @@ PGraphics maskHole;
 PGraphics maskBorder;
 PImage colorPaletteImage;
 
-int pd = 1;  // pixelDensity multiplier
+enum colourPalette
+{
+  BACKGROUND, FOREGROUND
+};
+
+  int pd = 1;  // pixelDensity multiplier
 int pdG = 2; // pgraphics pixelDensity multiplier
 
 // strokeweight settings 
@@ -56,8 +61,14 @@ void setup() {
   rrGraphics = createGraphics(pdG * width, pdG * height);
   maskHole   = createGraphics(pdG * width, pdG * height);
   maskBorder = createGraphics(pdG * width, pdG * height);
+  //colorPaletteImage = loadImage("paulklee-a-young-ladys-adventure-1921.jpg");
   // colorPaletteImage = loadImage("paulklee-castle-sun-1928.jpg");
-  colorPaletteImage = loadImage("paulklee-the-angler-1921.jpg");
+  //colorPaletteImage = loadImage("paulklee-the-angler-1921.jpg");
+  //colorPaletteImage = loadImage("paulklee-at-the-core-1935.jpg");
+  //colorPaletteImage = loadImage("paulklee-europa-1933.jpg");
+  colorPaletteImage = loadImage("paulklee-monument-1929.jpg");
+
+
 
   ////////////////////////////////////////////////////////////////////////////////////////
   // initialize the Geomerative library
@@ -151,7 +162,7 @@ void drawLogo()
 void drawBorderBackground () {
 
   maskBorder.beginDraw();
-  maskBorder.background(getRedColorPalette());
+  maskBorder.background(getRedColorPalette(colourPalette.BACKGROUND));
   maskBorder.strokeWeight(4);
   maskBorder.stroke(255);
 
@@ -170,13 +181,13 @@ void drawTriangleBorder () {
 
   maskBorder.beginDraw();
   maskBorder.fill(0);
-  color trianglePalette = color(88, 38, 33); //color(255, 255, 255); // getRedColorPalette();
+  color trianglePalette = getRedColorPalette(colourPalette.FOREGROUND); //color(88, 38, 33); //color(255, 255, 255); 
   maskBorder.fill(trianglePalette);
   maskBorder.stroke(trianglePalette);
 
   int borderWidth = 15;
   int blackBorderWidth = 0;
-  
+
   int pgWidth = maskBorder.width - blackBorderWidth;
   int pgHeight = maskBorder.height - blackBorderWidth;
   int pgStartWidth = blackBorderWidth;
@@ -269,307 +280,7 @@ void drawTriangleBorder () {
   maskBorder.endDraw();
 }
 
-/*
-void drawRandomSplashBorderBackground () {
- 
- // http://www.openprocessing.org/sketch/15068
- maskBorder.beginDraw();
- 
- maskBorder.background(getColorPalette());
- maskBorder.strokeWeight(2.0);
- maskBorder.stroke(255, 100);
- 
- for ( int x=0; x <= maskBorder.width; x = x+1) {
- maskBorder.line(0, x, maskBorder.width, random(maskBorder.width));
- maskBorder.line(x, 0, random(maskBorder.width), maskBorder.width);
- }
- 
- maskBorder.endDraw();
- }
- 
- 
- void drawBorderBackground () {
- 
- maskBorder.beginDraw();
- maskBorder.background(255);
- maskBorder.noStroke();
- 
- for (float i = 1; i <= 300; i +=5)
- for (int x = 0; x <= maskBorder.width; x += 5) {
- 
- // 1
- float y = offset + (sin(angle) * scaleVal);
- maskBorder.fill(getColorPalette(), 5);
- maskBorder.ellipse(x, y, 24, 40);
- maskBorder.point(x, y);
- 
- // 2
- y = offset + (cos(angle) * scaleVal);
- maskBorder.fill(getRedColorPalette(), 5);
- maskBorder.rect(x, y, 30, 13);
- 
- // 3
- y = (sin(angle) * scaleVal);
- maskBorder.fill(getColorPalette(), 5);
- maskBorder.rect(x, y, 5, 15);
- angle += angleInc;
- }
- 
- maskBorder.endDraw();
- } 
 
-
-////////////////////////////////////////////////////////////////////////////////////////
-// drawTriangleBorder: draws rotating triangle border 
-////////////////////////////////////////////////////////////////////////////////////////
-void drawTriangleBorder () {
-
-  maskBorder.beginDraw();
-  maskBorder.fill(0);
-  // maskBorder.fill(getColorPalette());
-
-  int borderWidth = 40;
-  int blackBorderWidth = 10;
-  int cdotsize = 15;
-
-  int pgWidth = maskBorder.width - blackBorderWidth;
-  int pgHeight = maskBorder.height - blackBorderWidth;
-  int pgStartWidth = blackBorderWidth;
-  int pgStartHeight = blackBorderWidth;
-
-  // top 
-  RShape topBorder = RShape.createRectangle(pgStartWidth, pgStartHeight, pgWidth, borderWidth); 
-  RShape topBorder2 = RShape.createRectangle(pgStartWidth, pgStartHeight+ borderWidth, pgWidth, borderWidth);
-
-  // left
-  RShape leftBorder = RShape.createRectangle(pgStartWidth, pgStartHeight, borderWidth, pgHeight);  
-  RShape leftBorder2 = RShape.createRectangle(pgStartWidth + borderWidth, 0, borderWidth, pgHeight);
-
-  // right
-  RShape rightBorder = RShape.createRectangle(pgWidth - borderWidth, 0, borderWidth, pgHeight);
-  RShape rightBorder2 = RShape.createRectangle(pgWidth - 2*borderWidth, 0, borderWidth, pgHeight);
-
-  // bottom 
-  RShape bottomBorder = RShape.createRectangle(pgStartWidth, pgHeight - borderWidth, pgWidth, borderWidth);
-  RShape bottomBorder2 = RShape.createRectangle(pgStartWidth, pgHeight - 2*borderWidth, pgWidth, borderWidth);
-
-  // segment into dots and draw
-  // int val = int(100 + 50 * sin(frameCount * 0.1));  // good
-  int val = int(130 + 20 * sin(frameCount * 0.1));  // sinusoidal, not linear
-
-  println("segmentLength == " + val);
-  RCommand.setSegmentLength(val);
-  RCommand.setSegmentator(RCommand.UNIFORMLENGTH);
-
-  // top 
-  RPolygon topPolygon = topBorder.toPolygon();
-  RPolygon topPolygon2 = topBorder2.toPolygon();
-
-  // left
-  RPolygon leftPolygon = leftBorder.toPolygon();
-  RPolygon leftPolygon2 = leftBorder2.toPolygon();
-
-  // right
-  RPolygon rightPolygon = rightBorder.toPolygon();
-  RPolygon rightPolygon2 = rightBorder2.toPolygon();
-
-  // bottom
-  RPolygon bottomPolygon = bottomBorder.toPolygon();
-  RPolygon bottomPolygon2 = bottomBorder2.toPolygon();
-
-  int i = 0;  
-  maskBorder.beginShape();
-
-  //////////////////////////////////////////////////////////////////////////
-  // TOP 1
-  for ( i = 0; i < topPolygon.contours[0].points.length / 2; i++)
-  {
-    // top side triangles pointing down
-    RPoint topPoints = topPolygon.contours[0].points[i];
-    maskBorder.triangle(topPoints.x, topPoints.y, 
-      topPoints.x + 2*borderWidth, topPoints.y, 
-      topPoints.x + borderWidth, topPoints.y + borderWidth);
-
-    // draw white center dots
-    maskBorder.fill(255); 
-    maskBorder.stroke(255);
-    maskBorder.ellipse(topPoints.x + borderWidth, topPoints.y + borderWidth/3, cdotsize, cdotsize);
-    int c = getColorPalette(); 
-    maskBorder.fill(c);  
-    maskBorder.stroke(c);
-  }
-
-  // TOP 2
-  for ( i = 1; i < topPolygon2.contours[0].points.length / 2 -1; i++)
-  {
-    RPoint topPoints2 = topPolygon2.contours[0].points[i];
-    maskBorder.triangle(topPoints2.x, topPoints2.y, 
-      topPoints2.x - borderWidth, topPoints2.y + borderWidth, 
-      topPoints2.x + borderWidth, topPoints2.y + borderWidth);
-
-    //maskBorder.fill(color(0, 255, 255));
-    //maskBorder.ellipse(topPoints2.x, topPoints2.y, 5, 5);
-
-    // draw white center dots                   
-    int c = getColorPalette(); 
-    maskBorder.fill(c);  
-    maskBorder.stroke(c); 
-    maskBorder.ellipse(topPoints2.x, topPoints2.y + 2*borderWidth/3, cdotsize, cdotsize);
-  }
-  //////////////////////////////////////////////////////////////////////////
-
-
-  //////////////////////////////////////////////////////////////////////////
-  // LEFT 1
-  for ( i = leftPolygon.contours[0].points.length/2; // bottom
-    i < leftPolygon.contours[0].points.length - 1; i++)  // top
-  {
-    // left side triangles pointing right
-    RPoint leftPoints = leftPolygon.contours[0].points[i];
-    maskBorder.triangle(leftPoints.x, leftPoints.y, 
-      leftPoints.x + borderWidth, leftPoints.y + borderWidth, 
-      leftPoints.x, leftPoints.y + 2*borderWidth);
-
-    // draw white center dots                   
-    maskBorder.fill(255); 
-    maskBorder.stroke(255);
-    maskBorder.ellipse(leftPoints.x + borderWidth/3, leftPoints.y + borderWidth, cdotsize, cdotsize);
-    int c = getColorPalette(); 
-    maskBorder.fill(c);  
-    maskBorder.stroke(c);
-  }
-
-  // LEFT 2
-  for ( i = leftPolygon2.contours[0].points.length/2 + 1; // bottom
-    i < leftPolygon2.contours[0].points.length - 2; i++) // top
-  {
-    // right side triangles pointing left
-    RPoint leftPoints2 = leftPolygon2.contours[0].points[i];
-    maskBorder.triangle(leftPoints2.x, leftPoints2.y, 
-      leftPoints2.x + borderWidth, leftPoints2.y - borderWidth, 
-      leftPoints2.x + borderWidth, leftPoints2.y + borderWidth);
-
-    // draw white center dots                   
-    int c = getColorPalette(); 
-    maskBorder.fill(c);  
-    maskBorder.stroke(c); 
-    maskBorder.ellipse(leftPoints2.x + 2*borderWidth/3, leftPoints2.y, cdotsize, cdotsize);
-  }
-  //////////////////////////////////////////////////////////////////////////
-
-
-  //////////////////////////////////////////////////////////////////////////
-  // RIGHT 1
-  for ( i = 1; i < rightPolygon.contours[0].points.length / 2; i++)  
-  {
-    // right side triangles pointing left
-    RPoint rightPoints = rightPolygon.contours[0].points[i];
-    maskBorder.triangle(rightPoints.x, rightPoints.y, 
-      rightPoints.x - borderWidth, rightPoints.y + borderWidth, 
-      rightPoints.x, rightPoints.y + 2*borderWidth);
-
-    //// draw white center dots                   
-    maskBorder.fill(255); 
-    maskBorder.stroke(255);
-    maskBorder.ellipse(rightPoints.x - borderWidth/3, rightPoints.y + borderWidth, cdotsize, cdotsize);
-    int c = getColorPalette(); 
-    maskBorder.fill(c);  
-    maskBorder.stroke(c);
-  }
-
-  // RIGHT 2
-  for ( i = 2; i < rightPolygon2.contours[0].points.length / 2 - 1; i++)
-  {
-    // left side triangles pointing right
-    RPoint rightPoints2 = rightPolygon2.contours[0].points[i];
-    maskBorder.triangle(rightPoints2.x, rightPoints2.y, 
-      rightPoints2.x - borderWidth, rightPoints2.y - borderWidth, 
-      rightPoints2.x - borderWidth, rightPoints2.y + borderWidth);
-
-    //    maskBorder.fill(color(255, 0, 0));
-    //    maskBorder.ellipse(rightPoints2.x, rightPoints2.y, 15, 15);
-
-    // draw white center dots                   
-    int c = getColorPalette(); 
-    maskBorder.fill(c);  
-    maskBorder.stroke(c); 
-    maskBorder.ellipse(rightPoints2.x - 2*borderWidth/3, rightPoints2.y, cdotsize, cdotsize);
-  }
-
-  //////////////////////////////////////////////////////////////////////////
-
-
-  //////////////////////////////////////////////////////////////////////////
-  // BOTTOM
-  for ( i = 1; i < bottomPolygon.contours[0].points.length/2; i++)
-  {
-    RPoint bottomPoints = bottomPolygon.contours[0].points[i];
-    maskBorder.triangle(bottomPoints.x, bottomPoints.y, 
-      bottomPoints.x - borderWidth, bottomPoints.y + borderWidth, 
-      bottomPoints.x + borderWidth, bottomPoints.y + borderWidth);
-
-    // draw white center dots                   
-    maskBorder.fill(255); 
-    maskBorder.stroke(255);
-    maskBorder.ellipse(bottomPoints.x, bottomPoints.y + 2*borderWidth/3, cdotsize, cdotsize);
-    int c = getColorPalette(); 
-    maskBorder.fill(c);  
-    maskBorder.stroke(c);
-  }
-
-  // BOTTOM 2
-  for ( i = 2; i < bottomPolygon2.contours[0].points.length / 2 - 1; i++)
-  {
-    // bottom triangles pointing down
-    RPoint bottomPoints2 = bottomPolygon2.contours[0].points[i];
-    maskBorder.triangle(bottomPoints2.x, bottomPoints2.y, 
-      bottomPoints2.x - 2*borderWidth, bottomPoints2.y, 
-      bottomPoints2.x - borderWidth, bottomPoints2.y + borderWidth);
-
-    // draw white center dots                   
-    int c = getColorPalette(); 
-    maskBorder.fill(c);  
-    maskBorder.stroke(c); 
-    maskBorder.ellipse(bottomPoints2.x - borderWidth, bottomPoints2.y + borderWidth/3, cdotsize, cdotsize);
-  }
-
-  //////////////////////////////////////////////////////////////////////////
-
-
-//  maskBorder.fill(0);
-//   maskBorder.stroke(0);  
-//   maskBorder.rect(0, 0, maskBorder.width, blackBorderWidth);  //top
-//   maskBorder.rect(0, 0, blackBorderWidth, maskBorder.height); // left
-//   maskBorder.rect(pgWidth, 0, blackBorderWidth, maskBorder.height);  // right
-//   maskBorder.rect(0, pgHeight, maskBorder.width, blackBorderWidth);  // bottom
-   
-   
-//   //////////////////////////////////////////////////////////////////////////
-//   // double lines 
-//   //////////////////////////////////////////////////////////////////////////
-   
-//   int halfBorderWidth = blackBorderWidth /2 - 5;
-   
-//   // outside
-//   maskBorder.fill(0);
-//   maskBorder.rect(0, 0, maskBorder.width, halfBorderWidth);  //top
-//   maskBorder.rect(0, 0, halfBorderWidth, maskBorder.height); // left
-//   maskBorder.rect(maskBorder.width - halfBorderWidth, 0, halfBorderWidth, maskBorder.height);  // right
-//   maskBorder.rect(0, maskBorder.height - halfBorderWidth, maskBorder.width, halfBorderWidth);  // bottom
-   
-//   // inside 
-//   maskBorder.rect(halfBorderWidth, 3*halfBorderWidth, maskBorder.width, halfBorderWidth);  //top
-//   maskBorder.rect(3*halfBorderWidth, 0, halfBorderWidth, maskBorder.height); // left
-//   maskBorder.rect(pgWidth, 0, halfBorderWidth, maskBorder.height);  // right
-//   maskBorder.rect(0, pgHeight, maskBorder.width, halfBorderWidth);  // bottom
-   
-   //////////////////////////////////////////////////////////////////////////
-  
-
-  maskBorder.endShape();
-  maskBorder.endDraw();
-}
-*/
 
 void drawBlackBorder() {
 
@@ -629,7 +340,7 @@ void drawMultiLineBorder_multicolore() {
   for (int i = 0; i < 5; i++)
   {
     maskBorder.strokeWeight(3);
-    maskBorder.stroke(getColorPalette());  // 
+    maskBorder.stroke(getRedColorPalette(colourPalette.FOREGROUND));  // 
     maskBorder.rect(0 + i*interlineDist, 0 + i*interlineDist, 
       maskBorder.width - 2*i*interlineDist, maskBorder.height - 2*i*interlineDist);
   }
@@ -643,7 +354,7 @@ void drawMultiLineBorder_thick() {
   for (int i = 0; i < 5; i++)
   {
     maskBorder.strokeWeight(3);
-    maskBorder.stroke(getColorPalette());  // 
+    maskBorder.stroke(getRedColorPalette(colourPalette.FOREGROUND));  // 
     maskBorder.rect(0 + i*interlineDist, 0 + i*interlineDist, 
       maskBorder.width - 2*i*interlineDist, maskBorder.height - 2*i*interlineDist);
   }
@@ -653,11 +364,11 @@ void drawMultiLineBorder_thick() {
 ////////////////////////////////////////////////////////////////////////////////////////
 // Color utils
 ////////////////////////////////////////////////////////////////////////////////////////
-color getColorPalette() {
+color getPhotoColorPalette() {
   colorPaletteImage.loadPixels(); 
-  int y = int(random(height));
-  int x = int(random(width));
-  int loc = x + y*width;
+  int y = int(random(colorPaletteImage.height));
+  int x = int(random(colorPaletteImage.width));
+  int loc = x + y*colorPaletteImage.width;
 
   // The functions red(), green(), and blue() pull out the 3 color components from a pixel.
   float r = red(colorPaletteImage.pixels[loc]);
@@ -668,10 +379,22 @@ color getColorPalette() {
   return color(r, g, b);
 }
 
-color getRedColorPalette() {
-  int anchor = 50 + int(random(-30, 30));
-  color rr = color(anchor, int(random(0, 20)), int(random(0, 20))); 
-  return rr;
+color getRedColorPalette(colourPalette pallette) {
+  // fg
+  color fgc =  getPhotoColorPalette();
+  
+  // bg
+  int val = int(noise(frameCount * 0.01) * 60);
+  int anchor = 50 + (val - 30);
+  color bgc = color(anchor, int(noise(frameCount * 0.01) * 20), int(noise(frameCount * 0.01) * 20));
+  
+  //int anchor = 50 + int(random(-30, 30));
+  //color bgc = color(anchor, int(random(0, 20)), int(random(0, 20)));
+  
+  if (pallette == colourPalette.FOREGROUND && brightness(fgc) > brightness(bgc)) return fgc;
+  else if (pallette == colourPalette.FOREGROUND && brightness(fgc) <= brightness(bgc)) return bgc;
+  else if (pallette == colourPalette.BACKGROUND && brightness(fgc) > brightness(bgc)) return bgc;
+  else return fgc;
 }
 
 
@@ -795,7 +518,7 @@ class RLogotype {
     // P[1] = new pt(450, 475);  
 
     // R outline
-    g.fill(getRedColorPalette());      // add an alpha 150 is good 
+    g.fill(getRedColorPalette(colourPalette.BACKGROUND));      // add an alpha 150 is good 
     rrlogo.diff.draw(g);  
     // g.noFill();
 
@@ -857,7 +580,7 @@ class RLogotype {
 
             // draw actual tiangles
             g.beginShape(); 
-            g.fill(getRedColorPalette());      // add an alpha 150 is good 
+            g.fill(getRedColorPalette(colourPalette.BACKGROUND));      // add an alpha 150 is good 
             P[i].vert(g); 
             P[j].vert(g); 
             P[k].vert(g); 
@@ -877,7 +600,7 @@ class RLogotype {
             int jj = int(random(5, 50));
 
             // println("ii: " + ii + " jj: " + jj);
-            g.stroke(getColorPalette(), 255);
+            g.stroke(getRedColorPalette(colourPalette.FOREGROUND), 255);
             g.strokeWeight(internalDotStoke*pdG);  // IOHAVOC - stroke weight for delaunay triangles INSIDE stroke SHAPES
 
             int shape = int(random(3));
