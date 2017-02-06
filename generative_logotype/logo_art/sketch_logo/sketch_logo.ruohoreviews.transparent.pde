@@ -1,4 +1,4 @@
-/* //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
+/* //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
  //////////////////////////////////////////////
  --------- generative logotypography ----------
  //////////////////////////////////////////////
@@ -26,7 +26,13 @@ enum colourPalette
   BACKGROUND, FOREGROUND
 };
 
-  int pd = 1;  // pixelDensity multiplier
+enum colourStyle
+{
+  BURGUNDY, GREEN // make gifs into animated gifs: convert -delay 200 -loop 0 *.gif animation.gif
+};
+
+
+int pd = 1;  // pixelDensity multiplier
 int pdG = 2; // pgraphics pixelDensity multiplier
 
 // strokeweight settings 
@@ -41,13 +47,13 @@ int pdG = 2; // pgraphics pixelDensity multiplier
 //int innerlineStroke = 10;
 
 // v1.0.2 - thicker twitter
-int outlineStroke  = 30;
+int outlineStroke  = 30;  // IOHAVOC -- transparent mod
 int internalDotStoke = 4;
-int innerlineStroke = 15;
+int innerlineStroke = 16;  // IOHAVOC -- transparent mod
 
 
 // Background cells
-int celln = 11;
+int celln = 5;
 Cell[][] cells = new Cell[celln][celln];
 
 
@@ -61,11 +67,15 @@ void setup() {
   rrGraphics = createGraphics(pdG * width, pdG * height);
   maskHole   = createGraphics(pdG * width, pdG * height);
   maskBorder = createGraphics(pdG * width, pdG * height);
-  //colorPaletteImage = loadImage("paulklee-a-young-ladys-adventure-1921.jpg");
+  
+  // BURGUNDY
+  // colorPaletteImage = loadImage("paulklee-a-young-ladys-adventure-1921.jpg");
+  // colorPaletteImage = loadImage("paulklee-at-the-core-1935.jpg");
   // colorPaletteImage = loadImage("paulklee-castle-sun-1928.jpg");
-  //colorPaletteImage = loadImage("paulklee-the-angler-1921.jpg");
-  //colorPaletteImage = loadImage("paulklee-at-the-core-1935.jpg");
+
+  // GREEN for RUOHO REVIEWS
   colorPaletteImage = loadImage("paulklee-europa-1933.jpg");
+  // colorPaletteImage = loadImage("paulklee-the-angler-1921.jpg");
   // colorPaletteImage = loadImage("paulklee-monument-1929.jpg");
 
 
@@ -115,9 +125,12 @@ void drawLogo()
   rrGraphics.beginDraw();
   rrGraphics.clear();
   rrGraphics.smooth(8);
-  rrGraphics.background(color(255, 0)); // clear background on each frame redraw
+  // rrGraphics.background(color(255, 0));     // clear background on each frame redraw
   rrGraphics.strokeWeight(outlineStroke*pdG);  // IOHAVOC - stroke weight for rrlogo outline
-  rrGraphics.stroke(255);    // make stroke white
+  
+  color strokeColor = getRedColorPalette(colourPalette.BACKGROUND, colourStyle.GREEN);
+  rrGraphics.stroke(255);    // 255 - to make stroke white
+  
   rrlogo.drawDelaunayTriangulation();
   rrGraphics.endDraw();
 
@@ -132,9 +145,9 @@ void drawLogo()
   maskHole.endDraw();
 
   // (3) Draw backgrounds on maskBorder PGraphics - then apply/blend the mask 
-  //drawBorderBackground();
+  // drawBorderBackground(); // IOHAVOC -- transparent commentout
   drawBlackBorder();
-  //drawTriangleBorder();
+  // drawTriangleBorder();  // IOHAVOC -- transparent commentout
   rrGraphics.blend(maskHole, 0, 0, pdG*width, pdG*height, 0, 0, pdG*width, pdG*height, ADD);
 
   // (4) Draw the hole (R shape) inverted (white on black) into the border pgraphics
@@ -150,21 +163,23 @@ void drawLogo()
   rrGraphics.blend(maskBorder, 0, 0, pdG*width, pdG*height, 0, 0, pdG*width, pdG*height, MULTIPLY);
   image(rrGraphics, 0, 0, width, height);
 
-  rrGraphics.loadPixels();
-  for(int n = 0; n < rrGraphics.pixels.length; n++) {
-   //println("pixel vals " + rrGraphics.pixels[n]); //<>//
+  // For removing the background
+   rrGraphics.loadPixels();
+   for(int n = 0; n < rrGraphics.pixels.length; n++) {
+   //println("pixel vals " + rrGraphics.pixels[n]);
    rrGraphics.pixels[n] = rrGraphics.pixels[n] == color(0) ? 0x00000000 : rrGraphics.pixels[n] | 0xff000000;
    if(red(rrGraphics.pixels[n]) == green(rrGraphics.pixels[n]) && 
-      red(rrGraphics.pixels[n]) == blue(rrGraphics.pixels[n])) {
-     
-        if(red(rrGraphics.pixels[n]) < 220)
-          rrGraphics.pixels[n] = 0x00000000;
+   red(rrGraphics.pixels[n]) == blue(rrGraphics.pixels[n])) {
+   
+   if(red(rrGraphics.pixels[n]) < 220)
+   rrGraphics.pixels[n] = 0x00000000;
    }
- }
-  rrGraphics.updatePixels(); //<>//
+   }
+   rrGraphics.updatePixels();
+   
 
   // rrGraphics.save("frames/" + frameCount + ".tif");
-  rrGraphics.save("frames/" + frameCount + ".png");
+  rrGraphics.save("frames/" + frameCount + ".png");  // IOHAVOC -- transparent commentout
   // saveFrame("line-######.png");
 }
 
@@ -176,7 +191,7 @@ void drawLogo()
 void drawBorderBackground () {
 
   maskBorder.beginDraw();
-  maskBorder.background(getRedColorPalette(colourPalette.BACKGROUND));
+  maskBorder.background(getRedColorPalette(colourPalette.BACKGROUND, colourStyle.GREEN));
   //maskBorder.background(color(48,57,61));
   maskBorder.strokeWeight(4);
   maskBorder.stroke(255);
@@ -195,12 +210,12 @@ void drawBorderBackground () {
 void drawTriangleBorder () {
 
   maskBorder.beginDraw();
-  maskBorder.fill(0);
-  color trianglePalette = getRedColorPalette(colourPalette.FOREGROUND); //color(88, 38, 33); //color(255, 255, 255); 
+  color trianglePalette = getRedColorPalette(colourPalette.FOREGROUND, colourStyle.GREEN); //color(88, 38, 33); //color(255, 255, 255); 
   maskBorder.fill(trianglePalette);
-  maskBorder.stroke(trianglePalette);
+  maskBorder.stroke(255);
+  // maskBorder.stroke(trianglePalette);
 
-  int borderWidth = 15;
+  int borderWidth = 25;
   int blackBorderWidth = 0;
 
   int pgWidth = maskBorder.width - blackBorderWidth;
@@ -219,7 +234,7 @@ void drawTriangleBorder () {
 
   // segment into dots and draw
   // int val = int(100 + 50 * sin(frameCount * 0.1));  // good
-  int val = int(35 + 10 * sin(frameCount * 0.1));  // sinusoidal, not linear
+  int val = int(55 + 10 * sin(frameCount * 0.1));  // sinusoidal, not linear
 
   println("segmentLength == " + val);
   RCommand.setSegmentLength(val);
@@ -355,7 +370,7 @@ void drawMultiLineBorder_multicolore() {
   for (int i = 0; i < 5; i++)
   {
     maskBorder.strokeWeight(3);
-    maskBorder.stroke(getRedColorPalette(colourPalette.FOREGROUND));  // 
+    maskBorder.stroke(getRedColorPalette(colourPalette.FOREGROUND, colourStyle.GREEN));  // 
     maskBorder.rect(0 + i*interlineDist, 0 + i*interlineDist, 
       maskBorder.width - 2*i*interlineDist, maskBorder.height - 2*i*interlineDist);
   }
@@ -369,7 +384,7 @@ void drawMultiLineBorder_thick() {
   for (int i = 0; i < 5; i++)
   {
     maskBorder.strokeWeight(3);
-    maskBorder.stroke(getRedColorPalette(colourPalette.FOREGROUND));  // 
+    maskBorder.stroke(getRedColorPalette(colourPalette.FOREGROUND, colourStyle.GREEN));  // 
     maskBorder.rect(0 + i*interlineDist, 0 + i*interlineDist, 
       maskBorder.width - 2*i*interlineDist, maskBorder.height - 2*i*interlineDist);
   }
@@ -394,15 +409,20 @@ color getPhotoColorPalette() {
   return color(r, g, b);
 }
 
-color getRedColorPalette(colourPalette pallette) {
+color getRedColorPalette(colourPalette pallette, colourStyle style) {
   // fg
   color fgc =  getPhotoColorPalette();
-  
+
   // bg
   int val = int(noise(frameCount * 0.01) * 60);
   int anchor = 50 + (val - 30);
-  // color bgc = color(anchor, int(noise(frameCount * 0.01) * 20), int(noise(frameCount * 0.01) * 20));
+
+  // green
   color bgc = color(int(noise(frameCount * 0.01) * 20), anchor, int(noise(frameCount * 0.01) * 20));
+  if (style == colourStyle.BURGUNDY) {
+    // burgundy red
+    bgc = color(anchor, int(noise(frameCount * 0.01) * 20), int(noise(frameCount * 0.01) * 20));
+  }
 
   if (pallette == colourPalette.FOREGROUND && brightness(fgc) > brightness(bgc)) return fgc;
   else if (pallette == colourPalette.FOREGROUND && brightness(fgc) <= brightness(bgc)) return bgc;
@@ -531,7 +551,7 @@ class RLogotype {
     // P[1] = new pt(450, 475);  
 
     // R outline
-    g.fill(getRedColorPalette(colourPalette.BACKGROUND));      // add an alpha 150 is good 
+    g.fill(getRedColorPalette(colourPalette.BACKGROUND, colourStyle.GREEN));      // add an alpha 150 is good 
     rrlogo.diff.draw(g);  
     // g.noFill();
 
@@ -588,12 +608,12 @@ class RLogotype {
             if (dots) {
               //g.strokeWeight(8);
               //g.stroke(rrblue); 
-              // X.show(4, g); // little blue dots
+               //X.show(4, g); // little blue dots
             };
 
             // draw actual tiangles
             g.beginShape(); 
-            g.fill(getRedColorPalette(colourPalette.BACKGROUND));      // add an alpha 150 is good 
+            g.fill(getRedColorPalette(colourPalette.BACKGROUND, colourStyle.GREEN));      // add an alpha 150 is good 
             P[i].vert(g); 
             P[j].vert(g); 
             P[k].vert(g); 
@@ -613,7 +633,7 @@ class RLogotype {
             int jj = int(random(5, 50));
 
             // println("ii: " + ii + " jj: " + jj);
-            g.stroke(getRedColorPalette(colourPalette.FOREGROUND), 255);
+            g.stroke(getRedColorPalette(colourPalette.FOREGROUND, colourStyle.BURGUNDY), 255);
             g.strokeWeight(internalDotStoke*pdG);  // IOHAVOC - stroke weight for delaunay triangles INSIDE stroke SHAPES
 
             int shape = int(random(3));
@@ -639,7 +659,9 @@ class RLogotype {
 
             println(); 
             println();
+            
             g.stroke(255);
+            // IOHAVOC g.stroke(getRedColorPalette(colourPalette.FOREGROUND, colourStyle.BURGUNDY), 255);
             g.strokeWeight(innerlineStroke*pdG);   // IOHAVOC - stroke weight for delaunay triangles inside LINES
           };
         };
