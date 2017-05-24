@@ -14,7 +14,7 @@ char typedKey = 'R';
 
 void setup() {
   colorMode(RGB,255,255,255);
-  size(600,800);
+  size(600, 800);
   background(255, 250, 245);
   strokeCap(SQUARE);
   
@@ -29,8 +29,13 @@ void setup() {
   textFont(font);
   fill(0);
   
-  textAlign(CENTER, CENTER);
-  text(typedKey, width/2, height/2-60);
+  // textAlign(CENTER, CENTER);
+  // text(typedKey, width/2, height/2-60);
+  // String s = "The quick brown fox jumped over the lazy dog.";
+  // text(s, 140, 140, 170, 180);  // Text wraps within text box
+  // textSize(14);
+  text("rebeiro films", 170, 180);
+
   list = new int[width*height];
   
   loadPixels();

@@ -30,8 +30,9 @@ void draw()
     background(255);
     translate(width/2,height/2);
     
-    RGroup grp = font.toGroup("rebeiro films");
-  
+    RGroup grp = font.toGroup("rebeiro orife");
+    RGroup grpfilms = font.toGroup("films");
+
     int maxFrames = 50;
     int multiplier = 1;
     int seglenA = frameCount % maxFrames;

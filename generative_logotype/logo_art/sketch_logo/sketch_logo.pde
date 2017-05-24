@@ -318,7 +318,7 @@ void drawBlackBorder() {
   maskBorder.fill(0);
   maskBorder.beginShape();
 
-  int blackBorderWidth = 40;
+  int blackBorderWidth = 45;
   int pgWidth = maskBorder.width - blackBorderWidth;
   int pgHeight = maskBorder.height - blackBorderWidth;
 
