@@ -51,6 +51,7 @@ int outlineStroke  = 16;
 int internalDotStoke = 4;
 int innerlineStroke = 6;
 
+boolean isBGTransparent = true;
 
 // Background cells
 int celln = 5;
@@ -67,7 +68,7 @@ void setup() {
   rrGraphics = createGraphics(pdG * width, pdG * height);
   maskHole   = createGraphics(pdG * width, pdG * height);
   maskBorder = createGraphics(pdG * width, pdG * height);
-  
+
   // BURGUNDY
   //colorPaletteImage = loadImage("paulklee-a-young-ladys-adventure-1921.jpg");
   colorPaletteImage = loadImage("paulklee-at-the-core-1935.jpg");
@@ -127,10 +128,10 @@ void drawLogo()
   rrGraphics.smooth(8);
   // rrGraphics.background(color(255, 0));     // clear background on each frame redraw
   rrGraphics.strokeWeight(outlineStroke*pdG);  // IOHAVOC - stroke weight for rrlogo outline
-  
+
   color strokeColor = getRedColorPalette(colourPalette.BACKGROUND, colourStyle.BURGUNDY);
   rrGraphics.stroke(255);    // 255 - to make stroke white
-  
+
   rrlogo.drawDelaunayTriangulation();
   rrGraphics.endDraw();
 
@@ -145,9 +146,13 @@ void drawLogo()
   maskHole.endDraw();
 
   // (3) Draw backgrounds on maskBorder PGraphics - then apply/blend the mask 
-  drawBorderBackground();
-  drawBlackBorder();
-  drawTriangleBorder();
+  if (isBGTransparent) {
+    drawBlackBorder();
+  } else {
+    drawBorderBackground();
+    drawBlackBorder();
+    drawTriangleBorder();
+  }
   rrGraphics.blend(maskHole, 0, 0, pdG*width, pdG*height, 0, 0, pdG*width, pdG*height, ADD);
 
   // (4) Draw the hole (R shape) inverted (white on black) into the border pgraphics
@@ -163,20 +168,21 @@ void drawLogo()
   rrGraphics.blend(maskBorder, 0, 0, pdG*width, pdG*height, 0, 0, pdG*width, pdG*height, MULTIPLY);
   image(rrGraphics, 0, 0, width, height);
 
-  /* // For removing the background
-   rrGraphics.loadPixels();
-   for(int n = 0; n < rrGraphics.pixels.length; n++) {
-   //println("pixel vals " + rrGraphics.pixels[n]);
-   rrGraphics.pixels[n] = rrGraphics.pixels[n] == color(0) ? 0x00000000 : rrGraphics.pixels[n] | 0xff000000;
-   if(red(rrGraphics.pixels[n]) == green(rrGraphics.pixels[n]) && 
-   red(rrGraphics.pixels[n]) == blue(rrGraphics.pixels[n])) {
-   
-   if(red(rrGraphics.pixels[n]) < 220)
-   rrGraphics.pixels[n] = 0x00000000;
-   }
-   }
-   rrGraphics.updatePixels();
-   */
+  // For removing the background
+  if (isBGTransparent) {
+    rrGraphics.loadPixels();
+    for (int n = 0; n < rrGraphics.pixels.length; n++) {
+      //println("pixel vals " + rrGraphics.pixels[n]);
+      rrGraphics.pixels[n] = rrGraphics.pixels[n] == color(0) ? 0x00000000 : rrGraphics.pixels[n] | 0xff000000;
+      if (red(rrGraphics.pixels[n]) == green(rrGraphics.pixels[n]) && 
+        red(rrGraphics.pixels[n]) == blue(rrGraphics.pixels[n])) {
+
+        if (red(rrGraphics.pixels[n]) < 220)
+          rrGraphics.pixels[n] = 0x00000000;
+      }
+    }
+    rrGraphics.updatePixels();
+  }
 
   // rrGraphics.save("frames/" + frameCount + ".tif");
   // rrGraphics.save("frames/" + frameCount + ".png");
@@ -608,7 +614,7 @@ class RLogotype {
             if (dots) {
               //g.strokeWeight(8);
               //g.stroke(rrblue); 
-               //X.show(4, g); // little blue dots
+              //X.show(4, g); // little blue dots
             };
 
             // draw actual tiangles
@@ -659,7 +665,7 @@ class RLogotype {
 
             println(); 
             println();
-            
+
             g.stroke(255);
             // IOHAVOC g.stroke(getRedColorPalette(colourPalette.FOREGROUND, colourStyle.BURGUNDY), 255);
             g.strokeWeight(innerlineStroke*pdG);   // IOHAVOC - stroke weight for delaunay triangles inside LINES
