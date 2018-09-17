@@ -1,4 +1,4 @@
-/* //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
+/* //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
  //////////////////////////////////////////////
  --------- generative logotypography ----------
  //////////////////////////////////////////////
@@ -47,14 +47,14 @@ int pdG = 2; // pgraphics pixelDensity multiplier
 //int innerlineStroke = 10;
 
 // v1.0.2 - thicker twitter
-int outlineStroke  = 16;
+int outlineStroke  = 24;
 int internalDotStoke = 4;
-int innerlineStroke = 6;
+int innerlineStroke = 12;
 
 boolean isBGTransparent = true;
 
 // Background cells
-int celln = 5;
+int celln = 24;
 Cell[][] cells = new Cell[celln][celln];
 
 
@@ -83,11 +83,12 @@ void setup() {
   ////////////////////////////////////////////////////////////////////////////////////////
   // initialize the Geomerative library
   RG.init(this);
+  //rrlogo = new RLogotype(400 * pdG, 500 * pdG, rrGraphics);  // original
   rrlogo = new RLogotype(400 * pdG, 500 * pdG, rrGraphics);
   rrlogo.setupRC();
 
   ////////////////////////////////////////////////////////////////////////////////////////
-  // bg 
+  // bg -- moved to draw, sinc we redraw, chaque frame
   for (int i = 0; i < celln; i++)
     for (int j = 0; j < celln; j++) {
       cells[i][j] = new Cell(i*(maskBorder.width/celln), 
@@ -100,6 +101,24 @@ void setup() {
 void draw() {
 
   background(value);
+
+  if (floor(random(2))==0) {
+    if (floor(random(2))==0) {
+
+      int val =  int(noise(frameCount) * 20.0 + 4);
+      print(val + "\n");
+      celln = val;
+
+      for (int i = 0; i < celln; i++)
+        for (int j = 0; j < celln; j++) {
+          cells[i][j] = new Cell(i*(maskBorder.width/celln), 
+            j*(maskBorder.width/celln), 
+            maskBorder.width/celln, 0);
+          cells[i][j].rand();
+        }
+    }
+  }
+
   drawLogo();
 }
 
@@ -128,8 +147,6 @@ void drawLogo()
   rrGraphics.smooth(8);
   // rrGraphics.background(color(255, 0));     // clear background on each frame redraw
   rrGraphics.strokeWeight(outlineStroke*pdG);  // IOHAVOC - stroke weight for rrlogo outline
-
-  color strokeColor = getRedColorPalette(colourPalette.BACKGROUND, colourStyle.BURGUNDY);
   rrGraphics.stroke(255);    // 255 - to make stroke white
 
   rrlogo.drawDelaunayTriangulation();
@@ -142,7 +159,7 @@ void drawLogo()
   maskHole.fill(0);          // black
   maskHole.smooth(8); 
   maskHole.noStroke();
-  rrlogo.diff.draw(maskHole);  
+  rrlogo.diff.draw(maskHole);  // IOHAVOC -- comment out for background only!
   maskHole.endDraw();
 
   // (3) Draw backgrounds on maskBorder PGraphics - then apply/blend the mask 
@@ -157,19 +174,19 @@ void drawLogo()
 
   // (4) Draw the hole (R shape) inverted (white on black) into the border pgraphics
   maskHole.beginDraw();
-  maskHole.background(0);  // black
+  maskHole.background(color(39,9,8));  // black
   maskHole.fill(255);      // white 
   maskHole.noStroke();
   rrlogo.diff.draw(maskHole);  
   maskHole.endDraw();
-  maskBorder.blend(maskHole, 0, 0, pdG*width, pdG*height, 0, 0, pdG*width, pdG*height, ADD);
+  maskBorder.blend(maskHole, 0, 0, pdG*width, pdG*height, 0, 0, pdG*width, pdG*height, ADD); // IOHAVOC -- comment out for background only!
 
   // (5) Blend border & R PGraphics
   rrGraphics.blend(maskBorder, 0, 0, pdG*width, pdG*height, 0, 0, pdG*width, pdG*height, MULTIPLY);
   image(rrGraphics, 0, 0, width, height);
 
   // For removing the background
-  if (isBGTransparent) {
+  if (!isBGTransparent) {
     rrGraphics.loadPixels();
     for (int n = 0; n < rrGraphics.pixels.length; n++) {
       //println("pixel vals " + rrGraphics.pixels[n]);
@@ -185,7 +202,7 @@ void drawLogo()
   }
 
   // rrGraphics.save("frames/" + frameCount + ".tif");
-  // rrGraphics.save("frames/" + frameCount + ".png");
+  rrGraphics.save("frames/" + frameCount + ".png");
   // saveFrame("line-######.png");
 }
 
