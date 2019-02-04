@@ -32,32 +32,41 @@
  */
 'use strict';
 
+var canvasSize = 800;
+
 var count = 0;
-var tileCountX = 6;
-var tileCountY = 6;
+var tileCountX = 1;
+var tileCountY = 1;
 
 var drawMode = 1;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   rectMode(CENTER);
+  frameRate(10);
 }
+
 
 function draw() {
   clear();
+  background(0);
+  stroke(255);
+  strokeWeight(2);
+
   noFill();
 
-  count = mouseX / 10 + 10;
+  ellipse(canvasSize/2, canvasSize/2, canvasSize, canvasSize);
+
+  count = mouseX / 20 + 10;
   var para = mouseY / height;
 
   var tileWidth = width / tileCountX;
   var tileHeight = height / tileCountY;
 
-  for (var gridY = 0; gridY <= tileCountY; gridY++) {
-    for (var gridX = 0; gridX <= tileCountX; gridX++) {
+  for (var gridX = 0; gridX <= tileCountX; gridX++) {
 
-      var posX = tileWidth * gridX + tileWidth / 2;
-      var posY = tileHeight * gridY + tileHeight / 2;
+      var posX = tileWidth / 2;
+      var posY = tileHeight / 2;
 
       push();
       translate(posX, posY);
@@ -65,7 +74,7 @@ function draw() {
       // switch between modules
       switch (drawMode) {
       case 1:
-        stroke(0);
+        stroke(255);
         for (var i = 0; i < count; i++) {
           rect(0, 0, tileWidth, tileHeight);
           scale(1 - 3 / count);
@@ -74,13 +83,31 @@ function draw() {
         break;
       case 2:
         noStroke();
+        // debug
+        // print(mouseX, mouseY);
+        // print(count)
+
         for (var i = 0; i < count; i++) {
-          var gradient = lerpColor(color(0, 0), color(166, 141, 5), i / count);
+          // IOHAVOC --> fix the gradient here
+          // var gradient = lerpColor(color(0, 0), color(166, 5, 5), i / count);
+          var from = color(0,0);
+          var to = color(166, 5, 5);
+          colorMode(RGB); // Try changing to HSB.
+          // var gradient = lerpColor(from, to, 0.33);
+
+           // IOHAVOC - gradient needs to change for Lin Interp Color to give us more visible 
+           // useful colors  ... so start from not black but close to it or rather is there 
+           // an expoential color interpolation?
+          var gradient = lerpColor(from, to, i/count); 
+
           fill(gradient, i / count * 200);
-          rotate(QUARTER_PI);
+          // rotate(QUARTER_PI);
+          rotate(0.20);
           rect(0, 0, tileWidth, tileHeight);
-          scale(1 - 3 / count);
+          scale(1 - 3 / (count));
           rotate(para * 1.5);
+          // rotate(para * 2.5);
+
         }
         break;
       case 3:
@@ -106,8 +133,6 @@ function draw() {
       }
 
       pop();
-
-    }
   }
 }
 
