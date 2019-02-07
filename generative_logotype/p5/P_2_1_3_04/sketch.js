@@ -57,7 +57,7 @@ function draw() {
 
   ellipse(canvasSize/2, canvasSize/2, canvasSize, canvasSize);
 
-  count = mouseX / 20 + 10;
+  count = mouseX / 128 + 10;
   var para = mouseY / height;
 
   var tileWidth = width / tileCountX;
@@ -78,7 +78,9 @@ function draw() {
         for (var i = 0; i < count; i++) {
           rect(0, 0, tileWidth, tileHeight);
           scale(1 - 3 / count);
-          rotate(para * 0.1);
+          // rotate(para * 0.1);
+          rotate(para * 1.8);
+
         }
         break;
       case 2:
@@ -90,7 +92,7 @@ function draw() {
         for (var i = 0; i < count; i++) {
           // IOHAVOC --> fix the gradient here
           // var gradient = lerpColor(color(0, 0), color(166, 5, 5), i / count);
-          var from = color(0,0);
+          var from = color(0,0, 0);
           var to = color(166, 5, 5);
           colorMode(RGB); // Try changing to HSB.
           // var gradient = lerpColor(from, to, 0.33);
@@ -101,11 +103,12 @@ function draw() {
           var gradient = lerpColor(from, to, i/count); 
 
           fill(gradient, i / count * 200);
-          // rotate(QUARTER_PI);
-          rotate(0.20);
+          //rotate(QUARTER_PI);
+          rotate(0.35);
           rect(0, 0, tileWidth, tileHeight);
           scale(1 - 3 / (count));
-          rotate(para * 1.5);
+          // don't rotate based on mouse height
+          // rotate(para);
           // rotate(para * 2.5);
 
         }
