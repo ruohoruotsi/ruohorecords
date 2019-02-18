@@ -41,7 +41,8 @@ var tileCountY = 1;
 var drawMode = 1;
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  createCanvas(1200,1200);
+  // createCanvas(windowWidth, windowHeight);
   rectMode(CENTER);
   frameRate(10);
 }
@@ -49,13 +50,13 @@ function setup() {
 
 function draw() {
   clear();
-  background(0);
-  stroke(255);
-  strokeWeight(2);
+  background(255);
+  stroke(0);
+  strokeWeight(8);
 
   noFill();
 
-  ellipse(canvasSize/2, canvasSize/2, canvasSize, canvasSize);
+  // ellipse(canvasSize/2, canvasSize/2, canvasSize, canvasSize);
 
   count = mouseX / 128 + 10;
   var para = mouseY / height;
@@ -74,7 +75,7 @@ function draw() {
       // switch between modules
       switch (drawMode) {
       case 1:
-        stroke(255);
+        stroke(0);
         for (var i = 0; i < count; i++) {
           rect(0, 0, tileWidth, tileHeight);
           scale(1 - 3 / count);
@@ -85,15 +86,10 @@ function draw() {
         break;
       case 2:
         noStroke();
-        // debug
-        // print(mouseX, mouseY);
-        // print(count)
 
         for (var i = 0; i < count; i++) {
-          // IOHAVOC --> fix the gradient here
-          // var gradient = lerpColor(color(0, 0), color(166, 5, 5), i / count);
-          var from = color(0,0, 0);
-          var to = color(166, 5, 5);
+          var from = color(255, 255, 255);
+          var to = color(200, 15, 15);
           colorMode(RGB); // Try changing to HSB.
           // var gradient = lerpColor(from, to, 0.33);
 
@@ -103,34 +99,14 @@ function draw() {
           var gradient = lerpColor(from, to, i/count); 
 
           fill(gradient, i / count * 200);
-          //rotate(QUARTER_PI);
-          rotate(0.35);
+          
+          rotate(0.39269908169); //rotate(QUARTER_PI);
           rect(0, 0, tileWidth, tileHeight);
-          scale(1 - 3 / (count));
+          scale(1 - (3 / (count)));
           // don't rotate based on mouse height
           // rotate(para);
           // rotate(para * 2.5);
 
-        }
-        break;
-      case 3:
-        noStroke();
-        for (var i = 0; i < count; i++) {
-          var gradient = lerpColor(color(0, 130, 164), color(255), i / count);
-          fill(gradient, 170);
-
-          push();
-          translate(4 * i, 0);
-          ellipse(0, 0, tileWidth / 4, tileHeight / 4);
-          pop();
-
-          push();
-          translate(-4 * i, 0);
-          ellipse(0, 0, tileWidth / 4, tileHeight / 4);
-          pop();
-
-          scale(1 - 1.5 / count);
-          rotate(para * 1.5);
         }
         break;
       }
@@ -148,4 +124,8 @@ function keyReleased() {
   if (keyCode == UP_ARROW) tileCountY += 1;
   if (keyCode == LEFT_ARROW) tileCountX = max(tileCountX - 1, 1);
   if (keyCode == RIGHT_ARROW) tileCountX += 1;
+}
+
+function mouseClicked(){
+  save('myCanvas.png');
 }
