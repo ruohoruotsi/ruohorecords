@@ -7,7 +7,7 @@ var canvasSize = 500 * multiplier;
 
 function setup() {
   createCanvas(canvasSize+offset, canvasSize+offset);
-  frameRate(2); // Attempt to refresh at starting FPS
+  frameRate(0.5); // Attempt to refresh at starting FPS
   stroke(255);
   noFill();    
 }
@@ -31,12 +31,29 @@ function draw() {
 
   // randomly select a bounding line for rect1
   rect1_lower_bound_y = random(50, 300)
-  rect1_offset_from_top = random(0,rect1_lower_bound_y)
+  rect1_offset_from_top = random(0, rect1_lower_bound_y)
   line(0, rect1_lower_bound_y, sq_dim, rect1_lower_bound_y);
   rect1_height = rect1_lower_bound_y - rect1_offset_from_top
+  fill(100);
   rect(0, rect1_offset_from_top, rect1_height, rect1_height);
+  noFill();
 
   // rect 2 (right rect1/rect3)
+  rect2_left_bound_x = random(200, sq_dim);
+  rect2_height = sq_dim - rect2_left_bound_x;
+  fill(100);
+  rect(rect2_left_bound_x, rect1_lower_bound_y, rect2_height, 50);
+  noFill();
+
+
   // rect 3 (bottom rect2)
+  rect3_top_bound_y = sq_dim - 150; // random(sq_dim - 200, sq_dim);
+  rect3_width = random(150,450);
+  fill(100);
+  // rect(sq_dim/2, sq_dim, sq_dim - rect3_width/2, sq_dim - rect3_top_bound_y);
+  rect(sq_dim/2 - 50, sq_dim - 50, sq_dim/2 - 50, 50);
+
+  noFill();
+
 
 }
