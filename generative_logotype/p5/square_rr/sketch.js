@@ -48,11 +48,11 @@ function draw() {
 
   // rect 3 (bottom rect2)
   rect3_top_bound_y = sq_dim - 150; // random(sq_dim - 200, sq_dim);
-  rect3_width = random(150,450);
+  rect3_height = random(20,100);
+  rect3_width = 60; // random(40,60);
   fill(100);
-  // rect(sq_dim/2, sq_dim, sq_dim - rect3_width/2, sq_dim - rect3_top_bound_y);
-  rect(sq_dim/2 - 50, sq_dim - 50, sq_dim/2 - 50, 50);
-
+  // rect((sq_dim - rect3_width)/2, sq_dim - rect3_height, (sq_dim + rect3_width)/2, rect3_height);
+  rect(200, 350, 250, 100)
   noFill();
 
 
