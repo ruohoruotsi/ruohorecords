@@ -52,7 +52,9 @@ function draw() {
   rect3_width = 60; // random(40,60);
   fill(100);
   // rect((sq_dim - rect3_width)/2, sq_dim - rect3_height, (sq_dim + rect3_width)/2, rect3_height);
-  rect(200, 350, 250, 100)
+  rect(200, 350, 250, 5);  // rect(x,y, w, h) ==> rect(30, 20, 55, 55);
+
+
   noFill();
 
 
