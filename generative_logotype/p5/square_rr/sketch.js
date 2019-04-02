@@ -27,6 +27,7 @@ function draw() {
   print("mouseX: " + mouseX, mouseY)
     
   // rect(cir_dim/18, cir_dim/18, sq_dim - 2*cir_dim/18, sq_dim - 2*cir_dim/18); // inner rect - complique
+  // fill(100);
   rect(0, 0, sq_dim, sq_dim); // better rect
 
 
@@ -35,8 +36,7 @@ function draw() {
   rect3_top_bound_y = sq_dim - 150; // random(sq_dim - 200, sq_dim);
   rect3_height = random(20,100);
   rect3_width = random(60,200);
-  // fill(100);   // grey fill
-  // rect(x,y, w, h) ==> rect(30, 20, 55, 55);
+  // fill(200);
   rect((sq_dim - rect3_width)/2, sq_dim - rect3_height, rect3_width, rect3_height);
 
 
@@ -44,30 +44,39 @@ function draw() {
   // rect 1 (left top/rect2)
   // randomly select a bounding line for rect1
   rect1_lower_bound_y = random(80, 300)
-  rect1_offset_from_top = random(0, rect1_lower_bound_y - 40)
-  // line(0, rect1_lower_bound_y, sq_dim, rect1_lower_bound_y);
+  rect1_offset_from_top = random(0, rect1_lower_bound_y - 40);
+  // line(0, rect1_lower_bound_y, sq_dim, rect1_lower_bound_y); // horizontal line
   line((sq_dim - rect3_width)/2, sq_dim, (sq_dim - rect3_width)/2, rect1_lower_bound_y);
-
+  
+  rect1_width = random((sq_dim - rect3_width)/2, sq_dim/2 + rect3_width);
   rect1_height = rect1_lower_bound_y - rect1_offset_from_top
-  // fill(100);  // grey fill
-  rect(0, rect1_offset_from_top, rect3_width, rect1_height);
+  // fill(170);
+  rect(0, rect1_offset_from_top, rect1_width, rect1_height);
 
   noFill();
   console.log(rect1_lower_bound_y, rect1_offset_from_top, rect1_height);
 
+
   //////////////////////////////////////////////////////////////////////////////////
   // rect 2 (right rect1/rect3) # 200 needs to be anchored to whatever rect1 is doing
-  var gap = 50
-  rect2_left_bound_x = random(200, sq_dim - gap);
+  var gap = 30
+  rect2_left_bound_x = random((sq_dim - rect3_width)/2 + gap, sq_dim - gap);
+  rect2_left_bound_y = random(rect1_lower_bound_y + gap, sq_dim - rect3_height - gap);
+  rect2_height = random(gap, sq_dim - rect3_height - rect2_left_bound_y - gap);
   // fills out the rest of the x dimension (sq_dim), anchoring rect2 to right side
   rect2_width = sq_dim - rect2_left_bound_x;  
-  // fill(100);   // grey fill
-  rect(rect2_left_bound_x, rect1_lower_bound_y, rect2_width, random(20,100));
+  
+  // fill(220);
+  rect(rect2_left_bound_x, rect2_left_bound_y, rect2_width, rect2_height);
   noFill();
 
+  // console.log(rect2_height);
+
+  stroke(200)
+  rect(rect2_left_bound_x + rect2_width, rect2_left_bound_y, 20, rect2_height);
 
 
-  noFill();
+
 }
 
 
