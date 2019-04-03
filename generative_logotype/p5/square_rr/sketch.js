@@ -50,29 +50,35 @@ function draw() {
   
   rect1_width = random((sq_dim - rect3_width)/2, sq_dim/2 + rect3_width);
   rect1_height = rect1_lower_bound_y - rect1_offset_from_top
-  // fill(170);
-  rect(random(0,100), rect1_offset_from_top, rect1_width, rect1_height);
-
+  rect1_x_start = random(0,100);
+  if (rect1_width + rect1_x_start > sq_dim){
+      rect1_width = sq_dim - rect1_x_start;
+  }
+  rect(rect1_x_start, rect1_offset_from_top, rect1_width, rect1_height);
   noFill();
-  console.log(rect1_lower_bound_y, rect1_offset_from_top, rect1_height);
 
 
   //////////////////////////////////////////////////////////////////////////////////
   // rect 2 (right rect1/rect3) # 200 needs to be anchored to whatever rect1 is doing
   var gap = 40
-  rect2_left_bound_x = random((sq_dim - rect3_width)/2 + gap, sq_dim - gap);
-  rect2_left_bound_y = random(rect1_lower_bound_y + gap, sq_dim - rect3_height - gap);
-  rect2_height = random(gap, sq_dim - rect3_height - rect2_left_bound_y);
+  rect2_x_start = random((sq_dim - rect3_width)/2 + gap, sq_dim - gap);
+  rect2_y_start = random(rect1_lower_bound_y + gap/2, sq_dim - rect3_height - gap/2);
   
   // fills out the rest of the x dimension (sq_dim), anchoring rect2 to right side
-  rect2_width = sq_dim - rect2_left_bound_x;  
-  
-  // fill(220);
-  rect(rect2_left_bound_x, rect2_left_bound_y, rect2_width, rect2_height);
+  rect2_width = sq_dim - rect2_x_start;  
+  rect2_height = random(gap, sq_dim - rect3_height - rect2_y_start - gap);
+
+  if (rect2_y_start + rect2_height + 15 > sq_dim - rect3_height){
+    console.log("headup")
+    console.log(rect2_y_start + rect2_height, sq_dim - rect3_height);
+    rect2_height = random(gap/2, sq_dim - rect3_height - rect2_y_start - gap);
+
+  }
+
+  rect(rect2_x_start, rect2_y_start, rect2_width, rect2_height);
   noFill();
 
-  console.log(rect3_height, rect2_height, sq_dim - rect3_height - rect2_left_bound_y - gap);
-
+  console.log(rect2_y_start + rect2_height , sq_dim - rect3_height)
   stroke(200)
 
 
