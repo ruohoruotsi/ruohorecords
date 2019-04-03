@@ -79,10 +79,6 @@ function draw() {
   noFill();
 
   console.log(rect2_y_start + rect2_height , sq_dim - rect3_height)
-  stroke(200)
-
-
-
 }
 
 
@@ -95,5 +91,6 @@ function mouseReleased() {
 }
 
 function keyPressed() {
-  if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
+  if (key == 's' || key == 'S') 
+    saveCanvas(Math.round(new Date().getTime() / 1000).toString(), 'png');
 }
