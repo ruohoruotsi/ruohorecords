@@ -51,7 +51,7 @@ function draw() {
   rect1_width = random((sq_dim - rect3_width)/2, sq_dim/2 + rect3_width);
   rect1_height = rect1_lower_bound_y - rect1_offset_from_top
   // fill(170);
-  rect(0, rect1_offset_from_top, rect1_width, rect1_height);
+  rect(random(0,100), rect1_offset_from_top, rect1_width, rect1_height);
 
   noFill();
   console.log(rect1_lower_bound_y, rect1_offset_from_top, rect1_height);
@@ -59,10 +59,11 @@ function draw() {
 
   //////////////////////////////////////////////////////////////////////////////////
   // rect 2 (right rect1/rect3) # 200 needs to be anchored to whatever rect1 is doing
-  var gap = 30
+  var gap = 40
   rect2_left_bound_x = random((sq_dim - rect3_width)/2 + gap, sq_dim - gap);
   rect2_left_bound_y = random(rect1_lower_bound_y + gap, sq_dim - rect3_height - gap);
-  rect2_height = random(gap, sq_dim - rect3_height - rect2_left_bound_y - gap);
+  rect2_height = random(gap, sq_dim - rect3_height - rect2_left_bound_y);
+  
   // fills out the rest of the x dimension (sq_dim), anchoring rect2 to right side
   rect2_width = sq_dim - rect2_left_bound_x;  
   
@@ -70,10 +71,9 @@ function draw() {
   rect(rect2_left_bound_x, rect2_left_bound_y, rect2_width, rect2_height);
   noFill();
 
-  // console.log(rect2_height);
+  console.log(rect3_height, rect2_height, sq_dim - rect3_height - rect2_left_bound_y - gap);
 
   stroke(200)
-  rect(rect2_left_bound_x + rect2_width, rect2_left_bound_y, 20, rect2_height);
 
 
 
@@ -86,4 +86,8 @@ function mousePressed() {
 
 function mouseReleased() {
   noLoop();
+}
+
+function keyPressed() {
+  if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
 }
