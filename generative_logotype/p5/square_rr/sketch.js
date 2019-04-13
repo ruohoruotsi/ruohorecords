@@ -1,14 +1,39 @@
 
+/**
+ * sketch.js
+ *
+ * p5.js: http://p5js.org/reference
+ *
+ * @author : ruoho ruotsi
+ */
+
+
+// -----------------------------------------------------------------
+// setup
+// -----------------------------------------------------------------
 var multiplier = 1;
 var cir_dim = 600 * multiplier;
 var sq_dim = 450 * multiplier;
 var offset = 100 * multiplier;
 var canvasSize = 500 * multiplier;
 
+var celln = 24;
+var cells = [];
+
 function setup() {
   createCanvas(canvasSize+offset, canvasSize+offset);
   frameRate(0.5); // Attempt to refresh at starting FPS
   stroke(255);
+
+  // setup cell grid
+  for (var i = 0; i < celln; i++) {
+      cells[i] = [];
+      for (var j = 0; j < celln; j++) {
+          cells[i][j] = new Cell(i*(sq_dim/celln), j*(sq_dim/celln), sq_dim/celln, 0);
+          cells[i][j].rand();
+      }
+  }
+
   noFill();
   noLoop() 
 }
@@ -18,16 +43,27 @@ function draw() {
 
   background(255);
   stroke(0);
-  strokeWeight(16);
-    
+  strokeWeight(1);
+
+
+
   // rect(0, 0, cir_dim, cir_dim); // outer, circumscribing rect
   // ellipse((canvasSize+offset)/2, (canvasSize+offset)/2, canvasSize+offset, canvasSize+offset);
 
   translate(offset*(sq_dim/cir_dim), offset*(sq_dim/cir_dim));
+
+
+  for (var i = 0; i < celln; i++)
+    for (var j = 0; j < celln; j++){
+      cells[i][j].rand();
+      cells[i][j].display();
+    }
+
+
   print("mouseX: " + mouseX, mouseY)
     
   // rect(cir_dim/18, cir_dim/18, sq_dim - 2*cir_dim/18, sq_dim - 2*cir_dim/18); // inner rect - complique
-  // fill(100);
+  strokeWeight(26);
   rect(0, 0, sq_dim, sq_dim); // better rect
 
 
@@ -36,7 +72,7 @@ function draw() {
   rect3_top_bound_y = sq_dim - 150; // random(sq_dim - 200, sq_dim);
   rect3_height = random(20,100);
   rect3_width = random(60,200);
-  // fill(200);
+  fill(255);
   rect((sq_dim - rect3_width)/2, sq_dim - rect3_height, rect3_width, rect3_height);
 
 
@@ -55,7 +91,7 @@ function draw() {
       rect1_width = sq_dim - rect1_x_start;
   }
   rect(rect1_x_start, rect1_offset_from_top, rect1_width, rect1_height);
-  noFill();
+  // noFill();
 
 
   //////////////////////////////////////////////////////////////////////////////////
@@ -93,4 +129,57 @@ function mouseReleased() {
 function keyPressed() {
   if (key == 's' || key == 'S') 
     saveCanvas(Math.round(new Date().getTime() / 1000).toString(), 'png');
+}
+
+
+// -----------------------------------------------------------------
+// Cell class for background patterning
+// -----------------------------------------------------------------
+
+class Cell {
+
+  // float x, y, s, pos = 0, speed = 1.5;
+  // int m = 2, type; // 0-empty
+  // boolean moving = false;
+
+  constructor(inx, iny, ins, intp) {
+    this.x = inx; 
+    this.y = iny;
+    this.s = ins;
+    this.type = intp;
+    this.moving = false;
+    this.m = 2;
+    this.pos = 0;
+    this.speed = 1.5;
+  }
+
+  rand() {
+    this.type = ceil(random(2));
+  }
+
+  display() {
+    if (this.moving) this.pos += this.speed;
+
+    if (this.pos > this.s) {
+      this.pos = 0;
+      this.moving = false;
+    }
+
+    switch(this.type) {
+    case 0: 
+      break;
+
+    case 1: 
+      line(this.x, this.y, this.x+this.s, this.y+this.s);
+      line(this.x+this.s/2, this.y, this.x+this.s, this.y+this.s/2);
+      line(this.x, this.y+this.s/2, this.x+this.s/2, this.y+this.s);
+      //break;
+
+    case 2: 
+      line(this.x+this.s, this.y, this.x, this.y+this.s);
+      line(this.x+this.s/2, this.y, this.x, this.y+this.s/2);
+      line(this.x+this.s/2, this.y+this.s, this.x+this.s, this.y+this.s/2);
+      break;
+    }
+  }
 }
