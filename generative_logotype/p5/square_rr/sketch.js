@@ -41,18 +41,21 @@ function setup() {
 
 function draw() {
 
+  // clear background on each frame
   background(255);
-  stroke(0);
-  strokeWeight(1);
 
+  // bg color
+  stroke(99,40,37);
+  strokeWeight(3);
 
-
+  // guide rects, circles
   // rect(0, 0, cir_dim, cir_dim); // outer, circumscribing rect
   // ellipse((canvasSize+offset)/2, (canvasSize+offset)/2, canvasSize+offset, canvasSize+offset);
 
+  // offset to middle of canvas
   translate(offset*(sq_dim/cir_dim), offset*(sq_dim/cir_dim));
 
-
+  // draw bg cell grid
   for (var i = 0; i < celln; i++)
     for (var j = 0; j < celln; j++){
       cells[i][j].rand();
@@ -61,9 +64,9 @@ function draw() {
 
 
   print("mouseX: " + mouseX, mouseY)
-    
-  // rect(cir_dim/18, cir_dim/18, sq_dim - 2*cir_dim/18, sq_dim - 2*cir_dim/18); // inner rect - complique
-  strokeWeight(26);
+  
+  stroke(0);
+  strokeWeight(18);
   rect(0, 0, sq_dim, sq_dim); // better rect
 
 
