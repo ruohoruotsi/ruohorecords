@@ -15,9 +15,10 @@ var multiplier = 1;
 var cir_dim = 600 * multiplier;
 var sq_dim = 450 * multiplier;
 var offset = 100 * multiplier;
-var canvasSize = 500 * multiplier;
+// var canvasSize = 500 * multiplier;
+var canvasSize = 600 * multiplier;  // for twitter
 
-var celln = 24;
+var celln = 12;
 var cells = [];
 
 function setup() {
@@ -44,16 +45,17 @@ function draw() {
   // clear background on each frame
   background(255);
 
-  // bg color
+  // bg cell grid color
   stroke(99,40,37);
-  strokeWeight(3);
+  strokeWeight(7);
 
   // guide rects, circles
   // rect(0, 0, cir_dim, cir_dim); // outer, circumscribing rect
   // ellipse((canvasSize+offset)/2, (canvasSize+offset)/2, canvasSize+offset, canvasSize+offset);
 
   // offset to middle of canvas
-  translate(offset*(sq_dim/cir_dim), offset*(sq_dim/cir_dim));
+  // translate(offset*(sq_dim/cir_dim), offset*(sq_dim/cir_dim));
+  translate(125, 125);  // twitter
 
   // draw bg cell grid
   for (var i = 0; i < celln; i++)
@@ -65,6 +67,7 @@ function draw() {
 
   print("mouseX: " + mouseX, mouseY)
   
+  // main shape stroke color & weight
   stroke(0);
   strokeWeight(18);
   rect(0, 0, sq_dim, sq_dim); // better rect
@@ -74,7 +77,7 @@ function draw() {
   // rect 3 (bottom rect2)
   rect3_top_bound_y = sq_dim - 150; // random(sq_dim - 200, sq_dim);
   rect3_height = random(20,100);
-  rect3_width = random(60,200);
+  rect3_width = random(60,300);
   fill(255);
   rect((sq_dim - rect3_width)/2, sq_dim - rect3_height, rect3_width, rect3_height);
 
