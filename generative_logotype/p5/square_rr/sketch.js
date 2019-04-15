@@ -18,7 +18,7 @@ var offset = 100 * multiplier;
 // var canvasSize = 500 * multiplier;
 var canvasSize = 600 * multiplier;  // for twitter
 
-var celln = 12;
+var celln = 6;
 var cells = [];
 
 function setup() {
@@ -69,7 +69,7 @@ function draw() {
   
   // main shape stroke color & weight
   stroke(0);
-  strokeWeight(18);
+  strokeWeight(24);
   rect(0, 0, sq_dim, sq_dim); // better rect
 
 
