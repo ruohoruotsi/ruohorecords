@@ -1,4 +1,4 @@
-// P_2_1_3_04
+// P_2_2_2_02
 //
 // Generative Gestaltung – Creative Coding im Web
 // ISBN: 978-3-87439-902-9, First Edition, Hermann Schmidt, Mainz, 2018
@@ -18,114 +18,209 @@
 // limitations under the License.
 
 /**
- * changing positions of stapled circles in a grid
+ * draw the path of an intelligent agent
  *
  * MOUSE
- * position x          : module detail
- * position y          : module parameter
+ * position x          : composition speed of the picture
  *
  * KEYS
  * 1-3                 : draw mode
- * arrow left/right    : number of tiles horizontally
- * arrow up/down       : number of tiles vertically
+ * DEL/BACKSPACE       : clear display
  * s                   : save png
  */
 'use strict';
 
-var canvasSize = 800;
+var NORTH = 0;
+var EAST = 1;
+var SOUTH = 2;
+var WEST = 3;
+var direction = SOUTH;
 
-var count = 0;
-var tileCountX = 1;
-var tileCountY = 1;
+var stepSize = 3;
+var minLength = 10;
+var diameter = 1;
+var angleCount = 7;
+var angle;
+var reachedBorder = false;
+
+var posX;
+var posY;
+var posXcross;
+var posYcross;
+
+var dWeight = 50;
+var dStroke = 4;
 
 var drawMode = 1;
 
+// Background cells
+var celln = 24;
+var cells = [];
+
+
 function setup() {
-  createCanvas(1200,1200);
-  // createCanvas(windowWidth, windowHeight);
-  rectMode(CENTER);
-  frameRate(10);
+  createCanvas(600, 600);
+  colorMode(HSB, 360, 100, 100, 100);
+  background(360);
+  frameRate(5); // Attempt to refresh at starting FPS
+
+  angle = getRandomAngle(direction);
+  posX = floor(random(width));
+  posY = 5;
+  posXcross = posX;
+  posYcross = posY;
+
+  // setup cells
+  // for (var i = 0; i < celln; i++){
+  //   for (var j = 0; j < celln; j++) {
+  //     cells[i][j] = new Cell(i*(width/celln), j*(width/celln), width/celln, 0);
+  //       cells[i][j].rand();
+  //     }
+  // }
+
+  for (var i = 0; i < celln; i++) {
+      cells[i] = [];
+      for (var j = 0; j < celln; j++) {
+          cells[i][j] = new Cell(i*(width/celln), j*(width/celln), width/celln, 0);
+          cells[i][j].rand();
+      }
+  }
+
 }
+
+var minY = 150;
+var minX = 150; 
 
 
 function draw() {
-  clear();
+
   background(255);
-  stroke(0);
-  strokeWeight(8);
+  translate(100, 100);
 
-  noFill();
+  for (var i = 0; i < celln; i++)
+    for (var j = 0; j < celln; j++){
+      cells[i][j].rand();
+      cells[i][j].display();
+    }
 
-  // ellipse(canvasSize/2, canvasSize/2, canvasSize, canvasSize);
 
-  count = mouseX / 128 + 10;
-  var para = mouseY / height;
+/*
+  var speed = int(map(mouseX, 0, width, 0, 20));
+  for (var i = 0; i <= speed; i++) {
 
-  var tileWidth = width / tileCountX;
-  var tileHeight = height / tileCountY;
+    // ------ draw dot at current position ------
+    strokeWeight(1);
+    stroke(180, 0, 0);
+    // point(posX, posY);
 
-  for (var gridX = 0; gridX <= tileCountX; gridX++) {
+    // ------ make step ------
+    posX += cos(radians(angle)) * stepSize;
+    posY += sin(radians(angle)) * stepSize;
 
-      var posX = tileWidth / 2;
-      var posY = tileHeight / 2;
+    // ------ check if agent is near one of the display borders ------
+    reachedBorder = false;
 
-      push();
-      translate(posX, posY);
+    if (posY <= minY) {
+      direction = SOUTH;
+      reachedBorder = true;
+    } else if (posX >= width - minX) {
+      direction = WEST;
+      reachedBorder = true;
+    } else if (posY >= height - minY) {
+      direction = NORTH;
+      reachedBorder = true;
+    } else if (posX <= minX) {
+      direction = EAST;
+      reachedBorder = true;
+    }
 
-      // switch between modules
-      switch (drawMode) {
-      case 1:
-        stroke(0);
-        for (var i = 0; i < count; i++) {
-          rect(0, 0, tileWidth, tileHeight);
-          scale(1 - 3 / count);
-          // rotate(para * 0.1);
-          rotate(para * 1.8);
+    // ------ if agent is crossing his path or border was reached ------
+    loadPixels();
+    var currentPixel = get(floor(posX), floor(posY));
+    if (
+      reachedBorder ||
+      (currentPixel[0] != 255 && currentPixel[1] != 255 && currentPixel[2] != 255)
+    ) {
+      angle = getRandomAngle(direction);
 
-        }
-        break;
-      case 2:
-        noStroke();
-
-        for (var i = 0; i < count; i++) {
-          var from = color(255, 255, 255);
-          var to = color(200, 15, 15);
-          colorMode(RGB); // Try changing to HSB.
-          // var gradient = lerpColor(from, to, 0.33);
-
-           // IOHAVOC - gradient needs to change for Lin Interp Color to give us more visible 
-           // useful colors  ... so start from not black but close to it or rather is there 
-           // an expoential color interpolation?
-          var gradient = lerpColor(from, to, i/count); 
-
-          fill(gradient, i / count * 200);
-          
-          rotate(0.39269908169); //rotate(QUARTER_PI);
-          rect(0, 0, tileWidth, tileHeight);
-          scale(1 - (3 / (count)));
-          // don't rotate based on mouse height
-          // rotate(para);
-          // rotate(para * 2.5);
-
-        }
-        break;
+      var distance = dist(posX, posY, posXcross, posYcross);
+      if (distance >= minLength) {
+        strokeWeight(distance / dWeight);
+        if (drawMode == 1) stroke(0);
+        if (drawMode == 2) stroke(52, 100, distance / dStroke);
+        if (drawMode == 3) stroke(192, 100, 64, distance / dStroke);
+        line(posX, posY, posXcross, posYcross);
       }
 
-      pop();
+      posXcross = posX;
+      posYcross = posY;
+    }
   }
+  */
 }
 
 function keyReleased() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
+  if (keyCode == DELETE || keyCode == BACKSPACE) background(360);
   if (key == '1') drawMode = 1;
   if (key == '2') drawMode = 2;
   if (key == '3') drawMode = 3;
-  if (keyCode == DOWN_ARROW) tileCountY = max(tileCountY - 1, 1);
-  if (keyCode == UP_ARROW) tileCountY += 1;
-  if (keyCode == LEFT_ARROW) tileCountX = max(tileCountX - 1, 1);
-  if (keyCode == RIGHT_ARROW) tileCountX += 1;
 }
 
-function mouseClicked(){
-  save('myCanvas.png');
+function getRandomAngle(currentDirection) {
+  var a = (floor(random(-angleCount, angleCount)) + 0.5) * 90 / angleCount;
+  if (currentDirection == NORTH) return a - 90;
+  if (currentDirection == EAST) return a;
+  if (currentDirection == SOUTH) return a + 90;
+  if (currentDirection == WEST) return a + 180;
+  return 0;
+}
+
+
+class Cell {
+
+  // float x, y, s, pos = 0, speed = 1.5;
+  // int m = 2, type; // 0-empty
+  // boolean moving = false;
+
+  constructor(inx, iny, ins, intp) {
+    this.x = inx; 
+    this.y = iny;
+    this.s = ins;
+    this.type = intp;
+    this.moving = false;
+    this.m = 2;
+    this.pos = 0;
+    this.speed = 1.5;
+  }
+
+  rand() {
+    this.type = ceil(random(2));
+  }
+
+  display() {
+    if (this.moving) this.pos += this.speed;
+
+    if (this.pos > this.s) {
+      this.pos = 0;
+      this.moving = false;
+    }
+
+    switch(this.type) {
+    case 0: 
+      break;
+
+    case 1: 
+      line(this.x, this.y, this.x+this.s, this.y+this.s);
+      line(this.x+this.s/2, this.y, this.x+this.s, this.y+this.s/2);
+      line(this.x, this.y+this.s/2, this.x+this.s/2, this.y+this.s);
+      //break;
+
+    case 2: 
+      line(this.x+this.s, this.y, this.x, this.y+this.s);
+      line(this.x+this.s/2, this.y, this.x, this.y+this.s/2);
+      line(this.x+this.s/2, this.y+this.s, this.x+this.s, this.y+this.s/2);
+      break;
+    }
+  }
 }
