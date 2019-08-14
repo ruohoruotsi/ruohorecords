@@ -22,7 +22,7 @@ var canvasSize_l = 540 * multiplier;  // 1080p at retina // 1920×1080
 var celln1 = 6;
 var cells1 = [];
 
-var celln2 = 3;
+var celln2 = 6;
 var cells2 = [];
 
 
@@ -59,15 +59,12 @@ function draw() {
   // clear background on each frame
   background(155, 83, 78);
 
-  // bg cell grid color
-  stroke(99,40,37);
-  strokeWeight(7);
-
   // offset to middle of canvas
   // translate(offset*(sq_dim/cir_dim), offset*(sq_dim/cir_dim));
 
+  // bg cell grid color
+  stroke(99,40,37);
 
-  
   // drawone here
   drawOne(cells1, celln1, 25, 125)
   drawOne(cells2, celln2, 500, 0)
@@ -80,6 +77,9 @@ function drawOne(cells, celln, translateX, translateY){
 
   translate(translateX, translateY);
 
+  // for letter background
+  strokeWeight(7);
+
   // draw bg cell grid
   for (var i = 0; i < celln; i++)
     for (var j = 0; j < celln; j++){
@@ -90,7 +90,7 @@ function drawOne(cells, celln, translateX, translateY){
   print("mouseX: " + mouseX, mouseY)
   
   // main shape stroke color & weight
-  stroke(0);
+  // stroke(0);
   strokeWeight(24);
 
   // dimensions of circumscribing-square
