@@ -57,7 +57,7 @@ function setup() {
 function draw() {
 
   // clear background on each frame
-  background(155, 83, 78);
+  background(255, 255, 255);
 
   // offset to middle of canvas
   // translate(offset*(sq_dim/cir_dim), offset*(sq_dim/cir_dim));
@@ -77,8 +77,9 @@ function drawOne(cells, celln, translateX, translateY){
 
   translate(translateX, translateY);
 
-  // for letter background
+  // for letter background set stroke style
   strokeWeight(7);
+  stroke(99,40,37);
 
   // draw bg cell grid
   for (var i = 0; i < celln; i++)
@@ -90,7 +91,7 @@ function drawOne(cells, celln, translateX, translateY){
   print("mouseX: " + mouseX, mouseY)
   
   // main shape stroke color & weight
-  // stroke(0);
+  stroke(0);
   strokeWeight(24);
 
   // dimensions of circumscribing-square
