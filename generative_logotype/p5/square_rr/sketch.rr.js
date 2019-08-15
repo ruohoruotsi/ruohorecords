@@ -12,10 +12,7 @@
 // setup
 // -----------------------------------------------------------------
 var multiplier = 1;
-var cir_dim = 600 * multiplier;
-var sq_dim = 450 * multiplier;
-var offset = 100 * multiplier;
-// var canvasSize = 500 * multiplier;
+var sq_dim = 350;
 var canvasSize_w = 960 * multiplier;  // 1080p at retina // 1920×1080 
 var canvasSize_l = 540 * multiplier;  // 1080p at retina // 1920×1080 
 
@@ -27,7 +24,7 @@ var cells2 = [];
 
 
 function setup() {
-  createCanvas(canvasSize_w+offset, canvasSize_l+offset);
+  createCanvas(canvasSize_w, canvasSize_l);
   frameRate(0.5); // Attempt to refresh at starting FPS
 
   // setup cell grid1
@@ -58,15 +55,12 @@ function draw() {
   // clear background on each frame
   background(220, 220, 240);
 
-  // offset to middle of canvas
-  // translate(offset*(sq_dim/cir_dim), offset*(sq_dim/cir_dim));
-
   // bg cell grid color
   stroke(99, 40, 37);
 
-  // drawone here
-  drawOne(cells1, celln1, 25, 125)
-  drawOne(cells2, celln2, 500, 125)
+  // draw one here
+  drawOne(cells1, celln1, 25, 125);   // coordinates are offsets for R
+  drawOne(cells2, celln2, 500, 125);    
 
   console.log(rect2_y_start + rect2_height , sq_dim - rect3_height)
 }
@@ -75,6 +69,7 @@ function draw() {
 function drawOne(cells, celln, translateX, translateY){
 
   push(); // Start a new drawing state
+
   translate(translateX, translateY);
 
   // for letter background set stroke style
@@ -96,7 +91,6 @@ function drawOne(cells, celln, translateX, translateY){
 
   // dimensions of circumscribing-square
   rect(0, 0, sq_dim, sq_dim); // better rect
-
 
   //////////////////////////////////////////////////////////////////////////////////
   // rect 3 (bottom rect2)
