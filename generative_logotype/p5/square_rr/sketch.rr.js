@@ -29,7 +29,6 @@ var cells2 = [];
 function setup() {
   createCanvas(canvasSize_w+offset, canvasSize_l+offset);
   frameRate(0.5); // Attempt to refresh at starting FPS
-  stroke(255);
 
   // setup cell grid1
   for (var i = 0; i < celln1; i++) {
@@ -57,17 +56,17 @@ function setup() {
 function draw() {
 
   // clear background on each frame
-  background(255, 255, 255);
+  background(220, 220, 240);
 
   // offset to middle of canvas
   // translate(offset*(sq_dim/cir_dim), offset*(sq_dim/cir_dim));
 
   // bg cell grid color
-  stroke(99,40,37);
+  stroke(99, 40, 37);
 
   // drawone here
   drawOne(cells1, celln1, 25, 125)
-  drawOne(cells2, celln2, 500, 0)
+  drawOne(cells2, celln2, 500, 125)
 
   console.log(rect2_y_start + rect2_height , sq_dim - rect3_height)
 }
@@ -75,6 +74,7 @@ function draw() {
 
 function drawOne(cells, celln, translateX, translateY){
 
+  push(); // Start a new drawing state
   translate(translateX, translateY);
 
   // for letter background set stroke style
@@ -143,6 +143,8 @@ function drawOne(cells, celln, translateX, translateY){
 
   rect(rect2_x_start, rect2_y_start, rect2_width, rect2_height);
   noFill();
+
+  pop(); // Restore original state
 }
 
 
