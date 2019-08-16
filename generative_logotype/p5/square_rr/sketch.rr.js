@@ -65,6 +65,11 @@ function draw() {
   console.log(rect2_y_start + rect2_height , sq_dim - rect3_height)
 }
 
+function ligneAvec(strokeWeight_thickness, lineStrokeColor_r, lineStrokeColor_g, lineStrokeColor_b ) {
+
+  strokeWeight(strokeWeight_thickness);
+  stroke(lineStrokeColor_r, lineStrokeColor_g, lineStrokeColor_b);
+}
 
 function drawOne(cells, celln, translateX, translateY){
 
@@ -73,8 +78,7 @@ function drawOne(cells, celln, translateX, translateY){
   translate(translateX, translateY);
 
   // for letter background set stroke style
-  strokeWeight(7);
-  stroke(99,40,37);
+  ligneAvec(7, 99, 40, 37);
 
   // draw bg cell grid
   for (var i = 0; i < celln; i++)
@@ -86,18 +90,17 @@ function drawOne(cells, celln, translateX, translateY){
   print("mouseX: " + mouseX, mouseY)
   
   // main shape stroke color & weight
-  stroke(0);
-  strokeWeight(24);
+  ligneAvec(24, 0, 0, 0);
 
   // dimensions of circumscribing-square
   rect(0, 0, sq_dim, sq_dim); // better rect
+  fill(255); // white
 
   //////////////////////////////////////////////////////////////////////////////////
   // rect 3 (bottom rect2)
   rect3_top_bound_y = sq_dim - 150; // random(sq_dim - 200, sq_dim);
   rect3_height = random(20,100);
   rect3_width = random(60,300);
-  fill(255);
   rect((sq_dim - rect3_width)/2, sq_dim - rect3_height, rect3_width, rect3_height);
 
 
@@ -106,7 +109,11 @@ function drawOne(cells, celln, translateX, translateY){
   // randomly select a bounding line for rect1
   rect1_lower_bound_y = random(80, 300)
   rect1_offset_from_top = random(0, rect1_lower_bound_y - 40);
-  // line(0, rect1_lower_bound_y, sq_dim, rect1_lower_bound_y); // horizontal line
+
+  ligneAvec(14, 155, 0, 0);
+  line(0, rect1_lower_bound_y, sq_dim, rect1_lower_bound_y); // horizontal line
+  ligneAvec(24, 0, 0, 0);
+
   line((sq_dim - rect3_width)/2, sq_dim, (sq_dim - rect3_width)/2, rect1_lower_bound_y);
   
   rect1_width = random((sq_dim - rect3_width)/2, sq_dim/2 + rect3_width);
