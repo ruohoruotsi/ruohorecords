@@ -62,7 +62,7 @@ function draw() {
   drawOne(cells1, celln1, 25, 125);   // coordinates are offsets for R
   // drawOne(cells2, celln2, 500, 125);    
 
-  console.log(rect2_y_start + rect2_height , sq_dim - rect3_height)
+  // console.log(rect2_y_start + rect2_height , sq_dim - rect3_height)
 }
 
 function ligneAvec(strokeWeight_thickness, lineStrokeColor_r, lineStrokeColor_g, lineStrokeColor_b ) {
@@ -115,7 +115,7 @@ function drawOne(cells, celln, translateX, translateY){
   // console.log("sq_dim - rect3_height: " + tmp);
 
   ligneAvec(10, 155, 0, 0);
-  line(0, rect1_lower_bound_y, sq_dim, rect1_lower_bound_y); // horizontal line
+  line(0, rect1_lower_bound_y, sq_dim, rect1_lower_bound_y); // RED horizontal line
   ligneAvec(24, 0, 0, 0);
 
   // Vertical line connecting R lines
@@ -123,15 +123,24 @@ function drawOne(cells, celln, translateX, translateY){
   
   //////////////////////////////////////////////////////////////////////////////////
   // rect 1 (left top/rect2)
-  rect1_offset_from_top = random(0, rect1_lower_bound_y - 40);
-  rect1_width = random((sq_dim - rect3_width)/2, sq_dim/2 + rect3_width);
-  rect1_height = rect1_lower_bound_y - rect1_offset_from_top
-  rect1_x_start = random(0,100);
-  if (rect1_width + rect1_x_start > sq_dim){
-      rect1_width = sq_dim - rect1_x_start;
-  }
+  rect1_yoffset_from_top = 0;
+  do {
+    rect1_yoffset_from_top = random(margin, rect1_lower_bound_y);
+  } while (rect1_lower_bound_y - rect1_yoffset_from_top < margin);
+
+  // console.log("rect1_yoffset_from_top: " + rect1_yoffset_from_top);
+  // console.log("rect1_lower_bound_y: " + rect1_lower_bound_y);
+
+  rect1_width = random((sq_dim - rect3_width)/2, sq_dim - (2*margin));
+  console.log("rect1_width: " + rect1_width);
+
+  rect1_height = rect1_lower_bound_y - rect1_yoffset_from_top
+  rect1_x_start = random(margin, (sq_dim - rect3_width)/2);
+  // if (rect1_width + rect1_x_start > sq_dim){
+  //     rect1_width = sq_dim - rect1_x_start;
+  // }
   fill(120, 120, 120);
-  // rect(rect1_x_start, rect1_offset_from_top, rect1_width, rect1_height);
+  rect(rect1_x_start, rect1_yoffset_from_top, rect1_width, rect1_height);
 
 
   //////////////////////////////////////////////////////////////////////////////////
@@ -145,8 +154,8 @@ function drawOne(cells, celln, translateX, translateY){
   rect2_height = random(gap, sq_dim - rect3_height - rect2_y_start - gap);
 
   if (rect2_y_start + rect2_height + 15 > sq_dim - rect3_height){
-    console.log("headup")
-    console.log(rect2_y_start + rect2_height, sq_dim - rect3_height);
+    // console.log("headup")
+    // console.log(rect2_y_start + rect2_height, sq_dim - rect3_height);
     rect2_height = random(gap/2, sq_dim - rect3_height - rect2_y_start - gap);
 
   }
