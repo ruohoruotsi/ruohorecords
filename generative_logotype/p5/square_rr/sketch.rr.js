@@ -98,17 +98,20 @@ function drawOne(cells, celln, translateX, translateY){
   margin = 30
 
   //////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////
   // rect 3 (bottom rect)
-  rect3_height = random(35, 200);
+  rect3_height = random(35, 100);
   rect3_width = random(45, sq_dim - (2*margin));  // max is sq_dim - some margin
   fill(40, 40, 40);
   rect((sq_dim - rect3_width)/2, sq_dim - rect3_height, rect3_width, rect3_height);
   // console.log("rect3_width: " + rect3_width);
   // console.log("rect3_height: " + rect3_height);
 
+  rect1_low_range = 80
   // Randomly select a bounding RED line for rect1
   // Use rect3's top + a margin as the range to select in
-  rect1_lower_bound_y = random(80, sq_dim - rect3_height - margin);
+  // rect1_lower_bound_y = random(80, sq_dim - rect3_height - margin);
+  rect1_lower_bound_y = random(rect1_low_range, sq_dim - rect3_height - 2*margin);
 
   // tmp = sq_dim - rect3_height; 
   // console.log("rect1_lower_bound_y: " + rect1_lower_bound_y);
@@ -116,11 +119,20 @@ function drawOne(cells, celln, translateX, translateY){
 
   ligneAvec(10, 155, 0, 0);
   line(0, rect1_lower_bound_y, sq_dim, rect1_lower_bound_y); // RED horizontal line
+  
+  ligneAvec(10, 155, 60, 60);
+  line(0, rect1_low_range, sq_dim, rect1_low_range);    // Pink horizontal line
+  ligneAvec(10, 55, 60, 60);
+  line(0, sq_dim - rect3_height - 2*margin, 
+  sq_dim, sq_dim - rect3_height - 2*margin); // Grey horizontal line
+
   ligneAvec(24, 0, 0, 0);
 
   // Vertical line connecting R lines
   line((sq_dim - rect3_width)/2, sq_dim, (sq_dim - rect3_width)/2, rect1_lower_bound_y);
   
+
+  //////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////
   // rect 1 (left top/rect2)
   rect1_yoffset_from_top = 0;
@@ -128,21 +140,28 @@ function drawOne(cells, celln, translateX, translateY){
     rect1_yoffset_from_top = random(margin, rect1_lower_bound_y);
   } while (rect1_lower_bound_y - rect1_yoffset_from_top < margin);
 
-  // console.log("rect1_yoffset_from_top: " + rect1_yoffset_from_top);
-  // console.log("rect1_lower_bound_y: " + rect1_lower_bound_y);
+  console.log("rect1_yoffset_from_top: " + rect1_yoffset_from_top);
+  console.log("rect1_lower_bound_y: " + rect1_lower_bound_y);
 
   rect1_width = random((sq_dim - rect3_width)/2, sq_dim - (2*margin));
   console.log("rect1_width: " + rect1_width);
 
   rect1_height = rect1_lower_bound_y - rect1_yoffset_from_top
-  rect1_x_start = random(margin, (sq_dim - rect3_width)/2);
-  // if (rect1_width + rect1_x_start > sq_dim){
-  //     rect1_width = sq_dim - rect1_x_start;
-  // }
+  rect1_x_start = 0;
+  do {
+    rect1_x_start = random(margin, (sq_dim - rect3_width)/2);
+    sum = rect1_width + rect1_x_start;
+
+    // console.log("==> adjusted rect1_x_start: " + rect1_x_start);
+    // console.log("==> rect1_width + rect1_x_start: " + rect1_width + " " + rect1_x_start);
+    // console.log("===> rect1_width + rect1_x_start: " + sum )
+  } while (sum + margin > sq_dim);
+
   fill(120, 120, 120);
   rect(rect1_x_start, rect1_yoffset_from_top, rect1_width, rect1_height);
 
 
+  //////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////
   // rect 2 (right rect1/rect3) # 200 needs to be anchored to whatever rect1 is doing
   var gap = 40
