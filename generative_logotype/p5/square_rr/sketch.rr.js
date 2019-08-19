@@ -107,11 +107,12 @@ function drawOne(cells, celln, translateX, translateY){
   // console.log("rect3_width: " + rect3_width);
   // console.log("rect3_height: " + rect3_height);
 
-  rect1_low_range = 80
+  rect1_low_range = 80;
+  rect1_high_range = sq_dim - rect3_height - margin;
   // Randomly select a bounding RED line for rect1
   // Use rect3's top + a margin as the range to select in
   // rect1_lower_bound_y = random(80, sq_dim - rect3_height - margin);
-  rect1_lower_bound_y = random(rect1_low_range, sq_dim - rect3_height - 2*margin);
+  rect1_lower_bound_y = random(rect1_low_range, rect1_high_range);
 
   // tmp = sq_dim - rect3_height; 
   // console.log("rect1_lower_bound_y: " + rect1_lower_bound_y);
@@ -123,14 +124,13 @@ function drawOne(cells, celln, translateX, translateY){
   ligneAvec(10, 155, 60, 60);
   line(0, rect1_low_range, sq_dim, rect1_low_range);    // Pink horizontal line
   ligneAvec(10, 55, 60, 60);
-  line(0, sq_dim - rect3_height - 2*margin, 
-  sq_dim, sq_dim - rect3_height - 2*margin); // Grey horizontal line
+  line(0, rect1_high_range, sq_dim, rect1_high_range);  // Grey horizontal line
 
-  ligneAvec(24, 0, 0, 0);
-
+  ligneAvec(18, 0, 0, 0);
   // Vertical line connecting R lines
   line((sq_dim - rect3_width)/2, sq_dim, (sq_dim - rect3_width)/2, rect1_lower_bound_y);
-  
+  ligneAvec(24, 0, 0, 0);
+
 
   //////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////
@@ -156,6 +156,8 @@ function drawOne(cells, celln, translateX, translateY){
     // console.log("==> rect1_width + rect1_x_start: " + rect1_width + " " + rect1_x_start);
     // console.log("===> rect1_width + rect1_x_start: " + sum )
   } while (sum + margin > sq_dim);
+
+  console.log("rect1_height: " + rect1_height);
 
   fill(120, 120, 120);
   rect(rect1_x_start, rect1_yoffset_from_top, rect1_width, rect1_height);
