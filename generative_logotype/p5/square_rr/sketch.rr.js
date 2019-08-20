@@ -60,7 +60,7 @@ function draw() {
 
   // draw one here
   drawOne(cells1, celln1, 25, 125);   // coordinates are offsets for R
-  // drawOne(cells2, celln2, 500, 125);    
+  drawOne(cells2, celln2, 500, 125);    
 
   // console.log(rect2_y_start + rect2_height , sq_dim - rect3_height)
 }
@@ -168,7 +168,9 @@ function drawOne(cells, celln, translateX, translateY){
   //////////////////////////////////////////////////////////////////////////////////
   // rect 2 (right rect1/rect3) # 200 needs to be anchored to whatever rect1 is doing
   rect2_x_start = random((sq_dim - rect3_width)/2 + margin, sq_dim - margin);
-  rect2_y_start = random(rect1_lower_bound_y, sq_dim - rect3_height);
+  // rect2_y_start = random(rect1_lower_bound_y, sq_dim - rect3_height);
+  rect2_y_start = rect1_lower_bound_y + margin;
+
   console.log("===> ===> rect2_x_start: " + rect2_x_start )
   console.log("===> ===> rect2_y_start: " + rect2_y_start )
 
@@ -179,25 +181,26 @@ function drawOne(cells, celln, translateX, translateY){
   line(0, rect2_y_start, sq_dim, rect2_y_start);  // Blue horizontal line
 
 
-
   // fills out the rest of the x dimension (sq_dim), anchoring rect2 to right side
   rect2_width = sq_dim - rect2_x_start;  
-  rect2_height = random(rect1_lower_bound_y + margin, sq_dim - rect3_height - rect1_lower_bound_y - margin);
+  // rect2_height = random(sq_dim - rect1_lower_bound_y, sq_dim - rect1_high_range);
+  rect2_height = rect1_high_range - rect1_lower_bound_y - margin;
+
 
   console.log("###> ###> rect2_width: " + rect2_width )
   console.log("###> ###> rect2_height: " + rect2_height )
 
-  // if (rect2_y_start + rect2_height + 15 > sq_dim - rect3_height){
-  //   // console.log("headup")
-  //   // console.log(rect2_y_start + rect2_height, sq_dim - rect3_height);
-  //   rect2_height = random(margin/2, sq_dim - rect3_height - rect2_y_start - margin);
-
-  // }
+  if (rect2_height < margin){
+    console.log("headups broken")
+    console.log(rect2_y_start + rect2_height + margin)
+    console.log(rect1_high_range)
+  } else {
 
   fill(200, 200, 200);
   rect(rect2_x_start, rect2_y_start, rect2_width, rect2_height);
   noFill();
-
+  }
+  
   pop(); // Restore original state
 }
 
