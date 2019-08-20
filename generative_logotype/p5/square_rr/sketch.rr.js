@@ -126,9 +126,10 @@ function drawOne(cells, celln, translateX, translateY){
   ligneAvec(10, 55, 60, 60);
   line(0, rect1_high_range, sq_dim, rect1_high_range);  // Grey horizontal line
 
-  ligneAvec(18, 0, 0, 0);
   // Vertical line connecting R lines
+  ligneAvec(18, 0, 0, 0);
   line((sq_dim - rect3_width)/2, sq_dim, (sq_dim - rect3_width)/2, rect1_lower_bound_y);
+
   ligneAvec(24, 0, 0, 0);
 
 
@@ -166,23 +167,35 @@ function drawOne(cells, celln, translateX, translateY){
   //////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////
   // rect 2 (right rect1/rect3) # 200 needs to be anchored to whatever rect1 is doing
-  var gap = 40
-  rect2_x_start = random((sq_dim - rect3_width)/2 + gap, sq_dim - gap);
-  rect2_y_start = random(rect1_lower_bound_y + gap/2, sq_dim - rect3_height - gap/2);
-  
+  rect2_x_start = random((sq_dim - rect3_width)/2 + margin, sq_dim - margin);
+  rect2_y_start = random(rect1_lower_bound_y, sq_dim - rect3_height);
+  console.log("===> ===> rect2_x_start: " + rect2_x_start )
+  console.log("===> ===> rect2_y_start: " + rect2_y_start )
+
+  ligneAvec(10, 55, 60, 120);
+  line(rect2_x_start, sq_dim, rect2_x_start, 0);  // Blue vertical line
+
+  ligneAvec(10, 15, 6, 180);
+  line(0, rect2_y_start, sq_dim, rect2_y_start);  // Blue horizontal line
+
+
+
   // fills out the rest of the x dimension (sq_dim), anchoring rect2 to right side
   rect2_width = sq_dim - rect2_x_start;  
-  rect2_height = random(gap, sq_dim - rect3_height - rect2_y_start - gap);
+  rect2_height = random(rect1_lower_bound_y + margin, sq_dim - rect3_height - rect1_lower_bound_y - margin);
 
-  if (rect2_y_start + rect2_height + 15 > sq_dim - rect3_height){
-    // console.log("headup")
-    // console.log(rect2_y_start + rect2_height, sq_dim - rect3_height);
-    rect2_height = random(gap/2, sq_dim - rect3_height - rect2_y_start - gap);
+  console.log("###> ###> rect2_width: " + rect2_width )
+  console.log("###> ###> rect2_height: " + rect2_height )
 
-  }
+  // if (rect2_y_start + rect2_height + 15 > sq_dim - rect3_height){
+  //   // console.log("headup")
+  //   // console.log(rect2_y_start + rect2_height, sq_dim - rect3_height);
+  //   rect2_height = random(margin/2, sq_dim - rect3_height - rect2_y_start - margin);
+
+  // }
 
   fill(200, 200, 200);
-  //rect(rect2_x_start, rect2_y_start, rect2_width, rect2_height);
+  rect(rect2_x_start, rect2_y_start, rect2_width, rect2_height);
   noFill();
 
   pop(); // Restore original state
