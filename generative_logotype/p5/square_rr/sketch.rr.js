@@ -22,6 +22,7 @@ var cells1 = [];
 var celln2 = 6;
 var cells2 = [];
 
+var DEBUG = false;  // control debug logging and diagnostic lines
 
 function setup() {
   createCanvas(canvasSize_w, canvasSize_l);
@@ -114,21 +115,23 @@ function drawOne(cells, celln, translateX, translateY){
   // rect1_lower_bound_y = random(80, sq_dim - rect3_height - margin);
   rect1_lower_bound_y = random(rect1_low_range, rect1_high_range);
 
-  // tmp = sq_dim - rect3_height; 
-  // console.log("rect1_lower_bound_y: " + rect1_lower_bound_y);
-  // console.log("sq_dim - rect3_height: " + tmp);
+  if (DEBUG) {
+    tmp = sq_dim - rect3_height; 
+    console.log("rect1_lower_bound_y: " + rect1_lower_bound_y);
+    console.log("sq_dim - rect3_height: " + tmp);
 
-  ligneAvec(10, 155, 0, 0);
-  line(0, rect1_lower_bound_y, sq_dim, rect1_lower_bound_y); // RED horizontal line
-  
-  ligneAvec(10, 155, 60, 60);
-  line(0, rect1_low_range, sq_dim, rect1_low_range);    // Pink horizontal line
-  ligneAvec(10, 55, 60, 60);
-  line(0, rect1_high_range, sq_dim, rect1_high_range);  // Grey horizontal line
+    ligneAvec(10, 155, 0, 0);
+    line(0, rect1_lower_bound_y, sq_dim, rect1_lower_bound_y); // RED horizontal line
+    
+    ligneAvec(10, 155, 60, 60);
+    line(0, rect1_low_range, sq_dim, rect1_low_range);    // Pink horizontal line
+    ligneAvec(10, 55, 60, 60);
+    line(0, rect1_high_range, sq_dim, rect1_high_range);  // Grey horizontal line
 
-  // Vertical line connecting R lines
-  ligneAvec(18, 0, 0, 0);
-  line((sq_dim - rect3_width)/2, sq_dim, (sq_dim - rect3_width)/2, rect1_lower_bound_y);
+    // Vertical line connecting R lines
+    ligneAvec(18, 0, 0, 0);
+    line((sq_dim - rect3_width)/2, sq_dim, (sq_dim - rect3_width)/2, rect1_lower_bound_y);
+  }
 
   ligneAvec(24, 0, 0, 0);
 
@@ -171,15 +174,17 @@ function drawOne(cells, celln, translateX, translateY){
   // rect2_y_start = random(rect1_lower_bound_y, sq_dim - rect3_height);
   rect2_y_start = rect1_lower_bound_y + margin;
 
-  console.log("===> ===> rect2_x_start: " + rect2_x_start )
-  console.log("===> ===> rect2_y_start: " + rect2_y_start )
+  if (DEBUG) {
+    console.log("[INFO] rect2_x_start: " + rect2_x_start );
+    console.log("[INFO] rect2_y_start: " + rect2_y_start );
 
-  ligneAvec(10, 55, 60, 120);
-  line(rect2_x_start, sq_dim, rect2_x_start, 0);  // Blue vertical line
+    ligneAvec(10, 55, 60, 120);
+    line(rect2_x_start, sq_dim, rect2_x_start, 0);  // Blue vertical line
 
-  ligneAvec(10, 15, 6, 180);
-  line(0, rect2_y_start, sq_dim, rect2_y_start);  // Blue horizontal line
-
+    ligneAvec(10, 15, 6, 180);
+    line(0, rect2_y_start, sq_dim, rect2_y_start);  // Blue horizontal line
+    ligneAvec(24, 0, 0, 0);
+  }
 
   // fills out the rest of the x dimension (sq_dim), anchoring rect2 to right side
   rect2_width = sq_dim - rect2_x_start;  
@@ -187,20 +192,24 @@ function drawOne(cells, celln, translateX, translateY){
   rect2_height = rect1_high_range - rect1_lower_bound_y - margin;
 
 
-  console.log("###> ###> rect2_width: " + rect2_width )
-  console.log("###> ###> rect2_height: " + rect2_height )
+  if (DEBUG) {
+    console.log("[INFO] rect2_width: " + rect2_width);
+    console.log("[INFO] rect2_height: " + rect2_height);
+  }
+
 
   if (rect2_height < margin){
-    console.log("headups broken")
-    console.log(rect2_y_start + rect2_height + margin)
-    console.log(rect1_high_range)
+    console.log("headups broken");
+    console.log(rect2_y_start + rect2_height + margin);
+    console.log(rect1_high_range);
+
   } else {
 
   fill(200, 200, 200);
   rect(rect2_x_start, rect2_y_start, rect2_width, rect2_height);
   noFill();
   }
-  
+
   pop(); // Restore original state
 }
 
