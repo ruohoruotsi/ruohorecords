@@ -11,10 +11,10 @@
 // -----------------------------------------------------------------
 // setup
 // -----------------------------------------------------------------
-var multiplier = 1;
+var multiplier = 2;
 var sq_dim = 350;
 var canvasSize_w = 960 * multiplier;  // 1080p at retina // 1920×1080 
-var canvasSize_l = 540 * multiplier;  // 1080p at retina // 1920×1080 
+var canvasSize_h = 540 * multiplier;  // 1080p at retina // 1920×1080 
 
 var celln1 = 6;
 var cells1 = [];
@@ -25,7 +25,7 @@ var cells2 = [];
 var DEBUG = false;  // control debug logging and diagnostic lines
 
 function setup() {
-  createCanvas(canvasSize_w, canvasSize_l);
+  createCanvas(canvasSize_w, canvasSize_h);
   frameRate(0.5); // Attempt to refresh at starting FPS
 
   // setup cell grid1
@@ -60,8 +60,12 @@ function draw() {
   stroke(99, 40, 37);
 
   // draw one here
-  drawOne(cells1, celln1, 25, 125);   // coordinates are offsets for R
-  drawOne(cells2, celln2, 500, 125);    
+  center_spacing = 30;
+  pos1_w = (canvasSize_w / 2) - sq_dim - center_spacing;
+  pos2_w = (canvasSize_w / 2)          + center_spacing;
+  pos_h = (canvasSize_h - sq_dim) / 2;
+  drawOne(cells1, celln1, pos1_w, pos_h);   // coordinates are offsets for R
+  drawOne(cells2, celln2, pos2_w, pos_h);    
 
   // console.log(rect2_y_start + rect2_height , sq_dim - rect3_height)
 }
