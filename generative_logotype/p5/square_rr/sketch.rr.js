@@ -103,10 +103,13 @@ function drawOne(cells, celln, translateX, translateY){
   // rect 3 (bottom rect)
   rect3_height = random(35, 100);
   rect3_width = random(45, sq_dim - (2*margin));  // max is sq_dim - some margin
-  fill(40, 40, 40);
+
+  ligneAvec(18, 0, 0, 0);
   rect((sq_dim - rect3_width)/2, sq_dim - rect3_height, rect3_width, rect3_height);
-  // console.log("rect3_width: " + rect3_width);
-  // console.log("rect3_height: " + rect3_height);
+  if (DEBUG) {
+    console.log("rect3_width: " + rect3_width);
+    console.log("rect3_height: " + rect3_height);
+  }
 
   rect1_low_range = 80;
   rect1_high_range = sq_dim - rect3_height - margin;
@@ -127,13 +130,11 @@ function drawOne(cells, celln, translateX, translateY){
     line(0, rect1_low_range, sq_dim, rect1_low_range);    // Pink horizontal line
     ligneAvec(10, 55, 60, 60);
     line(0, rect1_high_range, sq_dim, rect1_high_range);  // Grey horizontal line
-
-    // Vertical line connecting R lines
-    ligneAvec(18, 0, 0, 0);
-    line((sq_dim - rect3_width)/2, sq_dim, (sq_dim - rect3_width)/2, rect1_lower_bound_y);
   }
-
-  ligneAvec(24, 0, 0, 0);
+  
+  // Vertical line connecting R lines
+  ligneAvec(18, 0, 0, 0);
+  line((sq_dim - rect3_width)/2, sq_dim, (sq_dim - rect3_width)/2, rect1_lower_bound_y);
 
 
   //////////////////////////////////////////////////////////////////////////////////
@@ -144,11 +145,13 @@ function drawOne(cells, celln, translateX, translateY){
     rect1_yoffset_from_top = random(margin, rect1_lower_bound_y);
   } while (rect1_lower_bound_y - rect1_yoffset_from_top < margin);
 
-  console.log("rect1_yoffset_from_top: " + rect1_yoffset_from_top);
-  console.log("rect1_lower_bound_y: " + rect1_lower_bound_y);
-
   rect1_width = random((sq_dim - rect3_width)/2, sq_dim - (2*margin));
-  console.log("rect1_width: " + rect1_width);
+
+  if (DEBUG) {
+    console.log("[INFO] rect1_yoffset_from_top: " + rect1_yoffset_from_top);
+    console.log("[INFO] rect1_lower_bound_y: " + rect1_lower_bound_y);
+    console.log("[INFO] rect1_width: " + rect1_width);
+  }
 
   rect1_height = rect1_lower_bound_y - rect1_yoffset_from_top
   rect1_x_start = 0;
@@ -163,7 +166,7 @@ function drawOne(cells, celln, translateX, translateY){
 
   console.log("rect1_height: " + rect1_height);
 
-  fill(120, 120, 120);
+  ligneAvec(18, 0, 0, 0);
   rect(rect1_x_start, rect1_yoffset_from_top, rect1_width, rect1_height);
 
 
@@ -183,7 +186,6 @@ function drawOne(cells, celln, translateX, translateY){
 
     ligneAvec(10, 15, 6, 180);
     line(0, rect2_y_start, sq_dim, rect2_y_start);  // Blue horizontal line
-    ligneAvec(24, 0, 0, 0);
   }
 
   // fills out the rest of the x dimension (sq_dim), anchoring rect2 to right side
@@ -199,13 +201,13 @@ function drawOne(cells, celln, translateX, translateY){
 
 
   if (rect2_height < margin){
-    console.log("headups broken");
+    console.log("[SIZE ERROR] heads up broken");
     console.log(rect2_y_start + rect2_height + margin);
     console.log(rect1_high_range);
 
   } else {
 
-  fill(200, 200, 200);
+  ligneAvec(18, 0, 0, 0);
   rect(rect2_x_start, rect2_y_start, rect2_width, rect2_height);
   noFill();
   }
