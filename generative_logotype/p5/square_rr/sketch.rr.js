@@ -47,14 +47,16 @@ function setup() {
   }
 
   noFill();
-  noLoop() 
+  if (DEBUG) {
+    noLoop();
+  }
 }
 
 
 function draw() {
 
   // clear background on each frame
-  background(220, 220, 240);
+  background(255, 255, 255);
 
   // bg cell grid color
   stroke(99, 40, 37);
