@@ -26,7 +26,7 @@ var DEBUG = false;  // control debug logging and diagnostic lines
 
 function setup() {
   createCanvas(canvasSize_w, canvasSize_h);
-  frameRate(0.5); // Attempt to refresh at starting FPS
+  frameRate(1); // Attempt to refresh at starting FPS // 0.5
 
   // setup cell grid1
   for (var i = 0; i < celln1; i++) {
@@ -223,11 +223,15 @@ function drawOne(cells, celln, translateX, translateY){
 
 
 function mousePressed() {
-  loop();
+  if (DEBUG) {
+    loop();
+  }
 }
 
 function mouseReleased() {
-  noLoop();
+  if (DEBUG) {
+    noLoop();
+  }
 }
 
 function keyPressed() {
