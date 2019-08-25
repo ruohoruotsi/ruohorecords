@@ -23,6 +23,7 @@ var celln2 = 6;
 var cells2 = [];
 
 var DEBUG = false;  // control debug logging and diagnostic lines
+var margin = 40;
 
 function setup() {
   createCanvas(canvasSize_w, canvasSize_h);
@@ -96,13 +97,11 @@ function drawOne(cells, celln, translateX, translateY){
   print("mouseX: " + mouseX, mouseY)
   
   // main shape stroke color & weight
-  ligneAvec(24, 0, 0, 0);
+  ligneAvec(18, 0, 0, 0);
 
   // Draw circumscribing-square
   rect(0, 0, sq_dim, sq_dim); // sq_dim x sq_dim
   fill(255);                  // white
-
-  margin = 30
 
   //////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////
@@ -110,7 +109,7 @@ function drawOne(cells, celln, translateX, translateY){
   rect3_height = random(35, 100);
   rect3_width = random(45, sq_dim - (2*margin));  // max is sq_dim - some margin
 
-  ligneAvec(18, 0, 0, 0);
+  ligneAvec(14, 0, 0, 0);
   rect((sq_dim - rect3_width)/2, sq_dim - rect3_height, rect3_width, rect3_height);
   if (DEBUG) {
     console.log("rect3_width: " + rect3_width);
@@ -139,7 +138,7 @@ function drawOne(cells, celln, translateX, translateY){
   }
   
   // Vertical line connecting R lines
-  ligneAvec(18, 0, 0, 0);
+  ligneAvec(14, 0, 0, 0);
   line((sq_dim - rect3_width)/2, sq_dim, (sq_dim - rect3_width)/2, rect1_lower_bound_y);
 
 
@@ -172,7 +171,7 @@ function drawOne(cells, celln, translateX, translateY){
 
   console.log("rect1_height: " + rect1_height);
 
-  ligneAvec(18, 0, 0, 0);
+  ligneAvec(14, 0, 0, 0);
   rect(rect1_x_start, rect1_yoffset_from_top, rect1_width, rect1_height);
 
 
@@ -199,7 +198,6 @@ function drawOne(cells, celln, translateX, translateY){
   // rect2_height = random(sq_dim - rect1_lower_bound_y, sq_dim - rect1_high_range);
   rect2_height = rect1_high_range - rect1_lower_bound_y - margin;
 
-
   if (DEBUG) {
     console.log("[INFO] rect2_width: " + rect2_width);
     console.log("[INFO] rect2_height: " + rect2_height);
@@ -213,7 +211,7 @@ function drawOne(cells, celln, translateX, translateY){
 
   } else {
 
-  ligneAvec(18, 0, 0, 0);
+  ligneAvec(14, 0, 0, 0);
   rect(rect2_x_start, rect2_y_start, rect2_width, rect2_height);
   noFill();
   }
