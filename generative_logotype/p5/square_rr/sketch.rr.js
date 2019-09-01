@@ -57,7 +57,8 @@ function setup() {
 function draw() {
 
   // clear background on each frame
-  background(255, 255, 255);
+  background(255, 255, 255);      // <=== white background
+  clear();                        // <=== transparent background
 
   // bg cell grid color
   stroke(99, 40, 37);
