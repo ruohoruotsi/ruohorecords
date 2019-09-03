@@ -22,7 +22,7 @@ var cells1 = [];
 var celln2 = 6;
 var cells2 = [];
 
-var DEBUG = false;  // control debug logging and diagnostic lines
+var DEBUG = true;  // control debug logging and diagnostic lines
 var margin = 40;
 
 function setup() {
@@ -85,6 +85,16 @@ function drawOne(cells, celln, translateX, translateY){
 
   translate(translateX, translateY);
 
+  // draw the main shape first so the background for the grid isn't drawing transparent
+  // main shape stroke color & weight
+  ligneAvec(18, 0, 0, 0);
+
+  // Draw circumscribing-square
+  fill(255);                  // white
+  rect(0, 0, sq_dim, sq_dim); // sq_dim x sq_dim
+  noFill();
+
+
   // for letter background set stroke style
   ligneAvec(7, 99, 40, 37);
 
@@ -95,14 +105,15 @@ function drawOne(cells, celln, translateX, translateY){
       cells[i][j].display();
     }
 
-  print("mouseX: " + mouseX, mouseY)
-  
-  // main shape stroke color & weight
+  // // redraw rect shape, so the background lines don't show. Ugh
   ligneAvec(18, 0, 0, 0);
 
   // Draw circumscribing-square
   rect(0, 0, sq_dim, sq_dim); // sq_dim x sq_dim
   fill(255);                  // white
+
+  print("mouseX: " + mouseX, mouseY)
+  
 
   //////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////
