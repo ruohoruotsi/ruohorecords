@@ -42,5 +42,5 @@ srcFiles/
 *.JPG
 *.tiff
 *.TIFF
-*.png
+# *.png
 *.PNG
