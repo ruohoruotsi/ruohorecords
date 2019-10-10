@@ -22,7 +22,7 @@ var cells1 = [];
 var celln2 = 6;
 var cells2 = [];
 
-var DEBUG = true;  // control debug logging and diagnostic lines
+var DEBUG = false;  // control debug logging and diagnostic lines
 var margin = 40;
 
 function setup() {
