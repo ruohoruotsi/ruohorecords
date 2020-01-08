@@ -16,10 +16,10 @@ var sq_dim = 350;
 var canvasSize_w = 960 * multiplier;  // 1080p at retina // 1920×1080 
 var canvasSize_h = 540 * multiplier;  // 1080p at retina // 1920×1080 
 
-var celln1 = 6;
+var celln1 = 14;
 var cells1 = [];
 
-var celln2 = 6;
+var celln2 = 13;
 var cells2 = [];
 
 var DEBUG = false;  // control debug logging and diagnostic lines
@@ -96,7 +96,8 @@ function drawOne(cells, celln, translateX, translateY){
 
 
   // for letter background set stroke style
-  ligneAvec(7, 99, 40, 37);
+  // ligneAvec(7, 99, 40, 37);
+  ligneAvec(7, 0, 0, 0);
 
   // draw bg cell grid
   for (var i = 0; i < celln; i++)
