@@ -13,8 +13,8 @@
 // -----------------------------------------------------------------
 var multiplier = 1;
 var sq_dim = 450;
-var canvasSize_w = 600 * multiplier;  // 1080p at retina // 1920×1080 
-var canvasSize_h = 600 * multiplier;  // 1080p at retina // 1920×1080 
+var canvasSize_w = 800 * multiplier;  // 1080p at retina // 1920×1080 
+var canvasSize_h = 800 * multiplier;  // 1080p at retina // 1920×1080 
 
 var celln1 = 16;
 var cells1 = [];
