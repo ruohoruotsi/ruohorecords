@@ -1,0 +1,9 @@
+
+-- Ideas:
+
+- TILE a grid of RRs - drawing with complex modules P.2.3.6, 2.1.3
+
+- how to humanize the drawing with animated pen/brushes? 2.3.1, 2.3.
+   - attractors, randomness/noise
+   - shapes from agents P.2.2.3 [NO]
+
