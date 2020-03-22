@@ -16,7 +16,7 @@ var sq_dim = 800;
 var canvasSize_w = 800 * multiplier;  // 1080p at retina // 1920×1080 
 var canvasSize_h = 800 * multiplier;  // 1080p at retina // 1920×1080 
 
-var celln1 = 20;
+var celln1 = 30;
 var cells1 = [];
 
 // var celln2 = 13;
@@ -25,10 +25,16 @@ var cells1 = [];
 var DEBUG = false;  // control debug logging and diagnostic lines
 var margin = 40;
 
+let pg;
+  // var pg = createGraphics(canvasSize_w, canvasSize_h);
+  // //do stuff inside pg
+  // var img = createImage(pg.width, pg.height);
+  // // img.copy(pg, 0, 0, pg.width, pg.height, 0, 0, pg.width, pg.height);
 
 function preload() {
   // font = loadFont('assets/Jangotype.ttf');
   font = loadFont('assets/bombfact.ttf');
+  pg = createGraphics(canvasSize_w, canvasSize_h);
 
 }
 
@@ -46,8 +52,9 @@ function setup() {
   }
 
   textFont(font);
-  textSize(80);
-  textAlign(CENTER, CENTER);
+  textSize(140);
+  textLeading(90);
+  textAlign(CENTER, BOTTOM);
 
   noFill();
   if (DEBUG) {
@@ -73,9 +80,9 @@ function draw() {
   stroke(0);
   fill(255);
   strokeWeight(20);
-  // text('A-G \nVOL. 1', canvasSize_w/2, canvasSize_h/2);
-  // text('AMUSE \nGUEULES \nVOL. 1', canvasSize_w/2, canvasSize_h/2);
-  text('Amuse \nGueules \nVol. 1', canvasSize_w/2, canvasSize_h/2);
+  text('A - G \nVol. 1', canvasSize_w/2, canvasSize_h/2);
+  //text('AMUSE \nGUEULES \nVOL. 1', canvasSize_w/2, canvasSize_h/2);
+  // text('Amuse \nGueules \nVol One', canvasSize_w/2, canvasSize_h/2);
 
   // stroke(255);
   // fill(0);
@@ -107,7 +114,7 @@ function drawOne(cells, celln, translateX, translateY){
 
   // for letter background set stroke style
   // ligneAvec(7, 99, 40, 37);
-  ligneAvec(7, 0, 0, 0);
+  ligneAvec(7, 59, 59, 59);  // grey
 
   // draw bg cell grid
   for (var i = 0; i < celln; i++)
@@ -174,6 +181,20 @@ class Cell {
   }
 
   display() {
+
+    let dice = random(0, 30)
+    if (Math.round(dice) == 1){
+      let r = random(150,255)
+      let g = random(0,50)
+      let b = random(0, 50)
+      ligneAvec(7, r, g, b);  // reddish
+    }
+    else {
+      let color = random(0,70)
+      ligneAvec(7, color, color, color);  // grey
+      // ligneAvec(7, random(0,50), random(0,50), random(0,50));  // grey
+    }
+
     if (this.moving) this.pos += this.speed;
 
     if (this.pos > this.s) {
