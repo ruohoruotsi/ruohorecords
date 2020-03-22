@@ -25,7 +25,11 @@ var cells1 = [];
 var DEBUG = false;  // control debug logging and diagnostic lines
 var margin = 40;
 
-let pg;
+let pg_bg;
+let pg_bg_img;
+
+let pg_text;
+let pg_text_img;
   // var pg = createGraphics(canvasSize_w, canvasSize_h);
   // //do stuff inside pg
   // var img = createImage(pg.width, pg.height);
@@ -34,13 +38,14 @@ let pg;
 function preload() {
   // font = loadFont('assets/Jangotype.ttf');
   font = loadFont('assets/bombfact.ttf');
-  pg = createGraphics(canvasSize_w, canvasSize_h);
+  pg_text = createGraphics(canvasSize_w, canvasSize_h);
+  pg_bg = createGraphics(canvasSize_w, canvasSize_h);
 
 }
 
 function setup() {
   createCanvas(canvasSize_w, canvasSize_h);
-  frameRate(1); // Attempt to refresh at starting FPS // 0.5
+  frameRate(0.1); // Attempt to refresh at starting FPS // 0.5
 
   // setup cell grid1
   for (var i = 0; i < celln1; i++) {
@@ -51,10 +56,13 @@ function setup() {
       }
   }
 
-  textFont(font);
-  textSize(140);
-  textLeading(90);
-  textAlign(CENTER, BOTTOM);
+  pg_text.textFont(font);
+  pg_text.textSize(300);
+  pg_text.textLeading(150);
+  // pg_text.textAlign(CENTER, CENTER);
+
+  pg_bg_img = createImage(canvasSize_w, canvasSize_h);
+  pg_text_img = createImage(canvasSize_w, canvasSize_h);
 
   noFill();
   if (DEBUG) {
@@ -66,21 +74,21 @@ function setup() {
 function draw() {
 
   // clear background on each frame
-  background(255, 255, 255);      // <=== white background
-  clear();                        // <=== transparent background
+  pg_bg.background(255, 255, 255);      // <=== white background
+  pg_bg.clear();                        // <=== transparent background
 
   // bg cell grid color
-  stroke(99, 40, 37);
+  pg_bg.stroke(99, 40, 37);
 
   // draw one here
   pos1_w = (canvasSize_w - sq_dim) / 2 ;
   pos_h = (canvasSize_h - sq_dim) / 2;
   drawOne(cells1, celln1, 0, 0);   // coordinates are offsets for R
 
-  stroke(0);
-  fill(255);
+  pg_bg.stroke(0);
+  pg_bg.fill(255);
   strokeWeight(20);
-  text('A - G \nVol. 1', canvasSize_w/2, canvasSize_h/2);
+  pg_text.text('A-G \nV.1', (canvasSize_w/8), 3*(canvasSize_h/8) );
   //text('AMUSE \nGUEULES \nVOL. 1', canvasSize_w/2, canvasSize_h/2);
   // text('Amuse \nGueules \nVol One', canvasSize_w/2, canvasSize_h/2);
 
@@ -89,27 +97,36 @@ function draw() {
   // strokeWeight(5);
   // text('A-G \nVOL. 1', canvasSize_w/2, canvasSize_h/2);
 
+  pg_text_img.copy(pg_text, 0, 0, pg_text.width, pg_text.height, 0, 0, pg_text.width, pg_text.height);
+  pg_bg_img.copy(pg_bg, 0, 0, pg_bg.width, pg_bg.height, 0, 0, pg_bg.width, pg_bg.height);
+
+
+  pg_bg_img.mask(pg_text_img);
+
+  // image(pg_text_img, 0, 0);
+  image(pg_bg_img, 0, 0);
+
 }
 
 function ligneAvec(strokeWeight_thickness, lineStrokeColor_r, lineStrokeColor_g, lineStrokeColor_b ) {
-  strokeWeight(strokeWeight_thickness);
-  stroke(lineStrokeColor_r, lineStrokeColor_g, lineStrokeColor_b);
+  pg_bg.strokeWeight(strokeWeight_thickness);
+  pg_bg.stroke(lineStrokeColor_r, lineStrokeColor_g, lineStrokeColor_b);
 }
 
 function drawOne(cells, celln, translateX, translateY){
 
-  push(); // Start a new drawing state
+  pg_bg.push(); // Start a new drawing state
 
-  translate(translateX, translateY);
+  pg_bg.translate(translateX, translateY);
 
   // draw the main shape first so the background for the grid isn't drawing transparent
   // main shape stroke color & weight
   ligneAvec(18, 0, 0, 0);
 
   // Draw circumscribing-square
-  fill(255);                  // white
-  rect(0, 0, sq_dim, sq_dim); // sq_dim x sq_dim
-  noFill();
+  pg_bg.fill(255);                  // white
+  pg_bg.rect(0, 0, sq_dim, sq_dim); // sq_dim x sq_dim
+  pg_bg.noFill();
 
 
   // for letter background set stroke style
@@ -127,13 +144,12 @@ function drawOne(cells, celln, translateX, translateY){
   ligneAvec(18, 0, 0, 0);
 
   // Draw circumscribing-square
-  rect(0, 0, sq_dim, sq_dim); // sq_dim x sq_dim
-  fill(255);                  // white
+  pg_bg.rect(0, 0, sq_dim, sq_dim); // sq_dim x sq_dim
+  pg_bg.fill(255);                  // white
 
   print("mouseX: " + mouseX, mouseY)
   
-
-  pop(); // Restore original state
+  pg_bg.pop(); // Restore original state
 }
 
 
@@ -207,15 +223,15 @@ class Cell {
       break;
 
     case 1: 
-      line(this.x, this.y, this.x+this.s, this.y+this.s);
-      line(this.x+this.s/2, this.y, this.x+this.s, this.y+this.s/2);
-      line(this.x, this.y+this.s/2, this.x+this.s/2, this.y+this.s);
+      pg_bg.line(this.x, this.y, this.x+this.s, this.y+this.s);
+      pg_bg.line(this.x+this.s/2, this.y, this.x+this.s, this.y+this.s/2);
+      pg_bg.line(this.x, this.y+this.s/2, this.x+this.s/2, this.y+this.s);
       //break;
 
     case 2: 
-      line(this.x+this.s, this.y, this.x, this.y+this.s);
-      line(this.x+this.s/2, this.y, this.x, this.y+this.s/2);
-      line(this.x+this.s/2, this.y+this.s, this.x+this.s, this.y+this.s/2);
+      pg_bg.line(this.x+this.s, this.y, this.x, this.y+this.s);
+      pg_bg.line(this.x+this.s/2, this.y, this.x, this.y+this.s/2);
+      pg_bg.line(this.x+this.s/2, this.y+this.s, this.x+this.s, this.y+this.s/2);
       break;
     }
   }
