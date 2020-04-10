@@ -7,3 +7,11 @@
    - attractors, randomness/noise
    - shapes from agents P.2.2.3 [NO]
 
+
+concrete idea 3/29:
+ - animated/dynamic brush, or texture from an agent, or text freehand MASKED avec  bombfact font. 
+
+ - charles mingus with bombfact font
+
+ - coloured  lissajous figures MASKED with bombfact font
+
