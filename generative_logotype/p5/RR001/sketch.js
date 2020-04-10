@@ -1,4 +1,3 @@
-
 /**
  * sketch.js
  *
@@ -9,24 +8,56 @@
 
 
 // -----------------------------------------------------------------
-// setup
+// setup RR
 // -----------------------------------------------------------------
+
 var multiplier = 1;
-var sq_dim = 60; // 20-60?
+var sq_dim = 30; // 20-60?
 var canvasSize_w = 800 * multiplier;  // 1080p at retina // 1920×1080 
 var canvasSize_h = 800 * multiplier;  // 1080p at retina // 1920×1080 
 
-var celln1 = 4;
+var celln1 = 6;
 var cells1 = [];
 
 var DEBUG = false;  // control debug logging and diagnostic lines
 var margin = sq_dim/18;
+// -----------------------------------------------------------------
+
+
+let boardRadius = 10; //radius of hex grid
+let size; //size of hexes
+let originHex; //very center of the board
+let hexes = [];
+let mainLayout;
+let graphics;
+
+let pallete = ["#0A0311", "#3E1C4B", "#13065C", "#0B089A", "#A922B0", "#D54705", "#76A6A9", "#2A34AF"];
 
 function setup() {
-  createCanvas(canvasSize_w, canvasSize_h);
-  frameRate(1); // Attempt to refresh at starting FPS // 0.5
+  createCanvas(1500, 1500);
+  colorMode(HSB, 360, 100, 100, 100);
+  angleMode(DEGREES);
+  size = Point(20, 20);
+  mainLayout = hexLayout(pointyOrient, size);
+  hexGenerateBoard(boardRadius, hexes, Hex(0, 0, 0));
 
-  // setup cell grid1
+  graphics = createGraphics(width, height);
+  graphics.colorMode(HSB, 360, 100, 100, 100);
+  graphics.noStroke();
+  for (let i = 0; i < width * height * 25 / 100; i++) {
+    let r = (1 - random(random(random()))) * sqrt(sq(width) + sq(height)) / 2;
+    let angle = random(360);
+    let x = width / 2 + cos(angle) * r;
+    let y = height / 2 + sin(angle) * r;
+    let w = random(3);
+    let h = random(3);
+    random(100) > 50 ? graphics.fill(0, 0, 100, 5) : graphics.fill(0, 0, 0, 15);
+    graphics.ellipse(x, y, w, h);
+  }
+
+// -----------------------------------------------------------------
+
+    // setup cell grid1
   for (var i = 0; i < celln1; i++) {
       cells1[i] = [];
       for (var j = 0; j < celln1; j++) {
@@ -35,14 +66,108 @@ function setup() {
       }
   }
 
-  noFill();
-  if (DEBUG) {
-    noLoop();
+}
+
+function draw() {
+  background(0, 0, 95);
+  image(graphics, 0, 0);
+
+
+  push();
+  translate(width / 2, height / 2);
+  //hexDrawArray(mainLayout, hexes, color(0, 50, 100));
+  // hexDebugGrid(mainLayout, hexes);
+
+  // noStroke();
+  let i = 0;
+  drawingContext.shadowColor = color(0, 0, 0, 33);
+  drawingContext.shadowBlur = width / 50;
+
+  for (let h of hexes) {
+    // print(h);
+    let points = hexGetCorners(mainLayout, h);
+    let center = createVector(0, 0);
+    for (let p of points) {
+      center.add(createVector(p.x, p.y));
+    }
+    center.div(points.length);
+
+    for (let p of points) {
+      p.x -= center.x;
+      p.y -= center.y;
+    }
+    let distance = dist(points[0].x, points[0].y, center.x, center.y);
+
+    push();
+    translate(center.x, center.y);
+    rotate(random(360));
+    let n = int(random(points.length));
+    let nn = int(random(5, 15));
+    let isCircle = random(100) > 50 ? true : false;
+
+    for (let m = nn; m > 0; m--) {
+      let r = map(sqrt(sq(h.q) + sq(h.s) + sq(h.r)), 0, 8, 5, 0);
+      let q = r;
+      let p1 = createVector(points[n].x, points[n].y).mult(q);
+      let p2 = createVector(points[(n + 1) % points.length].x, points[(n + 1) % points.length].y).mult(q);
+      let p3 = createVector(points[(n + 3) % points.length].x, points[(n + 3) % points.length].y).mult(q);
+      let p4 = createVector(points[(n + 4) % points.length].x, points[(n + 4) % points.length].y).mult(q);
+      
+      if (isCircle) {
+        // arc(0, 0, distance / 3 * m / nn, distance / 3 * m / nn, 0, 90, PIE);
+      drawOne(cells1, celln1, random(0,100), random(0,100));   // coordinates are offsets for R
+
+      } 
+      // else {
+      //   if (n % 2 == 0) {
+      //     beginShape();
+      //     vertex(p1.x * m / nn, p1.y * m / nn);
+      //     vertex(p2.x * m / nn, p2.y * m / nn);
+      //     vertex(p3.x* m/nn,p3.y* m/nn);      
+      //     vertex(p4.x * m / nn, p4.y * m / nn);
+      //     endShape(CLOSE);
+      //   } else {
+      //     beginShape();
+      //     vertex(p1.x * m/nn,p1.y* m/nn);      
+      //     vertex(p2.x * m / nn, p2.y * m / nn);
+      //     vertex(p3.x * m / nn, p3.y * m / nn);
+      //     vertex(p4.x * m / nn, p4.y * m / nn);
+      //     endShape(CLOSE);
+      //   }
+      // }
+    }
+
+    beginShape();
+
+    endShape(CLOSE);
+    pop();
+
+    // stroke(0, 0, 10);
+    // ellipse(center.x, center.y, 10, 10);
+    i++;
   }
+  pop();
+  noLoop();
 }
 
 
-function draw() {
+
+
+
+
+// function setup() {
+//   createCanvas(canvasSize_w, canvasSize_h);
+//   frameRate(1); // Attempt to refresh at starting FPS // 0.5
+
+
+//   noFill();
+//   if (DEBUG) {
+//     noLoop();
+//   }
+// }
+
+
+function draw_r() {
 
   // clear background on each frame
   background(255, 255, 255);      // <=== white background
