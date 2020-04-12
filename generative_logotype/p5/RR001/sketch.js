@@ -16,18 +16,17 @@ var canvasSize_w = 800 * multiplier;  // 1080p at retina // 1920×1080
 var canvasSize_h = 800 * multiplier;  // 1080p at retina // 1920×1080 
 
 
-
 var DEBUG = false;  // control debug logging and diagnostic lines
 
 // -----------------------------------------------------------------
-let url = "https://coolors.co/app/9e9e9e-adadad-bebebe-d1d1d1-e8e8e8"
-// let url = "https://coolors.co/app/ffffff-f7f7f7-efefef-e8e8e8-e0e0e0" // lightgreyness
+// let url = "https://coolors.co/ffffff-e8e8e8-e2e8e8-d7d9d9-bfbfc0";  // lighter
+let url = "https://coolors.co/app/9e9e9e-adadad-bebebe-d1d1d1-e8e8e8"; // darker
 
 let pallete;
 
 let boardRadius = 10; //radius of hex grid
-let size; //size of hexes
-let originHex; //very center of the board
+let size;             //size of hexes
+let originHex;        // very center of the board
 let hexes = [];
 let mainLayout;
 let graphics;
@@ -58,13 +57,17 @@ function setup() {
 
   // IOHAVOC
   pallete = createPallete(url);
-
 }
 
 
 function draw() {
   background(0, 0, 95);
   image(graphics, 0, 0);
+
+  noFill();
+  stroke(0);
+  strokeWeight(30);
+  rect(0, 0, 1500, 1500); // sq_dim x sq_dim
 
   push();
   translate(width / 2, height / 2);
@@ -89,9 +92,10 @@ function draw() {
     }
     let distance = dist(points[0].x, points[0].y, center.x, center.y);
 
+
     push();
     translate(center.x, center.y + 150);  // IOHAVOC shift down from center
-    rotate(random(270, 360));
+    rotate(random(360));
     let n = int(random(points.length));
     let nn = int(random(1, 10));
     let isCircle = random(100) > 50 ? true : false;
@@ -109,12 +113,12 @@ function draw() {
       if (isCircle) {
       // arc(0, 0, distance / 3 * m / nn, distance / 3 * m / nn, 0, 90, PIE);
 
-      drawOne(random(20,30), random(0,100), random(0,100));   // coordinates are offsets for R
+      drawOne(random(20,30), random(0,200), random(0,200));   // coordinates are offsets for R
 
       } 
       else {
         if (n % 2 == 0) {
-          drawOne(random(20, 40), random(0, 100), random(0, 100));   // coordinates are offsets for R
+          drawOne(random(20, 40), random(0, 200), random(0, 200));   // coordinates are offsets for R
 
         } else {
           
