@@ -12,8 +12,8 @@
 
 var multiplier = 1;
 // var sq_dim = 30; // 20-60?
-var canvasSize_w = 800 * multiplier;  // 1080p at retina // 1920×1080 
-var canvasSize_h = 800 * multiplier;  // 1080p at retina // 1920×1080 
+var canvasSize_w = 1500;  // 1080p at retina // 1920×1080 
+var canvasSize_h = 1500 * multiplier;  // 1080p at retina // 1920×1080 
 
 
 var DEBUG = false;  // control debug logging and diagnostic lines
@@ -34,7 +34,7 @@ let graphics;
 
 function setup() {
 
-  createCanvas(1500, 1500);
+  createCanvas(canvasSize_w, canvasSize_h);
   colorMode(HSB, 360, 100, 100, 100);
   angleMode(DEGREES);
   size = Point(20, 20);
@@ -51,12 +51,20 @@ function setup() {
     let y = height / 2 + sin(angle) * r;
     let w = random(3);
     let h = random(3);
-    random(100) > 50 ? graphics.fill(0, 0, 100, 5) : graphics.fill(0, 0, 0, 15);
+
+    // Alpha controls dispersion of textural bg
+    random(100) > 50 ? graphics.fill(0, 0, 100, 25) : graphics.fill(0, 0, 0, 35);
     graphics.ellipse(x, y, w, h);
   }
 
   // IOHAVOC
   pallete = createPallete(url);
+
+  // fontItalic = loadFont('assets/Vokersololetras.ttf');
+  // fontItalic = loadFont('assets/typeone.ttf');
+  // fontItalic = loadFont('assets/Megafont.ttf');
+  // fontItalic = loadFont('assets/Jangotype.ttf');
+  // fontItalic = loadFont('assets/duro.ttf');
 }
 
 
@@ -64,10 +72,48 @@ function draw() {
   background(0, 0, 95);
   image(graphics, 0, 0);
 
+
+  // border 
+  let borderColour = color("#10060c");
+  let ruohoTextColour = color("#e8e8e8");
   noFill();
-  stroke(0);
+  stroke(borderColour);
   strokeWeight(30);
-  rect(0, 0, 1500, 1500); // sq_dim x sq_dim
+  rect(0, 0, canvasSize_w, canvasSize_h); // sq_dim x sq_dim
+
+  // top border
+  fill(borderColour);
+  stroke(borderColour);
+  strokeWeight(1);
+  rect(0, 0, canvasSize_w, 100); // sq_dim x sq_dim
+
+  // text
+  // textFont(fontItalic);
+  fill(255);
+  textSize(100);
+  stroke(10);
+  textAlign(LEFT);
+  textFont('Megafont');
+  // text("Ruoho Ruotsi A-G V.1", 0, 0, 1500, 300);
+  text("Ruoho", 15, 0, canvasSize_w, 300);
+  text("Ruotsi", 960, 0, canvasSize_w, 300);
+
+
+  // middle text box
+  let middleColour = color("#472422");
+  fill(middleColour);
+  stroke(middleColour);
+  var middleSize = 300;
+  rect((canvasSize_w - middleSize)/2, 0, middleSize, 100);
+
+  // album text
+  stroke(10);
+  fill(255);
+  textAlign(CENTER, CENTER);
+  textSize(60);
+  text("A-G V.1", (canvasSize_w - middleSize)/2 + 15, 0, middleSize, 100);
+
+  stroke(0);
 
   push();
   translate(width / 2, height / 2);
@@ -141,9 +187,9 @@ function draw() {
 }
 
 
-function ligneAvec(strokeWeight_thickness, lineStrokeColor_r, lineStrokeColor_g, lineStrokeColor_b ) {
+function ligneAvec(strokeWeight_thickness, color_in_hex) {
   strokeWeight(strokeWeight_thickness);
-  stroke(lineStrokeColor_r, lineStrokeColor_g, lineStrokeColor_b);
+  stroke(color(color_in_hex));
 }
 
 function drawOne(square_dim, translateX, translateY){
@@ -175,7 +221,7 @@ function drawOne(square_dim, translateX, translateY){
   push(); // Start a new drawing state
 
   translate(translateX, translateY);  
-  ligneAvec(1, 0, 0, 0); // for letter background set stroke style
+  ligneAvec(1, "#141414"); // for letter background set stroke style
 
   let c1 = random(pallete)
   // Draw circumscribing-square
@@ -197,7 +243,7 @@ function drawOne(square_dim, translateX, translateY){
   rect3_height = random(square_dim/15, (square_dim/10)*3);
   rect3_width = random(square_dim/10, square_dim - (2*margin));  // max is sq_dim - some margin
 
-  ligneAvec(1, 0, 0, 0);
+  ligneAvec(1, "#141414");
   rect((square_dim - rect3_width)/2, square_dim - rect3_height, rect3_width, rect3_height);
 
   rect1_low_range = 10;
@@ -208,7 +254,7 @@ function drawOne(square_dim, translateX, translateY){
   rect1_lower_bound_y = random(rect1_low_range, rect1_high_range);
   
   // Vertical line connecting R lines
-  ligneAvec(1, 0, 0, 0);
+  ligneAvec(1, "#141414");
   line((square_dim - rect3_width)/2, square_dim, (square_dim - rect3_width)/2, rect1_lower_bound_y);
 
 
@@ -231,7 +277,7 @@ function drawOne(square_dim, translateX, translateY){
 
   console.log("rect1_height: " + rect1_height);
 
-  ligneAvec(1, 0, 0, 0);
+  ligneAvec(1, "#141414");
   rect(rect1_x_start, rect1_yoffset_from_top, rect1_width, rect1_height);
 
 
@@ -255,7 +301,7 @@ function drawOne(square_dim, translateX, translateY){
 
   } else {
 
-  ligneAvec(1, 0, 0, 0);
+  ligneAvec(1, "#141414");
   rect(rect2_x_start, rect2_y_start, rect2_width, rect2_height);
   noFill();
   }
