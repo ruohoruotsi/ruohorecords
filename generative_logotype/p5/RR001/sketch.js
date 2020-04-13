@@ -73,9 +73,9 @@ function draw() {
   image(graphics, 0, 0);
 
 
+  //-------------------------------------------------------
   // border 
   let borderColour = color("#10060c");
-  let ruohoTextColour = color("#e8e8e8");
   noFill();
   stroke(borderColour);
   strokeWeight(30);
@@ -87,28 +87,42 @@ function draw() {
   strokeWeight(1);
   rect(0, 0, canvasSize_w, 100); // sq_dim x sq_dim
 
+  //-------------------------------------------------------
   // text
   // textFont(fontItalic);
-  fill(255);
+  let ruohoTextColour = color("#e8e8e8");
+
+  fill(ruohoTextColour);
   textSize(100);
-  stroke(10);
+  stroke(ruohoTextColour);
   textAlign(LEFT);
   textFont('Megafont');
   // text("Ruoho Ruotsi A-G V.1", 0, 0, 1500, 300);
-  text("Ruoho", 15, 0, canvasSize_w, 300);
-  text("Ruotsi", 960, 0, canvasSize_w, 300);
+  text("Ruoho", 150, 0, canvasSize_w, 300);
+  text("Ruotsi", 927, 0, canvasSize_w, 300);
 
-
+  //-------------------------------------------------------
   // middle text box
-  let middleColour = color("#472422");
+  let middleColour = color("#f0a202");        // yellowish?
+  // let middleColour = color("#d5a021");        // yellowish?
+
+  // 
+  let middleStrokeColour = color("#f2f2f2"); // background light grey
+
   fill(middleColour);
-  stroke(middleColour);
+  stroke(middleStrokeColour, 255);
+  strokeWeight(10);
+
   var middleSize = 300;
   rect((canvasSize_w - middleSize)/2, 0, middleSize, 100);
 
+  //-------------------------------------------------------
   // album text
-  stroke(10);
-  fill(255);
+  let albumTextColour = color("#302923"); // dark brown
+  strokeWeight(1);
+
+  stroke(albumTextColour);
+  fill(albumTextColour);
   textAlign(CENTER, CENTER);
   textSize(60);
   text("A-G V.1", (canvasSize_w - middleSize)/2 + 15, 0, middleSize, 100);
