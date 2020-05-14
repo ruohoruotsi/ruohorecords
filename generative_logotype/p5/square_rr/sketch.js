@@ -12,11 +12,11 @@
 // setup
 // -----------------------------------------------------------------
 var multiplier = 1;
-var sq_dim = 450;
-var canvasSize_w = 800 * multiplier;  // 1080p at retina // 1920×1080 
-var canvasSize_h = 800 * multiplier;  // 1080p at retina // 1920×1080 
+var sq_dim = 700;
+var canvasSize_w = 1200 * multiplier;  // 1080p at retina // 1920×1080 
+var canvasSize_h = 1200 * multiplier;  // 1080p at retina // 1920×1080 
 
-var celln1 = 16;
+var celln1 = 20;
 var cells1 = [];
 
 // var celln2 = 13;
