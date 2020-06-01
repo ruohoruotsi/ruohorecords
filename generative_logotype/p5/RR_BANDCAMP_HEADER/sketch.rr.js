@@ -48,19 +48,19 @@ function draw() {
   pos1_w = 45;
   pos2_w = pos1_w + sq_dim + center_spacing;
   pos_h = (canvasSize_h - sq_dim) / 2;
-  drawOneR(int(random(6,12)), pos1_w, pos_h);                                  // r
-  drawOne(int(random(6,10)), pos1_w + sq_dim + center_spacing, pos_h);         // u
-  drawOne(int(random(6,10)), pos1_w + 2*sq_dim + 2*center_spacing, pos_h);     // o
-  drawOne(int(random(6,10)), pos1_w + 3*sq_dim + 3*center_spacing, pos_h);     // h
-  drawOne(int(random(6,10)), pos1_w + 4*sq_dim + 4*center_spacing, pos_h);     // o
+  drawOneR(int(random(6,12)), pos1_w, pos_h);                                   // r
+  drawOneU(int(random(6,10)), pos1_w + sq_dim + center_spacing, pos_h);         // u
+  drawOneO(int(random(6,10)), pos1_w + 2*sq_dim + 2*center_spacing, pos_h);     // o
+  drawOneH(int(random(6,10)), pos1_w + 3*sq_dim + 3*center_spacing, pos_h);     // h
+  drawOneO(int(random(6,10)), pos1_w + 4*sq_dim + 4*center_spacing, pos_h);     // o
 
-  drawOneR(int(random(6,12)), pos1_w + 5*sq_dim + 5*center_spacing + inter_word_spacing, pos_h);   // r
-  drawOne(int(random(6,10)), pos1_w + 6*sq_dim + 6*center_spacing + inter_word_spacing, pos_h);    // e
-  drawOne(int(random(6,10)), pos1_w + 7*sq_dim + 7*center_spacing + inter_word_spacing, pos_h);    // c
-  drawOne(int(random(6,10)), pos1_w + 8*sq_dim + 8*center_spacing + inter_word_spacing, pos_h);    // o
-  drawOneR(int(random(6,10)), pos1_w + 9*sq_dim + 9*center_spacing + inter_word_spacing, pos_h);   // r
-  drawOne(int(random(6,10)), pos1_w + 10*sq_dim + 10*center_spacing + inter_word_spacing, pos_h);  // d
-  drawOne(int(random(6,10)), pos1_w + 11*sq_dim + 11*center_spacing + inter_word_spacing, pos_h);  // s  
+  drawOneR(int(random(6,12)), pos1_w + 5*sq_dim + 5*center_spacing + inter_word_spacing, pos_h);    // r
+  drawOneE(int(random(6,10)), pos1_w + 6*sq_dim + 6*center_spacing + inter_word_spacing, pos_h);    // e
+  drawOneC(int(random(6,10)), pos1_w + 7*sq_dim + 7*center_spacing + inter_word_spacing, pos_h);    // c
+  drawOneO(int(random(6,10)), pos1_w + 8*sq_dim + 8*center_spacing + inter_word_spacing, pos_h);    // o
+  drawOneR(int(random(6,10)), pos1_w + 9*sq_dim + 9*center_spacing + inter_word_spacing, pos_h);    // r
+  drawOneD(int(random(6,10)), pos1_w + 10*sq_dim + 10*center_spacing + inter_word_spacing, pos_h);  // d
+  drawOneS(int(random(6,10)), pos1_w + 11*sq_dim + 11*center_spacing + inter_word_spacing, pos_h);  // s  
 
   console.log(pos1_w, pos2_w);
 }
@@ -70,10 +70,14 @@ function ligneAvec(strokeWeight_thickness, lineStrokeColor_r, lineStrokeColor_g,
   stroke(lineStrokeColor_r, lineStrokeColor_g, lineStrokeColor_b);
 }
 
+// -----------------------------------------------------------------
+// RUOHO
+// -----------------------------------------------------------------
+
+// RRRRRRRRRRRRRRRRRRRRR 
 function drawOneR(numcells, translateX, translateY){
   drawOne(numcells, translateX, translateY)
 }
-
 
 function drawOne(numcells, translateX, translateY){
 
@@ -212,6 +216,434 @@ function drawOne(numcells, translateX, translateY){
   pop(); // Restore original state
 }
 
+// UUUUUUUUUUUUUUUUUUUUUUUUUUU
+function drawOneU(numcells, translateX, translateY){
+
+  var celln = numcells;
+  var cells = [];
+
+  // setup cell grid
+  for (var i = 0; i < celln; i++) {
+      cells[i] = [];
+      for (var j = 0; j < celln; j++) {
+          cells[i][j] = new Cell(i*(sq_dim/celln), j*(sq_dim/celln), sq_dim/celln, 0);
+          cells[i][j].rand();
+      }
+  }
+
+  push(); // Start a new drawing state
+  translate(translateX, translateY);
+
+  // Draw circumscribing-square
+  fill(255);                  // white
+  rect(0, 0, sq_dim, sq_dim); // sq_dim x sq_dim
+  noFill();
+
+  // for letter background set stroke style
+  ligneAvec(7, 0, 0, 0);
+
+  // draw bg cell grid
+  for (var i = 0; i < celln; i++)
+    for (var j = 0; j < celln; j++){
+      cells[i][j].rand();
+      cells[i][j].display();
+    }
+
+  // redraw rect shape, so the background lines don't show. Ugh
+  ligneAvec(10, 0, 0, 0);
+
+  // Draw circumscribing-square
+  rect(0, 0, sq_dim, sq_dim); // sq_dim x sq_dim
+  fill(255);                  // white
+
+  print("mouseX: " + mouseX, mouseY)
+  
+  //////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////
+  // center rec
+  rect1_yoffset_from_top = 0;
+  do {
+    rect1_yoffset_from_top = random(margin, rect1_lower_bound_y);
+  } while (rect1_lower_bound_y - rect1_yoffset_from_top < margin);
+
+  rect1_width = random(int(sq_dim/4), int(sq_dim * 0.6));
+  rect1_height = random(int(sq_dim/2), int(sq_dim * 0.75));
+
+  ligneAvec(10, 0, 0, 0);
+  rect((sq_dim - rect1_width)/2, 0, rect1_width, rect1_height);
+
+  pop(); // Restore original state
+}
+
+// OOOOOOOOOOOOOOOOOOOOOOOOOOO 
+function drawOneO(numcells, translateX, translateY){
+
+  var celln = numcells;
+  var cells = [];
+
+  // setup cell grid
+  for (var i = 0; i < celln; i++) {
+      cells[i] = [];
+      for (var j = 0; j < celln; j++) {
+          cells[i][j] = new Cell(i*(sq_dim/celln), j*(sq_dim/celln), sq_dim/celln, 0);
+          cells[i][j].rand();
+      }
+  }
+
+  push(); // Start a new drawing state
+  translate(translateX, translateY);
+
+  // Draw circumscribing-square
+  fill(255);                  // white
+  rect(0, 0, sq_dim, sq_dim); // sq_dim x sq_dim
+  noFill();
+
+  // for letter background set stroke style
+  ligneAvec(7, 0, 0, 0);
+
+  // draw bg cell grid
+  for (var i = 0; i < celln; i++)
+    for (var j = 0; j < celln; j++){
+      cells[i][j].rand();
+      cells[i][j].display();
+    }
+
+  // redraw rect shape, so the background lines don't show. Ugh
+  ligneAvec(10, 0, 0, 0);
+
+  // Draw circumscribing-square
+  rect(0, 0, sq_dim, sq_dim); // sq_dim x sq_dim
+  fill(255);                  // white
+
+  print("mouseX: " + mouseX, mouseY)
+  
+  //////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////
+  // center rec
+  rect1_yoffset_from_top = 0;
+  do {
+    rect1_yoffset_from_top = random(margin, rect1_lower_bound_y);
+  } while (rect1_lower_bound_y - rect1_yoffset_from_top < margin);
+
+  rect1_width = random(int(sq_dim/4), int(sq_dim/2));
+  rect1_height = rect1_width
+
+  ligneAvec(10, 0, 0, 0);
+  rect((sq_dim - rect1_width)/2, (sq_dim - rect1_height)/2, rect1_width, rect1_height);
+
+  pop(); // Restore original state
+}
+
+// HHHHHHHHHHHHHHHHHHHHHHHHHH
+function drawOneH(numcells, translateX, translateY){
+
+  var celln = numcells;
+  var cells = [];
+
+  // setup cell grid
+  for (var i = 0; i < celln; i++) {
+      cells[i] = [];
+      for (var j = 0; j < celln; j++) {
+          cells[i][j] = new Cell(i*(sq_dim/celln), j*(sq_dim/celln), sq_dim/celln, 0);
+          cells[i][j].rand();
+      }
+  }
+
+  push(); // Start a new drawing state
+  translate(translateX, translateY);
+
+  // Draw circumscribing-square
+  fill(255);                  // white
+  rect(0, 0, sq_dim, sq_dim); // sq_dim x sq_dim
+  noFill();
+
+  // for letter background set stroke style
+  ligneAvec(7, 0, 0, 0);
+
+  // draw bg cell grid
+  for (var i = 0; i < celln; i++)
+    for (var j = 0; j < celln; j++){
+      cells[i][j].rand();
+      cells[i][j].display();
+    }
+
+  // redraw rect shape, so the background lines don't show. Ugh
+  ligneAvec(10, 0, 0, 0);
+
+  // Draw circumscribing-square
+  rect(0, 0, sq_dim, sq_dim); // sq_dim x sq_dim
+  fill(255);                  // white
+
+  print("mouseX: " + mouseX, mouseY)
+  
+  //////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////
+  // center rec
+  rect1_yoffset_from_top = 0;
+  do {
+    rect1_yoffset_from_top = random(margin, rect1_lower_bound_y);
+  } while (rect1_lower_bound_y - rect1_yoffset_from_top < margin);
+
+  rect1_width = random(int(sq_dim/5), int(sq_dim/3));
+  rect1_height = rect1_width
+
+  ligneAvec(10, 0, 0, 0);
+  rect((sq_dim - rect1_width)/2, 0, rect1_width, rect1_height);
+
+
+  rect((sq_dim - rect1_width)/2, sq_dim - rect1_height, rect1_width, rect1_height);
+
+  pop(); // Restore original state
+}
+
+//------------------------------------------------------------------
+// RECORDS
+//------------------------------------------------------------------
+
+// CCCCCCCCCCCCCCCCCCCCCCCCCC
+function drawOneC(numcells, translateX, translateY){
+
+  var celln = numcells;
+  var cells = [];
+
+  // setup cell grid
+  for (var i = 0; i < celln; i++) {
+      cells[i] = [];
+      for (var j = 0; j < celln; j++) {
+          cells[i][j] = new Cell(i*(sq_dim/celln), j*(sq_dim/celln), sq_dim/celln, 0);
+          cells[i][j].rand();
+      }
+  }
+
+  push(); // Start a new drawing state
+  translate(translateX, translateY);
+
+  // Draw circumscribing-square
+  fill(255);                  // white
+  rect(0, 0, sq_dim, sq_dim); // sq_dim x sq_dim
+  noFill();
+
+  // for letter background set stroke style
+  ligneAvec(7, 0, 0, 0);
+
+  // draw bg cell grid
+  for (var i = 0; i < celln; i++)
+    for (var j = 0; j < celln; j++){
+      cells[i][j].rand();
+      cells[i][j].display();
+    }
+
+  // redraw rect shape, so the background lines don't show. Ugh
+  ligneAvec(10, 0, 0, 0);
+
+  // Draw circumscribing-square
+  rect(0, 0, sq_dim, sq_dim); // sq_dim x sq_dim
+  fill(255);                  // white
+
+  print("mouseX: " + mouseX, mouseY)
+  
+  //////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////
+  // center rec
+  rect1_yoffset_from_top = 0;
+  do {
+    rect1_yoffset_from_top = random(margin, rect1_lower_bound_y);
+  } while (rect1_lower_bound_y - rect1_yoffset_from_top < margin);
+
+  rect1_width = random(int(sq_dim/4), int(sq_dim * 0.75));
+  rect1_height = random(int(sq_dim/2), int(sq_dim * 0.6));
+
+  ligneAvec(10, 0, 0, 0);
+  rect(sq_dim - rect1_width, (sq_dim - rect1_height)/2, rect1_width, rect1_height);
+
+
+  pop(); // Restore original state
+}
+
+// DDDDDDDDDDDDDDDDDDDDDDDDDD
+function drawOneD(numcells, translateX, translateY){
+
+  var celln = numcells;
+  var cells = [];
+
+  // setup cell grid
+  for (var i = 0; i < celln; i++) {
+      cells[i] = [];
+      for (var j = 0; j < celln; j++) {
+          cells[i][j] = new Cell(i*(sq_dim/celln), j*(sq_dim/celln), sq_dim/celln, 0);
+          cells[i][j].rand();
+      }
+  }
+
+  push(); // Start a new drawing state
+  translate(translateX, translateY);
+
+  // Draw circumscribing-square
+  fill(255);                  // white
+  rect(0, 0, sq_dim, sq_dim); // sq_dim x sq_dim
+  noFill();
+
+  // for letter background set stroke style
+  ligneAvec(7, 0, 0, 0);
+
+  // draw bg cell grid
+  for (var i = 0; i < celln; i++)
+    for (var j = 0; j < celln; j++){
+      cells[i][j].rand();
+      cells[i][j].display();
+    }
+
+  // redraw rect shape, so the background lines don't show. Ugh
+  ligneAvec(10, 0, 0, 0);
+
+  // Draw circumscribing-square
+  rect(0, 0, sq_dim, sq_dim); // sq_dim x sq_dim
+  fill(255);                  // white
+
+  print("mouseX: " + mouseX, mouseY)
+  
+  //////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////
+  // center rec
+  rect1_yoffset_from_top = 0;
+  do {
+    rect1_yoffset_from_top = random(margin, rect1_lower_bound_y);
+  } while (rect1_lower_bound_y - rect1_yoffset_from_top < margin);
+
+  rect1_width = random(int(sq_dim/3), int(sq_dim/2));
+  rect1_height = rect1_width
+
+  ligneAvec(10, 0, 0, 0);
+  rect((sq_dim - rect1_width)/2 - 45, (sq_dim - rect1_height)/2, rect1_width, rect1_height);
+
+  pop(); // Restore original state
+}
+
+// EEEEEEEEEEEEEEEEEEEEEEEEEE
+function drawOneE(numcells, translateX, translateY){
+
+  var celln = numcells;
+  var cells = [];
+
+  // setup cell grid
+  for (var i = 0; i < celln; i++) {
+      cells[i] = [];
+      for (var j = 0; j < celln; j++) {
+          cells[i][j] = new Cell(i*(sq_dim/celln), j*(sq_dim/celln), sq_dim/celln, 0);
+          cells[i][j].rand();
+      }
+  }
+
+  push(); // Start a new drawing state
+  translate(translateX, translateY);
+
+  // Draw circumscribing-square
+  fill(255);                  // white
+  rect(0, 0, sq_dim, sq_dim); // sq_dim x sq_dim
+  noFill();
+
+  // for letter background set stroke style
+  ligneAvec(7, 0, 0, 0);
+
+  // draw bg cell grid
+  for (var i = 0; i < celln; i++)
+    for (var j = 0; j < celln; j++){
+      cells[i][j].rand();
+      cells[i][j].display();
+    }
+
+  // redraw rect shape, so the background lines don't show. Ugh
+  ligneAvec(10, 0, 0, 0);
+
+  // Draw circumscribing-square
+  rect(0, 0, sq_dim, sq_dim); // sq_dim x sq_dim
+  fill(255);                  // white
+
+  print("mouseX: " + mouseX, mouseY)
+  
+  //////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////
+  // center rec
+  rect1_yoffset_from_top = 0;
+  do {
+    rect1_yoffset_from_top = random(margin, rect1_lower_bound_y);
+  } while (rect1_lower_bound_y - rect1_yoffset_from_top < margin);
+
+  rect1_width = random(int(sq_dim/2), int(sq_dim * 0.75));
+  rect1_height = random(int(sq_dim * 0.1), int(sq_dim * 0.2));
+
+  ligneAvec(10, 0, 0, 0);
+  rect(sq_dim - rect1_width, (sq_dim - rect1_height) * .25, rect1_width, rect1_height);
+
+  rect(sq_dim - rect1_width, (sq_dim - rect1_height) * .75, rect1_width, rect1_height);
+
+  pop(); // Restore original state
+}
+
+// SSSSSSSSSSSSSSSSSSSSSSSSSS
+function drawOneS(numcells, translateX, translateY){
+
+  var celln = numcells;
+  var cells = [];
+
+  // setup cell grid
+  for (var i = 0; i < celln; i++) {
+      cells[i] = [];
+      for (var j = 0; j < celln; j++) {
+          cells[i][j] = new Cell(i*(sq_dim/celln), j*(sq_dim/celln), sq_dim/celln, 0);
+          cells[i][j].rand();
+      }
+  }
+
+  push(); // Start a new drawing state
+  translate(translateX, translateY);
+
+  // Draw circumscribing-square
+  fill(255);                  // white
+  rect(0, 0, sq_dim, sq_dim); // sq_dim x sq_dim
+  noFill();
+
+  // for letter background set stroke style
+  ligneAvec(7, 0, 0, 0);
+
+  // draw bg cell grid
+  for (var i = 0; i < celln; i++)
+    for (var j = 0; j < celln; j++){
+      cells[i][j].rand();
+      cells[i][j].display();
+    }
+
+  // redraw rect shape, so the background lines don't show. Ugh
+  ligneAvec(10, 0, 0, 0);
+
+  // Draw circumscribing-square
+  rect(0, 0, sq_dim, sq_dim); // sq_dim x sq_dim
+  fill(255);                  // white
+
+  print("mouseX: " + mouseX, mouseY)
+  
+  //////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////
+  // center rec
+  rect1_yoffset_from_top = 0;
+  do {
+    rect1_yoffset_from_top = random(margin, rect1_lower_bound_y);
+  } while (rect1_lower_bound_y - rect1_yoffset_from_top < margin);
+
+  rect1_width = random(int(sq_dim/2), int(sq_dim * 0.75));
+  rect1_height = random(int(sq_dim * 0.1), int(sq_dim * 0.2));
+
+  ligneAvec(10, 0, 0, 0);
+  rect(sq_dim - rect1_width, (sq_dim - rect1_height) * .25, rect1_width, rect1_height);
+
+  rect(0, (sq_dim - rect1_height) * .75, rect1_width, rect1_height);
+
+  pop(); // Restore original state
+}
+
+// -----------------------------------------------------------------
+// mouse & key callbacks 
+// -----------------------------------------------------------------
 
 function mousePressed() {
   if (DEBUG) {
