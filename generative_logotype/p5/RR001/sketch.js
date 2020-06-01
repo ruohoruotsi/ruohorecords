@@ -154,8 +154,10 @@ function draw() {
 
 
     push();
-    translate(center.x, center.y + 150);  // IOHAVOC shift down from center
-    rotate(random(360));
+    translate(center.x - 150, center.y + 50);  // IOHAVOC shift down from center
+    // translate(center.x - 100, center.y + 150);  // IOHAVOC shift down from center
+
+    // rotate(random(360));
     let n = int(random(points.length));
     let nn = int(random(1, 10));
     let isCircle = random(100) > 50 ? true : false;
@@ -174,15 +176,16 @@ function draw() {
       // arc(0, 0, distance / 3 * m / nn, distance / 3 * m / nn, 0, 90, PIE);
 
       drawOne(random(20,30), random(0,200), random(0,200));   // coordinates are offsets for R
-
+      // drawOne(random(20,30), random(0,300), random(0,300));   // coordinates are offsets for R
       } 
       else {
         if (n % 2 == 0) {
           drawOne(random(20, 40), random(0, 200), random(0, 200));   // coordinates are offsets for R
-
+          // drawOne(random(20, 40), random(0, 300), random(0, 300));   // coordinates are offsets for R
         } else {
           
           drawOne(random(30, 60), random(0, 100), random(0, 100));   // coordinates are offsets for R
+          // drawOne(random(30, 60), random(0, 200), random(0, 200));   // coordinates are offsets for R          
         }
       }
     }
