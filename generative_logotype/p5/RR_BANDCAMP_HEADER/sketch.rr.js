@@ -12,7 +12,7 @@
 // setup
 // -----------------------------------------------------------------
 var multiplier = 2;
-var sq_dim = 280;
+var sq_dim = 250;
 var canvasSize_w = 1950 * multiplier;  // 1080p at retina // 1920×1080 
 var canvasSize_h = 360 * multiplier;  // 1080p at retina // 1920×1080 
 
@@ -45,22 +45,22 @@ function draw() {
   inter_word_spacing = 120;
   // pos1_w = (canvasSize_w / 8) - sq_dim - center_spacing;
   // pos2_w = (canvasSize_w / 8)          + center_spacing;
-  pos1_w = 45;
+  pos1_w = 45 + 180;
   pos2_w = pos1_w + sq_dim + center_spacing;
   pos_h = (canvasSize_h - sq_dim) / 2;
-  drawOneR(int(random(6,12)), pos1_w, pos_h);                                   // r
-  drawOneU(int(random(6,10)), pos1_w + sq_dim + center_spacing, pos_h);         // u
-  drawOneO(int(random(6,10)), pos1_w + 2*sq_dim + 2*center_spacing, pos_h);     // o
-  drawOneH(int(random(6,10)), pos1_w + 3*sq_dim + 3*center_spacing, pos_h);     // h
-  drawOneO(int(random(6,10)), pos1_w + 4*sq_dim + 4*center_spacing, pos_h);     // o
+  drawOneR(int(random(6,10)), pos1_w, pos_h);                                   // r
+  drawOneU(int(random(6,8)), pos1_w + sq_dim + center_spacing, pos_h);         // u
+  drawOneO(int(random(6,8)), pos1_w + 2*sq_dim + 2*center_spacing, pos_h);     // o
+  drawOneH(int(random(6,8)), pos1_w + 3*sq_dim + 3*center_spacing, pos_h);     // h
+  drawOneO(int(random(6,8)), pos1_w + 4*sq_dim + 4*center_spacing, pos_h);     // o
 
-  drawOneR(int(random(6,12)), pos1_w + 5*sq_dim + 5*center_spacing + inter_word_spacing, pos_h);    // r
-  drawOneE(int(random(6,10)), pos1_w + 6*sq_dim + 6*center_spacing + inter_word_spacing, pos_h);    // e
-  drawOneC(int(random(6,10)), pos1_w + 7*sq_dim + 7*center_spacing + inter_word_spacing, pos_h);    // c
-  drawOneO(int(random(6,10)), pos1_w + 8*sq_dim + 8*center_spacing + inter_word_spacing, pos_h);    // o
-  drawOneR(int(random(6,10)), pos1_w + 9*sq_dim + 9*center_spacing + inter_word_spacing, pos_h);    // r
-  drawOneD(int(random(6,10)), pos1_w + 10*sq_dim + 10*center_spacing + inter_word_spacing, pos_h);  // d
-  drawOneS(int(random(6,10)), pos1_w + 11*sq_dim + 11*center_spacing + inter_word_spacing, pos_h);  // s  
+  drawOneR(int(random(6,10)), pos1_w + 5*sq_dim + 5*center_spacing + inter_word_spacing, pos_h);    // r
+  drawOneE(int(random(6,8)), pos1_w + 6*sq_dim + 6*center_spacing + inter_word_spacing, pos_h);    // e
+  drawOneC(int(random(6,8)), pos1_w + 7*sq_dim + 7*center_spacing + inter_word_spacing, pos_h);    // c
+  drawOneO(int(random(6,8)), pos1_w + 8*sq_dim + 8*center_spacing + inter_word_spacing, pos_h);    // o
+  drawOneR(int(random(6,8)), pos1_w + 9*sq_dim + 9*center_spacing + inter_word_spacing, pos_h);    // r
+  drawOneD(int(random(6,8)), pos1_w + 10*sq_dim + 10*center_spacing + inter_word_spacing, pos_h);  // d
+  drawOneS(int(random(6,8)), pos1_w + 11*sq_dim + 11*center_spacing + inter_word_spacing, pos_h);  // s  
 
   console.log(pos1_w, pos2_w);
 }
@@ -125,7 +125,7 @@ function drawOne(numcells, translateX, translateY){
   //////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////
   // rect 3 (bottom rect)
-  rect3_height = random(35, 100);
+  rect3_height = random(35, 60);
   rect3_width = random(45, sq_dim - (2*margin));  // max is sq_dim - some margin
 
   ligneAvec(10, 0, 0, 0);
@@ -141,6 +141,10 @@ function drawOne(numcells, translateX, translateY){
   // Use rect3's top + a margin as the range to select in
   // rect1_lower_bound_y = random(80, sq_dim - rect3_height - margin);
   rect1_lower_bound_y = random(rect1_low_range, rect1_high_range);
+
+  // ligneAvec(10, 155, 0, 0);
+  // line(0, rect1_lower_bound_y, sq_dim, rect1_lower_bound_y); // RED horizontal line
+    
 
   if (DEBUG) {
     tmp = sq_dim - rect3_height; 
@@ -169,7 +173,9 @@ function drawOne(numcells, translateX, translateY){
     rect1_yoffset_from_top = random(margin, rect1_lower_bound_y);
   } while (rect1_lower_bound_y - rect1_yoffset_from_top < margin);
 
-  rect1_width = random((sq_dim - rect3_width)/3, sq_dim - (2*margin));
+  rect1_width = random((sq_dim - rect3_width)/5, sq_dim - (3*margin));
+  console.log("[INFO] rect1_width: " + rect1_width );
+
   rect1_height = rect1_lower_bound_y - rect1_yoffset_from_top
   rect1_x_start = 0;
   do {
@@ -384,7 +390,7 @@ function drawOneH(numcells, translateX, translateY){
     rect1_yoffset_from_top = random(margin, rect1_lower_bound_y);
   } while (rect1_lower_bound_y - rect1_yoffset_from_top < margin);
 
-  rect1_width = random(int(sq_dim/5), int(sq_dim/3));
+  rect1_width = random(int(sq_dim/4), int(sq_dim * 0.4));
   rect1_height = rect1_width
 
   ligneAvec(10, 0, 0, 0);
@@ -570,7 +576,7 @@ function drawOneE(numcells, translateX, translateY){
   } while (rect1_lower_bound_y - rect1_yoffset_from_top < margin);
 
   rect1_width = random(int(sq_dim/2), int(sq_dim * 0.75));
-  rect1_height = random(int(sq_dim * 0.1), int(sq_dim * 0.2));
+  rect1_height = random(int(sq_dim * 0.15), int(sq_dim * 0.22));
 
   ligneAvec(10, 0, 0, 0);
   rect(sq_dim - rect1_width, (sq_dim - rect1_height) * .25, rect1_width, rect1_height);
@@ -630,8 +636,8 @@ function drawOneS(numcells, translateX, translateY){
     rect1_yoffset_from_top = random(margin, rect1_lower_bound_y);
   } while (rect1_lower_bound_y - rect1_yoffset_from_top < margin);
 
-  rect1_width = random(int(sq_dim/2), int(sq_dim * 0.75));
-  rect1_height = random(int(sq_dim * 0.1), int(sq_dim * 0.2));
+  rect1_width = random(int(sq_dim * 0.55), int(sq_dim * 0.75));
+  rect1_height = random(int(sq_dim * 0.13), int(sq_dim * 0.22));
 
   ligneAvec(10, 0, 0, 0);
   rect(sq_dim - rect1_width, (sq_dim - rect1_height) * .25, rect1_width, rect1_height);
