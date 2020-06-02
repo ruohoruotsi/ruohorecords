@@ -21,7 +21,7 @@ var margin = 40;
 
 function setup() {
   createCanvas(canvasSize_w, canvasSize_h);
-  frameRate(0.25); // Attempt to refresh at starting FPS // 0.5
+  frameRate(0.75); // Attempt to refresh at starting FPS // 0.5
 
 
 
@@ -169,7 +169,7 @@ function drawOne(numcells, translateX, translateY){
     rect1_yoffset_from_top = random(margin, rect1_lower_bound_y);
   } while (rect1_lower_bound_y - rect1_yoffset_from_top < margin);
 
-  rect1_width = random((sq_dim - rect3_width)/2, sq_dim - (2*margin));
+  rect1_width = random((sq_dim - rect3_width)/3, sq_dim - (2*margin));
   rect1_height = rect1_lower_bound_y - rect1_yoffset_from_top
   rect1_x_start = 0;
   do {
@@ -182,7 +182,7 @@ function drawOne(numcells, translateX, translateY){
   //////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////
   // rect 2 (right rect1/rect3) # 200 needs to be anchored to whatever rect1 is doing
-  rect2_x_start = random((sq_dim - rect3_width)/2 + margin, sq_dim - margin);
+  rect2_x_start = random((sq_dim - rect3_width)/3 + margin, sq_dim - margin);
   // rect2_y_start = random(rect1_lower_bound_y, sq_dim - rect3_height);
   rect2_y_start = rect1_lower_bound_y + margin;
 
