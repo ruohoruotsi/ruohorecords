@@ -18,12 +18,56 @@ var canvasSize_h = 360 * multiplier;  // 1080p at retina // 1920×1080
 
 var DEBUG = false;  // control debug logging and diagnostic lines
 var margin = 40;
+let graphics;
 
 function setup() {
   createCanvas(canvasSize_w, canvasSize_h);
+
+  //////////
+  colorMode(HSB, 360, 100, 100, 100);
+  angleMode(DEGREES);
+
+  graphics = createGraphics(width, height);
+  graphics.colorMode(HSB, 360, 100, 100, 100);
+  graphics.noStroke();
+  // for (let i = 0; i < width * height * 25 / 100; i++) {
+  //   // let r = (1 - random(random(random()))) * sqrt(sq(width) + sq(height)) / 2;
+  //   let r = (random(random(random()))) * sqrt(sq(width) + sq(height)) / 2;
+
+  //   let angle = random(360);
+  //   let x = width / 2 + cos(angle) * r;
+  //   let y = height / 2 + sin(angle) * r;
+  //   let w = random(3);
+  //   let h = random(3);
+
+  //   // Alpha controls dispersion of textural bg
+  //   // random(100) > 50 ? graphics.fill(0, 0, 100, 25) : graphics.fill(0, 0, 0, 35);
+  //   random(100) > 50 ? graphics.fill(0, 0, 100, 55) : graphics.fill(0, 0, 0, 65);
+
+  //   graphics.ellipse(x, y, w, h);
+  // }
+    for (let i = 0; i < width * height * 4 / 100; i++) {
+    // let r = (1 - random(random(random()))) * sqrt(sq(width) + sq(height)) / 2;
+    let r = (random(random(random()))) * sqrt(sq(width) + sq(height)) * 35;
+
+    // ok
+    //let r = random() * sqrt(sq(width) + sq(height)) * 10;
+
+    let angle = random(360);
+    let x = width / 2 + cos(angle) * r;
+    let y = height / 2 + sin(angle) * r;
+    let w = random(6);
+    let h = random(6);
+
+    // Alpha controls dispersion of textural bg
+    // random(100) > 50 ? graphics.fill(0, 0, 100, 25) : graphics.fill(0, 0, 0, 35);
+    random(100) > 50 ? graphics.fill(0, 0, 100, 25) : graphics.fill(0, 0, 0, 35);
+
+    graphics.ellipse(x, y, w, h);
+  }
+  /////////
+
   frameRate(0.75); // Attempt to refresh at starting FPS // 0.5
-
-
 
   noFill();
   if (DEBUG) {
@@ -36,6 +80,9 @@ function draw() {
 
   background(255, 255, 255);      // <=== white background
   clear();                        // <=== transparent background
+
+  image(graphics, 0, 0);
+
 
   // bg cell grid color
   stroke(99, 40, 37);
