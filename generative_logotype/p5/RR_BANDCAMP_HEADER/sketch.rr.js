@@ -11,10 +11,10 @@
 // -----------------------------------------------------------------
 // setup
 // -----------------------------------------------------------------
-var multiplier = 2;
+var multiplier = 4;
 var sq_dim = 250;
-var canvasSize_w = 1950 * multiplier;  // 1080p at retina // 1920×1080 
-var canvasSize_h = 360 * multiplier;  // 1080p at retina // 1920×1080 
+var canvasSize_w = 1920 * multiplier;  // 1080p at retina // 1920×1080 
+var canvasSize_h = 1080 * multiplier;  // 1080p at retina // 1920×1080 
 
 var DEBUG = false;  // control debug logging and diagnostic lines
 var margin = 40;
@@ -30,44 +30,25 @@ function setup() {
   graphics = createGraphics(width, height);
   graphics.colorMode(HSB, 360, 100, 100, 100);
   graphics.noStroke();
-  // for (let i = 0; i < width * height * 25 / 100; i++) {
-  //   // let r = (1 - random(random(random()))) * sqrt(sq(width) + sq(height)) / 2;
-  //   let r = (random(random(random()))) * sqrt(sq(width) + sq(height)) / 2;
-
-  //   let angle = random(360);
-  //   let x = width / 2 + cos(angle) * r;
-  //   let y = height / 2 + sin(angle) * r;
-  //   let w = random(3);
-  //   let h = random(3);
-
-  //   // Alpha controls dispersion of textural bg
-  //   // random(100) > 50 ? graphics.fill(0, 0, 100, 25) : graphics.fill(0, 0, 0, 35);
-  //   random(100) > 50 ? graphics.fill(0, 0, 100, 55) : graphics.fill(0, 0, 0, 65);
-
-  //   graphics.ellipse(x, y, w, h);
-  // }
-    for (let i = 0; i < width * height * 4 / 100; i++) {
+  for (let i = 0; i < width * height * 1 / 100; i++) {
     // let r = (1 - random(random(random()))) * sqrt(sq(width) + sq(height)) / 2;
-    let r = (random(random(random()))) * sqrt(sq(width) + sq(height)) * 35;
-
-    // ok
-    //let r = random() * sqrt(sq(width) + sq(height)) * 10;
+    let r = (random(random(random()))) * sqrt(sq(width) + sq(height)) / 2;
 
     let angle = random(360);
     let x = width / 2 + cos(angle) * r;
     let y = height / 2 + sin(angle) * r;
-    let w = random(6);
-    let h = random(6);
+    let w = random(20);
+    let h = random(20);
 
     // Alpha controls dispersion of textural bg
     // random(100) > 50 ? graphics.fill(0, 0, 100, 25) : graphics.fill(0, 0, 0, 35);
-    random(100) > 50 ? graphics.fill(0, 0, 100, 25) : graphics.fill(0, 0, 0, 35);
+    random(100) > 50 ? graphics.fill(0, 0, 100, 55) : graphics.fill(0, 0, 0, 65);
 
     graphics.ellipse(x, y, w, h);
   }
   /////////
 
-  frameRate(0.75); // Attempt to refresh at starting FPS // 0.5
+  frameRate(0.33); // Attempt to refresh at starting FPS // 0.5
 
   noFill();
   if (DEBUG) {
@@ -92,9 +73,9 @@ function draw() {
   inter_word_spacing = 120;
   // pos1_w = (canvasSize_w / 8) - sq_dim - center_spacing;
   // pos2_w = (canvasSize_w / 8)          + center_spacing;
-  pos1_w = 45 + 180;
+  pos1_w = 473*4 + 55*4; // 45 + 180;
   pos2_w = pos1_w + sq_dim + center_spacing;
-  pos_h = (canvasSize_h - sq_dim) / 2;
+  pos_h = 57*4; // (canvasSize_h - sq_dim) / 2;
   drawOneR(int(random(6,10)), pos1_w, pos_h);                                  // r
   drawOneU(int(random(6,8)), pos1_w + sq_dim + center_spacing, pos_h);         // u
   drawOneO(int(random(6,8)), pos1_w + 2*sq_dim + 2*center_spacing, pos_h);     // o
