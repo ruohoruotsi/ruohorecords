@@ -7,6 +7,10 @@
  * @author : ruoho ruotsi
  */
 
+// Snipping the generated 1920 x 1080 image for Bandcamp
+// 55 [?] 55
+// 
+// 473 [975] 472
 
 // -----------------------------------------------------------------
 // setup
@@ -76,19 +80,19 @@ function draw() {
   pos1_w = 473*4 + 55*4; // 45 + 180;
   pos2_w = pos1_w + sq_dim + center_spacing;
   pos_h = 57*4; // (canvasSize_h - sq_dim) / 2;
-  drawOneR(int(random(6,10)), pos1_w, pos_h);                                  // r
-  drawOneU(int(random(6,8)), pos1_w + sq_dim + center_spacing, pos_h);         // u
-  drawOneO(int(random(6,8)), pos1_w + 2*sq_dim + 2*center_spacing, pos_h);     // o
-  drawOneH(int(random(6,8)), pos1_w + 3*sq_dim + 3*center_spacing, pos_h);     // h
-  drawOneO(int(random(6,8)), pos1_w + 4*sq_dim + 4*center_spacing, pos_h);     // o
+  drawOneR(int(random(6,12)), pos1_w, pos_h);                                  // r
+  drawOneU(int(random(6,10)), pos1_w + sq_dim + center_spacing, pos_h);         // u
+  drawOneO(int(random(6,10)), pos1_w + 2*sq_dim + 2*center_spacing, pos_h);     // o
+  drawOneH(int(random(6,10)), pos1_w + 3*sq_dim + 3*center_spacing, pos_h);     // h
+  drawOneO(int(random(6,10)), pos1_w + 4*sq_dim + 4*center_spacing, pos_h);     // o
 
-  drawOneR(int(random(6,10)), pos1_w + 5*sq_dim + 5*center_spacing + inter_word_spacing, pos_h);   // r
-  drawOneE(int(random(6,8)), pos1_w + 6*sq_dim + 6*center_spacing + inter_word_spacing, pos_h);    // e
-  drawOneC(int(random(6,8)), pos1_w + 7*sq_dim + 7*center_spacing + inter_word_spacing, pos_h);    // c
-  drawOneO(int(random(6,8)), pos1_w + 8*sq_dim + 8*center_spacing + inter_word_spacing, pos_h);    // o
-  drawOneR(int(random(6,10)), pos1_w + 9*sq_dim + 9*center_spacing + inter_word_spacing, pos_h);   // r
-  drawOneD(int(random(6,8)), pos1_w + 10*sq_dim + 10*center_spacing + inter_word_spacing, pos_h);  // d
-  drawOneS(int(random(6,8)), pos1_w + 11*sq_dim + 11*center_spacing + inter_word_spacing, pos_h);  // s  
+  drawOneR(int(random(6,12)), pos1_w + 5*sq_dim + 5*center_spacing + inter_word_spacing, pos_h);   // r
+  drawOneE(int(random(6,10)), pos1_w + 6*sq_dim + 6*center_spacing + inter_word_spacing, pos_h);    // e
+  drawOneC(int(random(6,10)), pos1_w + 7*sq_dim + 7*center_spacing + inter_word_spacing, pos_h);    // c
+  drawOneO(int(random(6,10)), pos1_w + 8*sq_dim + 8*center_spacing + inter_word_spacing, pos_h);    // o
+  drawOneR(int(random(6,12)), pos1_w + 9*sq_dim + 9*center_spacing + inter_word_spacing, pos_h);   // r
+  drawOneD(int(random(6,10)), pos1_w + 10*sq_dim + 10*center_spacing + inter_word_spacing, pos_h);  // d
+  drawOneS(int(random(6,10)), pos1_w + 11*sq_dim + 11*center_spacing + inter_word_spacing, pos_h);  // s  
 
   console.log(pos1_w, pos2_w);
 }
@@ -142,7 +146,7 @@ function drawOne(numcells, translateX, translateY){
     }
 
   // redraw rect shape, so the background lines don't show. Ugh
-  ligneAvec(10, 0, 0, 0);
+  ligneAvec(12, 0, 0, 0);
 
   // Draw circumscribing-square
   rect(0, 0, sq_dim, sq_dim); // sq_dim x sq_dim
@@ -153,8 +157,8 @@ function drawOne(numcells, translateX, translateY){
   //////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////
   // rect 3 (bottom rect)
-  rect3_height = random(35, 60);
-  rect3_width = random(45, sq_dim - (2*margin));  // max is sq_dim - some margin
+  rect3_height = random(35, 50);
+  rect3_width = random(85, sq_dim - (2*margin));  // max is sq_dim - some margin
 
   ligneAvec(10, 0, 0, 0);
   rect((sq_dim - rect3_width)/2, sq_dim - rect3_height, rect3_width, rect3_height);
@@ -207,7 +211,7 @@ function drawOne(numcells, translateX, translateY){
   rect1_height = rect1_lower_bound_y - rect1_yoffset_from_top
   rect1_x_start = 0;
   do {
-    rect1_x_start = random(margin, (sq_dim - rect3_width)/2);
+    rect1_x_start = random(margin, (sq_dim - rect3_width)/4);
     sum = rect1_width + rect1_x_start;
   } while (sum + margin > sq_dim);
   ligneAvec(10, 0, 0, 0);
@@ -242,8 +246,8 @@ function drawOne(numcells, translateX, translateY){
 
   } else {
 
-  ligneAvec(10, 0, 0, 0);
-  rect(rect2_x_start, rect2_y_start, rect2_width, rect2_height);
+  // ligneAvec(10, 0, 0, 0);
+  // rect(rect2_x_start, rect2_y_start, rect2_width, rect2_height);
   noFill();
   }
 
@@ -284,7 +288,7 @@ function drawOneU(numcells, translateX, translateY){
     }
 
   // redraw rect shape, so the background lines don't show. Ugh
-  ligneAvec(10, 0, 0, 0);
+  ligneAvec(12, 0, 0, 0);
 
   // Draw circumscribing-square
   rect(0, 0, sq_dim, sq_dim); // sq_dim x sq_dim
@@ -343,7 +347,7 @@ function drawOneO(numcells, translateX, translateY){
     }
 
   // redraw rect shape, so the background lines don't show. Ugh
-  ligneAvec(10, 0, 0, 0);
+  ligneAvec(12, 0, 0, 0);
 
   // Draw circumscribing-square
   rect(0, 0, sq_dim, sq_dim); // sq_dim x sq_dim
@@ -402,7 +406,7 @@ function drawOneH(numcells, translateX, translateY){
     }
 
   // redraw rect shape, so the background lines don't show. Ugh
-  ligneAvec(10, 0, 0, 0);
+  ligneAvec(12, 0, 0, 0);
 
   // Draw circumscribing-square
   rect(0, 0, sq_dim, sq_dim); // sq_dim x sq_dim
@@ -468,7 +472,7 @@ function drawOneC(numcells, translateX, translateY){
     }
 
   // redraw rect shape, so the background lines don't show. Ugh
-  ligneAvec(10, 0, 0, 0);
+  ligneAvec(12, 0, 0, 0);
 
   // Draw circumscribing-square
   rect(0, 0, sq_dim, sq_dim); // sq_dim x sq_dim
@@ -484,7 +488,7 @@ function drawOneC(numcells, translateX, translateY){
     rect1_yoffset_from_top = random(margin, rect1_lower_bound_y);
   } while (rect1_lower_bound_y - rect1_yoffset_from_top < margin);
 
-  rect1_width = random(int(sq_dim/4), int(sq_dim * 0.75));
+  rect1_width = random(int(sq_dim/2), int(sq_dim * 0.75));
   rect1_height = random(int(sq_dim/2), int(sq_dim * 0.6));
 
   ligneAvec(10, 0, 0, 0);
@@ -528,7 +532,7 @@ function drawOneD(numcells, translateX, translateY){
     }
 
   // redraw rect shape, so the background lines don't show. Ugh
-  ligneAvec(10, 0, 0, 0);
+  ligneAvec(12, 0, 0, 0);
 
   // Draw circumscribing-square
   rect(0, 0, sq_dim, sq_dim); // sq_dim x sq_dim
@@ -587,7 +591,7 @@ function drawOneE(numcells, translateX, translateY){
     }
 
   // redraw rect shape, so the background lines don't show. Ugh
-  ligneAvec(10, 0, 0, 0);
+  ligneAvec(12, 0, 0, 0);
 
   // Draw circumscribing-square
   rect(0, 0, sq_dim, sq_dim); // sq_dim x sq_dim
@@ -648,7 +652,7 @@ function drawOneS(numcells, translateX, translateY){
     }
 
   // redraw rect shape, so the background lines don't show. Ugh
-  ligneAvec(10, 0, 0, 0);
+  ligneAvec(12, 0, 0, 0);
 
   // Draw circumscribing-square
   rect(0, 0, sq_dim, sq_dim); // sq_dim x sq_dim
