@@ -14,7 +14,7 @@
 // setup
 // -----------------------------------------------------------------
 var multiplier = 2;
-var sq_dim = 250;
+var sq_dim = 200;
 var canvasSize_w = 2560 * multiplier;  // 
 var canvasSize_h = 1440 * multiplier;  // 
 
@@ -72,19 +72,19 @@ function draw() {
   pos1_w = (canvasSize_w - (11*sq_dim + 11*center_spacing + inter_word_spacing))/2 - sq_dim/2;
   pos2_w = pos1_w + sq_dim + center_spacing;
   pos_h = (canvasSize_h - sq_dim) / 2;
-  drawOneR(int(random(6,12)), pos1_w, pos_h);                                  // r
-  drawOneU(int(random(6,10)), pos1_w + sq_dim + center_spacing, pos_h);         // u
-  drawOneO(int(random(6,10)), pos1_w + 2*sq_dim + 2*center_spacing, pos_h);     // o
-  drawOneH(int(random(6,10)), pos1_w + 3*sq_dim + 3*center_spacing, pos_h);     // h
-  drawOneO(int(random(6,10)), pos1_w + 4*sq_dim + 4*center_spacing, pos_h);     // o
+  drawOneR(int(random(6,10)), pos1_w, pos_h);                                  // r
+  drawOneU(int(random(5,9)), pos1_w + sq_dim + center_spacing, pos_h);         // u
+  drawOneO(int(random(5,9)), pos1_w + 2*sq_dim + 2*center_spacing, pos_h);     // o
+  drawOneH(int(random(5,9)), pos1_w + 3*sq_dim + 3*center_spacing, pos_h);     // h
+  drawOneO(int(random(5,9)), pos1_w + 4*sq_dim + 4*center_spacing, pos_h);     // o
 
-  drawOneR(int(random(6,12)), pos1_w + 5*sq_dim + 5*center_spacing + inter_word_spacing, pos_h);   // r
-  drawOneE(int(random(6,10)), pos1_w + 6*sq_dim + 6*center_spacing + inter_word_spacing, pos_h);    // e
-  drawOneC(int(random(6,10)), pos1_w + 7*sq_dim + 7*center_spacing + inter_word_spacing, pos_h);    // c
-  drawOneO(int(random(6,10)), pos1_w + 8*sq_dim + 8*center_spacing + inter_word_spacing, pos_h);    // o
-  drawOneR(int(random(6,12)), pos1_w + 9*sq_dim + 9*center_spacing + inter_word_spacing, pos_h);   // r
-  drawOneD(int(random(6,10)), pos1_w + 10*sq_dim + 10*center_spacing + inter_word_spacing, pos_h);  // d
-  drawOneS(int(random(6,10)), pos1_w + 11*sq_dim + 11*center_spacing + inter_word_spacing, pos_h);  // s  
+  drawOneR(int(random(6,10)), pos1_w + 5*sq_dim + 5*center_spacing + inter_word_spacing, pos_h);   // r
+  drawOneE(int(random(5,9)), pos1_w + 6*sq_dim + 6*center_spacing + inter_word_spacing, pos_h);    // e
+  drawOneC(int(random(5,9)), pos1_w + 7*sq_dim + 7*center_spacing + inter_word_spacing, pos_h);    // c
+  drawOneO(int(random(5,9)), pos1_w + 8*sq_dim + 8*center_spacing + inter_word_spacing, pos_h);    // o
+  drawOneR(int(random(6,10)), pos1_w + 9*sq_dim + 9*center_spacing + inter_word_spacing, pos_h);   // r
+  drawOneD(int(random(5,9)), pos1_w + 10*sq_dim + 10*center_spacing + inter_word_spacing, pos_h);  // d
+  drawOneS(int(random(5,9)), pos1_w + 11*sq_dim + 11*center_spacing + inter_word_spacing, pos_h);  // s  
 
   console.log(pos1_w, pos2_w);
 }
@@ -544,7 +544,7 @@ function drawOneD(numcells, translateX, translateY){
   rect1_height = rect1_width
 
   ligneAvec(10, 0, 0, 0);
-  rect((sq_dim - rect1_width)/2 - 45, (sq_dim - rect1_height)/2, rect1_width, rect1_height);
+  rect((sq_dim - rect1_width)/2 - 35, (sq_dim - rect1_height)/2, rect1_width, rect1_height);
 
   pop(); // Restore original state
 }

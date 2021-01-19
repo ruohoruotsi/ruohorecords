@@ -119,7 +119,7 @@ function drawOne(cells, celln, translateX, translateY){
   //////////////////////////////////////////////////////////////////////////////////
   // rect 3 (bottom rect)
   rect3_height = random(35, 100);
-  rect3_width = random(45, sq_dim - (2*margin));  // max is sq_dim - some margin
+  rect3_width = random(85, sq_dim - (2*margin));  // max is sq_dim - some margin
 
   ligneAvec(14, 0, 0, 0);
   rect((sq_dim - rect3_width)/2, sq_dim - rect3_height, rect3_width, rect3_height);
@@ -223,8 +223,8 @@ function drawOne(cells, celln, translateX, translateY){
 
   } else {
 
-  ligneAvec(14, 0, 0, 0);
-  rect(rect2_x_start, rect2_y_start, rect2_width, rect2_height);
+  // ligneAvec(14, 0, 0, 0);
+  // rect(rect2_x_start, rect2_y_start, rect2_width, rect2_height);
   noFill();
   }
 
