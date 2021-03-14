@@ -105,20 +105,21 @@ function draw_quad_colors_bezier() {
 
   blendMode(BLEND);
   bg_color = color(random(10), 0, 45);
-  // background(0,0,20);
   background(bg_color);
 
-  cells = int(random(2, 4));
+  cells = int(random(5, 6));
   cols = cells;
   rows = cells;
   offset = width / 10;
-  margin = 0; // offset / 5;
+  margin = 50; // offset / 5;
 
   cellW = (width - offset * 2 - margin * (cols - 1)) / cols;
   cellH = (height - offset * 2 - margin * (rows - 1)) / rows;
 
   for (let j = 0; j < rows; j++) {
     for (let i = 0; i < cols; i++) {
+      if (j == 0) continue;
+
       let x = offset + i * (cellW + margin);
       let y = offset + j * (cellH + margin);
       let cx = x + cellW / 2;
