@@ -30,17 +30,17 @@ function setup() {
   graphics = createGraphics(width, height);
   graphics.noStroke();
   for (let i = 0; i < width * height * 1 / 10; i++) {
-    let r = (1 - random(random(random()))) * sqrt(sq(width) + sq(height)) / 2;
+    let r = (1 - random(random(random()))) * sqrt(sq(width) + sq(height));
     // let r = (random(random(random()))) * sqrt(sq(width) + sq(height)) / 2;
 
     let angle = random(360);
     let x = width / 2 + cos(angle) * r;
     let y = height / 2 + sin(angle) * r;
-    let w = random(20);
-    let h = random(20);
+    let w = random(25);
+    let h = random(25);
 
     // Alpha controls dispersion of textural bg
-    random(100) > 50 ? graphics.fill(0, 0, 0, 40) : graphics.fill(80, 53, 37, 20);  // HSBmode
+    random(100) > 50 ? graphics.fill(0, 0, 0, 70) : graphics.fill(0, 0, 0, 20);
 
     graphics.ellipse(x, y, w, h);
   }
