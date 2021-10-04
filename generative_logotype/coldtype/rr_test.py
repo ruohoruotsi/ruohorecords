@@ -1,12 +1,17 @@
 from coldtype import *
 
 
-# pass a rect to an oval, with frame? taking a color tuple
-# what is a DATPen?
+# Pass an 300px inset rect containing an oval, with frame? taking a 
+# color tuple. What is a DATPen? <-- fontTools RecordingPen, a vector 
+# representation in Coldtype
+#######################################################################
 # @renderable()
-# def test(r):
-#     return DATPen().oval(r).f((0.1,0.2,0.6))
+# def test(r:Rect):
+#     # return DATPen().oval(r.inset(300)).f((0.3, 0.2, 0.6))
+#     return DATPen().rect(r.inset(300)).f(hsl(random()))
 
+
+#######################################################################
 # What is P()? f.a.r = frame.animation.rect, black, inset 300pixels
 # with sinusoidal easing in/out
 @animation(timeline=10) # duration of 10 frames
