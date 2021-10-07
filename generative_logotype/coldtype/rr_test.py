@@ -16,11 +16,14 @@ from coldtype import *
 # Built in fonts are ColdtypeObviously, RecursiveMono, MutatorSans
 @renderable((1440, 1080))
 def sample_text(r):
-    return PS([
-        P().oval(r.inset(20)).f(hsl(random())),
-        (StSt("RUOHO",
-        Font.))
-        ])
+    return PS([                                 # list for renderables
+        P().oval(r.inset(20)).f(hsl(random())), # renderable #1
+
+        (StSt("COLDTYPE",                       # renderable #2
+        Font.ColdtypeObviously(), 400,
+        wdth=0, tu=100, rotate=0)
+        .align(r)
+        .f(1))])
 
 
 #######################################################################
