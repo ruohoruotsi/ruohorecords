@@ -7,28 +7,27 @@ from coldtype import *
 #######################################################################
 # @renderable()
 # def test(r:Rect):
-#     # return DATPen().oval(r.inset(300)).f((0.3, 0.2, 0.6))
+#     #return DATPen().oval(r.inset(300)).f((0.3, 0.2, 0.6))
 #     return DATPen().rect(r.inset(300)).f(hsl(random()))
 
 
-#######################################################################
 # Multiple Renderables
 # Built in fonts are ColdtypeObviously, RecursiveMono, MutatorSans
-@renderable((1440, 1080))
+@renderable((800, 600))
 def sample_text(r):
     return PS([                                 # list for renderables
         P().oval(r.inset(20)).f(hsl(random())), # renderable #1
 
-        (StSt("COLDTYPE",                       # renderable #2
-        Font.ColdtypeObviously(), 400,
-        wdth=0, tu=100, rotate=0)
+        (StSt("DOPO POTLY",                   # renderable #2
+        Font.ColdtypeObviously(), 200,
+        wdth=0, tu=100, rotate=15)
         .align(r)
         .f(1))])
 
 
-#######################################################################
 # What is P()? f.a.r = frame.animation.rect, black, inset 300pixels
 # with sinusoidal easing in/out
+#######################################################################
 # @animation(timeline=10) # duration of 10 frames
 # def easing_example(f):
 #     square = P(f.a.r.inset(300)).f(0)
