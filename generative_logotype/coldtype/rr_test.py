@@ -38,18 +38,31 @@ from coldtype import *
 #         .f(1))])
 
 
-# 
-coldtype_obv = Font.ColdtypeObviously()
-@renderable((800,800))
-def basic(r):
-    # return (StSt("POTLY", coldtype_obv, 150).align(r))
-    pens = (StSt("POTLY", coldtype_obv, 150,
-        wdth=0.5, rotate=10, tu=160)
-        .align(r)
-        .f(hsl(0.8, s=0.75)))
+# Less Basic Text
+#######################################################################
+# coldtype_obv = Font.ColdtypeObviously()
+# @renderable((800,800))
+# def basic(r):
+#     # return (StSt("POTLY", coldtype_obv, 150).align(r))
+#     pens = (StSt("POTLY", coldtype_obv, 150,
+#         wdth=0.5, rotate=10, tu=160)
+#         .align(r)
+#         .f(hsl(0.8, s=0.75)))
 
-    print(pens.tree())
-    pens[0].rotate(180)
-    pens[-1].rotate(180)
-    pens[3].rotate(180)
-    return pens
+#     print(pens.tree())
+#     pens[0].rotate(180)
+#     pens[-1].rotate(180)
+#     pens[3].rotate(180)
+#     return pens
+
+coldtype_obv = Font.ColdtypeObviously()
+@renderable((1000, 200))
+def simpledrop(r):
+    pens = (StSt("LYPOT CO", coldtype_obv, 150,
+        wdth=0.5, rotate=11, tu=250)
+        .align(r)
+        .f(1))
+    return DATPens([ 
+        pens.copy().translate(10, -10).f(0) # shadow
+        ,pens.s(hsl(0.9)).sw(3)           # top version of text
+    ])
