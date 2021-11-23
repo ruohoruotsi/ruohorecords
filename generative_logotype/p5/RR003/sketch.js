@@ -20,9 +20,8 @@ var DEBUG = false;  // control debug logging and diagnostic lines
 
 // color pallet for little RRs
 // -----------------------------------------------------------------
-// let url = "https://coolors.co/fff6ed-ffeddb-ffdcb6-ffb96d-ff9624-ff8400-f27d00-d76f00-ae5a00-864500" // autumn pallette
-let url = "https://coolors.co/3e1b02-7a330b-94470e-c07b21-ce902c-e3b046-f0cd70" // splash yellow
-
+// let url = "https://coolors.co/3d3d3d-333333-292929-1f1f1f-141414" // dark grey
+let url = "https://coolors.co/03071e-370617-6a040f-9d0208-d00000-dc2f02-e85d04-f48c06-faa307-ffba08"
 
 let pallete;
 
@@ -51,11 +50,11 @@ function setup() {
     let angle = random(360);
     let x = width / 2 + cos(angle) * r;
     let y = height / 2 + sin(angle) * r;
-    let w = random(19);
-    let h = random(19);
+    let w = random(11);
+    let h = random(11);
 
     // Alpha controls dispersion of textural bg
-    graphics.fill(33, 23, 7, 45); // good brown, better than mixing orange and brown
+    graphics.fill(12, 18, 24, 105);
     graphics.ellipse(x, y, w, h);
   }
 
@@ -98,12 +97,12 @@ function draw() {
 
   //-------------------------------------------------------
   // middle text box
-  // let middleColour = color("#f25c54");        // orange
-  let middleColour = color("#c6a180");        // brown beige
+  // let middleColour = color("#f25c54");     // orange
+  let middleColour = color("#dc2f02");        // blue
 
 
   // 
-  let middleStrokeColour = color("#f2f2f2"); // background light grey
+  let middleStrokeColour = color("#00000"); // background light grey
 
   fill(middleColour);
   stroke(middleStrokeColour, 255);
@@ -114,7 +113,7 @@ function draw() {
 
   //-------------------------------------------------------
   // album text
-  let albumTextColour = color("#302923"); // dark brown
+  let albumTextColour = color("#302923"); //
   strokeWeight(1);
 
   stroke(albumTextColour);
@@ -150,13 +149,13 @@ function draw() {
 
 
     push();
-    translate(center.x - 150, center.y + 50);  // IOHAVOC shift down from center
+    translate(center.x - 150, center.y - 100);  // IOHAVOC shift down from center
     // translate(center.x - 100, center.y + 150);  // IOHAVOC shift down from center
 
     // rotate(random(360));
     let n = int(random(points.length));
-    let nn = int(random(1, 5));
-    let isCircle = random(100) > 50 ? true : false;
+    let nn = int(random(1, 15));
+    let isCircle = random(100) > 90 ? true : false;
     console.log("nn: " + nn);
     console.log("n: " + n);
 
@@ -169,7 +168,7 @@ function draw() {
       let p4 = createVector(points[(n + 4) % points.length].x, points[(n + 4) % points.length].y).mult(q);
       
       if (!isCircle) {
-      	 drawOne(random(30, 40), random(0,300), random(0, 300));   // coordinates are offsets for R
+      	 drawOne(random(20, 40), random(0,200), random(0, 200));   // coordinates are offsets for R
       }
     }
 
@@ -211,7 +210,7 @@ function drawOne(square_dim, translateX, translateY){
   push(); // Start a new drawing state
 
   translate(translateX, translateY);  
-  ligneAvec(1, "#141414"); // for letter background set stroke style
+  ligneAvec(1, "#212529"); // for letter background set stroke style
 
   let c1 = random(pallete)
   // Draw circumscribing-square
@@ -233,7 +232,7 @@ function drawOne(square_dim, translateX, translateY){
   rect3_height = random(square_dim/5, (square_dim/6));
   rect3_width = random(square_dim/4, square_dim - (2*margin));  // max is sq_dim - some margin
 
-  ligneAvec(1, "#141414");
+  ligneAvec(1, "#403d39");
   rect((square_dim - rect3_width)/2, square_dim - rect3_height, rect3_width, rect3_height);
 
   rect1_low_range = 10;
@@ -264,7 +263,7 @@ function drawOne(square_dim, translateX, translateY){
 
   console.log("rect1_height: " + rect1_height);
 
-  ligneAvec(1, "#141414");
+  ligneAvec(1, "#403d39");
   rect(rect1_x_start, rect1_yoffset_from_top, rect1_width, rect1_height);
 
 
