@@ -45,17 +45,27 @@ function setup() {
   graphics = createGraphics(width, height);
   // graphics.colorMode(HSB, 360, 100, 100, 100);  // get rid of HSBmode
   graphics.noStroke();
-  for (let i = 0; i < width * height * 25 / 100; i++) {
+  for (let i = 0; i < width * height * 25 / 200; i++) {
     let r = (1 - random(random(random()))) * sqrt(sq(width) + sq(height)) / 2;
     let angle = random(360);
     let x = width / 2 + cos(angle) * r;
     let y = height / 2 + sin(angle) * r;
-    let w = random(11);
-    let h = random(11);
+    let w = random(6, 10);
+    let h = random(6, 10);
+
 
     // Alpha controls dispersion of textural bg
-    graphics.fill(12, 18, 24, 105);
-    graphics.ellipse(x, y, w, h);
+    let isBlack = random(100) > 45 ? true : false;
+
+    // graphics.fill(12, 18, 24, 105);
+    if(isBlack == true){
+      graphics.fill(12, 18, 24, 105);
+      graphics.ellipse(x, y, w, h);
+    }else {
+      graphics.fill(220, 47, 2, 45);
+      graphics.ellipse(x, y, 6, 6)
+    }
+    // graphics.ellipse(x, y, w, h)
   }
 
   // IOHAVOC
@@ -149,12 +159,12 @@ function draw() {
 
 
     push();
-    translate(center.x - 150, center.y - 100);  // IOHAVOC shift down from center
+    translate(center.x - 250, center.y - 250);  // IOHAVOC shift down from center
     // translate(center.x - 100, center.y + 150);  // IOHAVOC shift down from center
 
     // rotate(random(360));
     let n = int(random(points.length));
-    let nn = int(random(1, 15));
+    let nn = int(random(1, 25));
     let isCircle = random(100) > 90 ? true : false;
     console.log("nn: " + nn);
     console.log("n: " + n);
@@ -168,7 +178,7 @@ function draw() {
       let p4 = createVector(points[(n + 4) % points.length].x, points[(n + 4) % points.length].y).mult(q);
       
       if (!isCircle) {
-      	 drawOne(random(20, 40), random(0,200), random(0, 200));   // coordinates are offsets for R
+      	 drawOne(random(20, 40), random(0,500), random(0, 500));   // coordinates are offsets for R
       }
     }
 
