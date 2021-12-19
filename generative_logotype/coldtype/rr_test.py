@@ -56,27 +56,71 @@ from coldtype import *
 #     pens[3].rotate(180)
 #     return pens
 
+# Drop Shadows
+#######################################################################
 coldtype_obv = Font.ColdtypeObviously()
-@renderable((1000, 200))
-def simpledrop(r):
-    pens = (StSt("LYPT CO", coldtype_obv, 150,
-        wdth=0.5, rotate=11, tu=250)
-        .align(r)
-        .f(1))
-    return DATPens([ 
-        pens.copy().translate(10, -10).f(0) # shadow
-        ,pens.s(hsl(0.9)).sw(3)             # top version of text
-    ])
+# @renderable((1000, 200))
+# def simpledrop(r):
+#     pens = (StSt("LYPT CO", coldtype_obv, 150,
+#         wdth=0.5, rotate=11, tu=250)
+#         .align(r)
+#         .f(1))
+#     return DATPens([ 
+#         pens.copy().translate(10, -10).f(0) # shadow
+#         ,pens.s(hsl(0.9)).sw(3)             # top version of text
+#     ])
 
 
+# @renderable((1000, 200))
+# def ro(r):
+#     return (StSt("LPTT COOO", coldtype_obv, 150,
+#         width=0.5, rotate=10, tu=100, ro=1)
+#         .align(r)
+#         .f(1)
+#         .pen()
+#         .layer(
+#             lambda p: p.castshadow(-45, 50).f(0),
+#             lambda p: p.s(hsl(0.9)).sw(3))
+#         .align(r, th=1, tv=1))
+
+# @renderable((1000, 200))
+# def stroke_shadow(r):
+#     return (StSt("LYYYT CO", coldtype_obv, 160,
+#     width=1, rotate=10, tu=100, ro=1)
+#     .align(r)
+#     .f(1)
+#     .layer(
+#         lambda ps: ps.pmap(lambda p: p
+#         .outline(10)
+#         .removeOverlap()
+#         .castshadow(-24, 50)
+#         .f(None)
+#         .s(hsl(0.6, s=1, l=0.4))
+#         .sw(4)),
+#         lambda ps: ps.s(hsl(0.9)).sw(4))
+#     .align(r, th=1, tv=1)
+#     )
+
 @renderable((1000, 200))
-def ro(r):
-    return (StSt("LPTT COOO", coldtype_obv, 150,
-        width=0.5, rotate=10, tu=100, ro=1)
+def stroke_shadow_cleanup(r):
+    def shadow_and_cleanup(p):
+        return (p
+            .outline(10)
+            .reverse()
+            .removeOverlap()
+            .castshadow(-5, 220)
+            # .filter_contours( lambda j, c:
+            #     c.bounds().w > 50)
+            .f(None)
+            .s(hsl(0.6, s=1, l=0.4))
+            .sw(4))
+
+    return (StSt("C", coldtype_obv, 200,
+        wdth=0.5, rotate=10, tu=100, ro=1)
         .align(r)
         .f(1)
-        .pen()
         .layer(
-            lambda p: p.castshadow(-45, 50).f(0),
-            lambda p: p.s(hsl(0.9)).sw(3))
-        .align(r, th=1, tv=1))
+            lambda ps: ps.pmap(shadow_and_cleanup),
+            lambda ps: ps.s(hsl(0.9)).sw(4))
+        .align(r, th=1, tv=1)
+        )
