@@ -1,4 +1,6 @@
 from coldtype import *
+from coldtype.text.reader import offset
+coldtype_obv = Font.ColdtypeObviously()
 
 # Basics
 
@@ -40,7 +42,6 @@ from coldtype import *
 
 # Less Basic Text
 #######################################################################
-# coldtype_obv = Font.ColdtypeObviously()
 # @renderable((800,800))
 # def basic(r):
 #     # return (StSt("POTLY", coldtype_obv, 150).align(r))  # lessbasic
@@ -58,7 +59,6 @@ from coldtype import *
 
 # Drop Shadows
 #######################################################################
-coldtype_obv = Font.ColdtypeObviously()
 # @renderable((1000, 200))
 # def simpledrop(r):
 #     pens = (StSt("LYPT CO", coldtype_obv, 150,
@@ -69,7 +69,6 @@ coldtype_obv = Font.ColdtypeObviously()
 #         pens.copy().translate(10, -10).f(0) # shadow
 #         ,pens.s(hsl(0.9)).sw(3)             # top version of text
 #     ])
-
 
 # @renderable((1000, 200))
 # def ro(r):
@@ -101,26 +100,58 @@ coldtype_obv = Font.ColdtypeObviously()
 #     .align(r, th=1, tv=1)
 #     )
 
-@renderable((1000, 200))
-def stroke_shadow_cleanup(r):
-    def shadow_and_cleanup(p):
-        return (p
-            .outline(10)
-            .reverse()
-            .removeOverlap()
-            .castshadow(-5, 220)
-            # .filter_contours( lambda j, c:
-            #     c.bounds().w > 50)
-            .f(None)
-            .s(hsl(0.6, s=1, l=0.4))
-            .sw(4))
+# cleanup a little spec in the above drop shadow rendering
+# it may depend on the (canvas/char) dimensions chosen too, je pense 
+# @renderable((1000, 200))
+# def stroke_shadow_cleanup(r):
+#     def shadow_and_cleanup(p):
+#         return (p
+#             .outline(10)
+#             .reverse()
+#             .removeOverlap()
+#             .castshadow(-5, 220)
+#             # .filter_contours( lambda j, c:
+#             #     c.bounds().w > 50)
+#             .f(None)
+#             .s(hsl(0.6, s=1, l=0.4))
+#             .sw(4))
 
-    return (StSt("C", coldtype_obv, 200,
-        wdth=0.5, rotate=10, tu=100, ro=1)
+#     return (StSt("C", coldtype_obv, 200,
+#         wdth=0.5, rotate=10, tu=100, ro=1)
+#         .align(r)
+#         .f(1)
+#         .layer(
+#             lambda ps: ps.pmap(shadow_and_cleanup),
+#             lambda ps: ps.s(hsl(0.9)).sw(4))
+#         .align(r, th=1, tv=1)
+#         )
+
+# Multi-line, just add a \n
+#######################################################################
+# @renderable((1000, 550))
+# def multiline(r):
+#     return (StSt("COLDTYPE\nTYPECOLD", coldtype_obv, 300,
+#         wdth=1, fit=500)
+#         .align(r)
+#         .f(0))
+
+# Text on a path
+# @renderable((1000, 1000))
+# def on_a_path(r):
+#     circle = P().oval(r.inset(250)).reverse()
+#     return (StSt("COLDTYPE", coldtype_obv, 200, width=1)
+#         .distribute_on_path(circle, offset=275)
+#         .f(0)
+#     )
+
+
+# Finally RR font experiments
+rr_ttf = Font("rr_fonts/origami-mommy.pixellated.ttf")
+
+#######################################################################
+@renderable((1000, 550))
+def multiline(r):
+    return (StSt("RUOHO\nRECORDS", rr_ttf, 100,
+        wdth=1, fit=500)
         .align(r)
-        .f(1)
-        .layer(
-            lambda ps: ps.pmap(shadow_and_cleanup),
-            lambda ps: ps.s(hsl(0.9)).sw(4))
-        .align(r, th=1, tv=1)
-        )
+        .f(0))
