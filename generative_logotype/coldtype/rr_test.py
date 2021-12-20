@@ -144,14 +144,90 @@ coldtype_obv = Font.ColdtypeObviously()
 #         .f(0)
 #     )
 
-
-# Finally RR font experiments
-rr_ttf = Font("rr_fonts/origami-mommy.pixellated.ttf")
-
 #######################################################################
-@renderable((1000, 550))
-def multiline(r):
-    return (StSt("RUOHO\nRECORDS", rr_ttf, 100,
-        wdth=1, fit=500)
+#######################################################################
+# Finally RR font experiments. Labyrinth FTW!
+rr_ttf = Font("rr_fonts/lavirint/lavirint.ttf")
+# 1) Vertical Gradient looks nice
+# 2) small colorized drop shadow
+# 3) horizontal gradient?
+# 
+#######################################################################
+#######################################################################
+# IOHAVOC TODO, make this renderable match the size of the Bandcamp header
+@renderable((1000, 250))
+# def ruoho_records_basic(r):
+#     return (StSt("RUOHO RECORDS", rr_ttf, 80, width=1.0, r=1)
+#         # .f(hsl(random()))
+#         .f(Gradient.H(r,
+#             hsl(0.05, s=0.75),
+#             hsl(0.8, s=0.75)))
+#         .understroke(s=0, sw=3)  # OMG what is this??
+#         .align(r)
+#         )
+
+
+# try stroke shadow - MEH
+# def stroke_shadow(r):
+#     return (StSt("RUOHO RECORDS", rr_ttf, 80, 
+#         wdth=1, rotate=0, tu=10, ro=1)
+#         .align(r)
+#         .f(1)
+#         .layer(
+#             lambda ps: ps.pmap(lambda p: p
+#                 .outline(10)
+#                 .removeOverlap()
+#                 .castshadow(-15, 20)
+#                 .f(None)
+#                 .s(hsl(0.6, s=1, l=0.4))
+#                 .sw(4)),
+#             lambda ps: ps.s(hsl(0.9)).sw(4))
+#         .align(r, th=1, tv=1))
+
+# Vertical gradient is nice thoguh
+def ruoho_records_vertical(r):
+    return (StSt("RUOHO RECORDS", rr_ttf, 80, 
+        width=1.0, rotate=0, tu=40)
+        .f(Gradient.Vertical(r,
+            hsl(0.01, s=0.8),
+            hsl(0.2, s=0.75))
+            )
+        # .understroke(s=0, sw=1)
         .align(r)
-        .f(0))
+    )
+
+# Drop shadow
+# def simpledrop(r):
+#     return (StSt("RUOHO RECORDS", rr_ttf, 80,
+#         wdth=1.0, rotate=0, tu=40, ro=1)
+#         .align(r)
+#         .f(Gradient.H(r, hsl(0.74, s=0.15, l=0.25), 
+#                           hsl(0.1, s=0.75, l=0.35)))
+#         .pen()
+#         .layer(
+#             lambda p: p.castshadow(-45, 20)
+#                 .f(Gradient.H(r, hsl(0.03, s=0.15, l=0.05), 
+#                                  hsl(0.09, s=0.25, l=0.15))),
+#             lambda p: p.s(hsl(0.2)).sw(1))
+#         .align(r, th=1, tv=1))
+
+# Straight classic black
+# def ruoho_records_classic_black(r):
+#     return (StSt("RUOHO RECORDS", rr_ttf, 80, 
+#         width=1.0, rotate=0, tu=40)
+#         .f(0)
+#         # .f(Gradient.H(r, hsl(0.05, s=0.75), hsl(0.8, s=0.75)))
+#         # .f(Gradient.Vertical(r, hsl(0.5, s=0.8), hsl(0.8, s=0.75)))
+#         .understroke(s=0, sw=1)  # OMG what is this??
+#         .align(r)
+#         )
+
+# Horizontal gradient
+# def ruoho_records_horizontal_gradient(r):
+#     return (StSt("RUOHO RECORDS", rr_ttf, 80, 
+#         width=1.0, rotate=0, tu=40)
+#         .f(Gradient.H(r, hsl(0.03, s=0.15, l=0.25), 
+#                          hsl(0.09, s=0.75, l=0.35)))
+#         .understroke(s=0, sw=1)
+#         .align(r)
+#         )
