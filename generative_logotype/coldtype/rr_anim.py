@@ -4,8 +4,8 @@ rr_ttf = Font("rr_fonts/lavirint/lavirint.ttf")
 
 @animation((1080, 540), timeline=60, storyboard=[30], render_bg=1)
 def vari(f):
-    return (StSt("R", rr_ttf,
-        font_size=f.e("seio", 1, rng=(50, 150)),
+    return (StSt("RUOHO RECORDS", rr_ttf,
+        font_size=f.e("seio", 1, rng=(20, 80)),
         # wdth=f.e("eeio", 1, rng=[0, 10]),
         # wght=f.e("seio", 1, rng=[0,18]),
         leading=5)
