@@ -185,16 +185,16 @@ rr_ttf = Font("rr_fonts/lavirint/lavirint.ttf")
 #         .align(r, th=1, tv=1))
 
 # Vertical gradient is nice thoguh
-def ruoho_records_vertical(r):
-    return (StSt("RUOHO RECORDS", rr_ttf, 80, 
-        width=1.0, rotate=0, tu=40)
-        .f(Gradient.Vertical(r,
-            hsl(0.01, s=0.8),
-            hsl(0.2, s=0.75))
-            )
-        # .understroke(s=0, sw=1)
-        .align(r)
-    )
+# def ruoho_records_vertical(r):
+#     return (StSt("RUOHO RECORDS", rr_ttf, 80, 
+#         width=1.0, rotate=0, tu=40)
+#         .f(Gradient.Vertical(r,
+#             hsl(0.01, s=0.8),
+#             hsl(0.2, s=0.75))
+#             )
+#         # .understroke(s=0, sw=1)
+#         .align(r)
+#     )
 
 # Drop shadow
 # def simpledrop(r):
@@ -231,3 +231,15 @@ def ruoho_records_vertical(r):
 #         .understroke(s=0, sw=1)
 #         .align(r)
 #         )
+
+def ruoho_records_classic_black_understroke(r):
+    return (StSt("RUOHO RECORDS", rr_ttf, 100, 
+        width=1.0, rotate=0, tu=-220)
+        .f(0)
+        .reverse_pens() # overlaps pens L->R
+        # .f(Gradient.H(r, hsl(0.05, s=0.75), hsl(0.8, s=0.75)))
+        .f(Gradient.Vertical(r, hsl(0.01, l=0), 
+                                hsl(0.09, l=0.5)))
+        .understroke(s=1, sw=10)
+        .align(r)
+        )
