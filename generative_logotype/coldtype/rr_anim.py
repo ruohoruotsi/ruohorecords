@@ -40,21 +40,38 @@ rr_ttf = Font("rr_fonts/lavirint/lavirint.ttf")
 # release = gw2.export("h264")
 
 
-@animation((1000, 250),
-    bg=hsl(0.45, 0.65, 0.4),
-    timeline=Timeline(30, 18),
-    storyboard=[0, 15])
-def understroke(f):
-    return (StSt("RUOHO RECORDS", rr_ttf,
+# @animation((975, 180),
+#     bg=hsl(0.45, 0.65, 1.0),
+#     timeline=Timeline(30, 18))
+# def bandcamp_header_banner(f):
+#     return (StSt("RUOHO RECORDS", rr_ttf,
+#         ro=1,
+#         font_size=95,
+#         rotate=f.e("ceio", 1, rng=(-10, 0)),
+#         tu=f.e("eeio", 1, rng=(100, -100)))
+#         .align(f.a.r)
+#         .reverse_pens() # overlaps pens L->R
+#         .f(1)
+#         .understroke(sw=10)
+#         .ch(phototype(f.a.r, blur=2, 
+#                             cut=110, 
+#                             cutw=30, 
+#                             fill=hsl(h=0.5, s=0.5, l=0.0))))
+
+@animation((500, 500),
+    bg=hsl(0.45, 0.65, 1.0),
+    timeline=Timeline(30, 18))
+def bandcamp_logo(f):
+    return (StSt("R", rr_ttf,
         ro=1,
-        font_size=70,
+        font_size=300,
         rotate=f.e("ceio", 1, rng=(-10, 0)),
-        tu=f.e("eeio", 1, rng=(100, -255)))
+        tu=f.e("eeio", 1, rng=(100, -100)))
         .align(f.a.r)
         .reverse_pens() # overlaps pens L->R
         .f(1)
-        .understroke(sw=15)
-        .ch(phototype(f.a.r, blur=2, 
-                            cut=160, 
+        .understroke(s=1, sw=3)
+        .ch(phototype(f.a.r, blur=3, 
+                            cut=70, 
                             cutw=30, 
-                            fill=hsl(0.17, 1))))
+                            fill=hsl(h=0.5, s=0.5, l=0.0))))
