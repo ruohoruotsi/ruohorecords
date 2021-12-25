@@ -62,7 +62,7 @@ rr_ttf = Font("rr_fonts/lavirint/lavirint.ttf")
     bg=hsl(0.45, 0.65, 1.0),
     timeline=Timeline(30, 18))
 def bandcamp_logo(f):
-    return (StSt("R", rr_ttf,
+    return (StSt("r", rr_ttf,
         ro=1,
         font_size=300,
         rotate=f.e("ceio", 1, rng=(-10, 0)),
@@ -70,8 +70,8 @@ def bandcamp_logo(f):
         .align(f.a.r)
         .reverse_pens() # overlaps pens L->R
         .f(1)
-        .understroke(s=1, sw=3)
-        .ch(phototype(f.a.r, blur=3, 
+        .understroke(s=1, sw=1)
+        .ch(phototype(f.a.r, blur=2, 
                             cut=70, 
                             cutw=30, 
                             fill=hsl(h=0.5, s=0.5, l=0.0))))
