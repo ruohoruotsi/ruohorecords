@@ -58,20 +58,39 @@ rr_ttf = Font("rr_fonts/lavirint/lavirint.ttf")
 #                             cutw=30, 
 #                             fill=hsl(h=0.5, s=0.5, l=0.0))))
 
-@animation((500, 500),
+# @animation((500, 500),
+#     bg=hsl(0.45, 0.65, 1.0),
+#     timeline=Timeline(30, 18))
+# def bandcamp_logo(f):
+#     return (StSt("r", rr_ttf,
+#         ro=1,
+#         font_size=300,
+#         rotate=f.e("ceio", 1, rng=(-10, 0)),
+#         tu=f.e("eeio", 1, rng=(100, -100)))
+#         .align(f.a.r)
+#         .reverse_pens() # overlaps pens L->R
+#         .f(1)
+#         .understroke(s=1, sw=1)
+#         .ch(phototype(f.a.r, blur=2, 
+#                             cut=70, 
+#                             cutw=30, 
+#                             fill=hsl(h=0.5, s=0.5, l=0.0))))
+
+
+@animation((2048, 1152),
     bg=hsl(0.45, 0.65, 1.0),
     timeline=Timeline(30, 18))
-def bandcamp_logo(f):
-    return (StSt("r", rr_ttf,
+def youtube_header_banner(f):
+    return (StSt("RUOHO RECORDS", rr_ttf,
         ro=1,
-        font_size=300,
+        font_size=116,
         rotate=f.e("ceio", 1, rng=(-10, 0)),
         tu=f.e("eeio", 1, rng=(100, -100)))
         .align(f.a.r)
         .reverse_pens() # overlaps pens L->R
         .f(1)
-        .understroke(s=1, sw=1)
+        .understroke(sw=10)
         .ch(phototype(f.a.r, blur=2, 
-                            cut=70, 
+                            cut=110, 
                             cutw=30, 
                             fill=hsl(h=0.5, s=0.5, l=0.0))))
