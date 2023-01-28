@@ -15,9 +15,9 @@ def understroke(f):
         .align(f.a.r)
         .reverse_pens() # overlaps pens L->R
         .f(1)
-        .understroke(sw=1220)
+        .understroke(sw=10)
         .ch(phototype(f.a.r, blur=6, 
-                            cut=90, 
+                            cut=110, 
                             cutw=10, 
                             fill=hsl(h=0.5, s=0.5, l=0.0)
                             )))
