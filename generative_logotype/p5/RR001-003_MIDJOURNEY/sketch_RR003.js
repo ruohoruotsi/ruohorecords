@@ -32,7 +32,7 @@ let mj_img; // Declare variable 'mj_img'.
 
 function setup() {
   createCanvas(canvasSize_w, canvasSize_h);
-  mj_img = loadImage('midjourney_images/AGV1.png'); // Load the image
+  mj_img = loadImage('midjourney_images/AGV3.png'); // Load the image
 }
 
 
@@ -71,7 +71,8 @@ function draw() {
 
   //-------------------------------------------------------
   // middle text box
-  let middleColour = color("#FDE635");        // yellowish? 237, 200, 100
+  let middleColour = color("#dc2f02");        // reddish
+
   fill(middleColour);
   strokeWeight(0);
 
@@ -86,7 +87,7 @@ function draw() {
   stroke(albumTextColour);
   fill(albumTextColour);
   textSize(60);
-  text("A-G V.1", (canvasSize_w - middleSize)/2 + 17, 20, middleSize, 100);
+  text("A-G V.3", (canvasSize_w - middleSize)/2 + 17, 20, middleSize, 100);
 }
 
 
