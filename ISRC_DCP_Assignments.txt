@@ -2,17 +2,17 @@
 DCP 001: Ruoho Ruotsi - Vrng Sqrd
 
 a1 Vrng Sqrd (Original Mix)	  		ISRC US-4SP-04-00001 
-a2 Vrng Sqrd (Igor O. Vlasov Mix) 		ISRC US-4SP-04-00002 
-b1 Faible Sexy 			  		ISRC US-4SP-04-00003 
+a2 Vrng Sqrd (Igor O. Vlasov Mix) 	ISRC US-4SP-04-00002 
+b1 Faible Sexy 			  			ISRC US-4SP-04-00003 
 
 
 --------------------------------------------------------------------
 
 DCP 002: Ruoho Ruotsi - Balai Ballet
 
-a1 Ruoho Ruotsi Suite Mix			ISRC US-4SP-04-00004 
-a2 Deadbeat Deep Down Dub			ISRC US-4SP-04-00005 
-b1 Ruoho Ruotsi [iii] Blend			ISRC US-4SP-04-00006 
+a1 Ruoho Ruotsi Suite Mix					ISRC US-4SP-04-00004 
+a2 Deadbeat Deep Down Dub					ISRC US-4SP-04-00005 
+b1 Ruoho Ruotsi [iii] Blend					ISRC US-4SP-04-00006 
 b2 Conrado Martinez Midnight Whistle Remix 	ISRC US-4SP-04-00007 
 
 
@@ -20,17 +20,17 @@ b2 Conrado Martinez Midnight Whistle Remix 	ISRC US-4SP-04-00007
 
 DCP 003: Ruoho Ruotsi - Hmmm...
 
-a1 Hmmm... 					ISRC US-4SP-05-00008 
+a1 Hmmm... 							ISRC US-4SP-05-00008 
 a2 Hmmm... (Gys Version) 			ISRC US-4SP-05-00009 
-b1 Knocking Again (Kristina's Mix) 	        ISRC US-4SP-05-00010 
+b1 Knocking Again (Kristina's Mix)	ISRC US-4SP-05-00010 
 
 
 --------------------------------------------------------------------
 
 DCP 004: Ruoho Ruotsi - Tants Doll
 
-a1 Tants Doll					    ISRC US-4SP-06-00011 
-a2 Tants Doll (KLMN's Ghostrider Mix)		    ISRC US-4SP-06-00012
+a1 Tants Doll					    				ISRC US-4SP-06-00011 
+a2 Tants Doll (KLMN's Ghostrider Mix)		    	ISRC US-4SP-06-00012
 b1 Tants Doll (Mike Uzzi and Ben Recht Remix)       ISRC US-4SP-06-00013 
 b2 Tants Doll (Suz + Layborn's 43 Seconds Late Mix) ISRC US-4SP-06-00014
 
@@ -39,42 +39,42 @@ b2 Tants Doll (Suz + Layborn's 43 Seconds Late Mix) ISRC US-4SP-06-00014
 
 DCP 005: Igor O. Vlasov - Eulalia
 
-a1 Flavour				ISRC US-4SP-06-00015 
-a2 Scan					ISRC US-4SP-06-00016
+a1 Flavour								ISRC US-4SP-06-00015 
+a2 Scan									ISRC US-4SP-06-00016
 b1 Somewhere (Polaris Pulsations Mix)   ISRC US-4SP-06-00017 
-b2 Die Festsetzung (Rmx)    		ISRC US-4SP-06-00018
+b2 Die Festsetzung (Rmx)    			ISRC US-4SP-06-00018
 
 
 --------------------------------------------------------------------
 
 DCP 006: Suz + Layborn - Nuzzle Fudge
 
-a1 Nuzzle Fudge					ISRC US-4SP-07-00019
+a1 Nuzzle Fudge								ISRC US-4SP-07-00019
 a2 Nuzzle Fudge (Pheek's Soozooloo Remix)	ISRC US-4SP-07-00020
-b1 Peakle Matter				ISRC US-4SP-07-00021
-b2 Peakle Matter (Ali Khan Remix)		ISRC US-4SP-07-00022
+b1 Peakle Matter							ISRC US-4SP-07-00021
+b2 Peakle Matter (Ali Khan Remix)			ISRC US-4SP-07-00022
 
 
 --------------------------------------------------------------------
 
 DCP 007: Max Brannslokker - Teika
 
-a1 Utopia 					ISRC US-4SP-07-00023
-a2 Reindeer					ISRC US-4SP-07-00024
-a3 Pragma					ISRC US-4SP-07-00025
+a1 Utopia 							ISRC US-4SP-07-00023
+a2 Reindeer							ISRC US-4SP-07-00024
+a3 Pragma							ISRC US-4SP-07-00025
 b1 Utopia (Dave Aju Remix)			ISRC US-4SP-07-00026
-b2 Reindeer (Circuit 73 Remix)			ISRC US-4SP-07-00027
+b2 Reindeer (Circuit 73 Remix)		ISRC US-4SP-07-00027
 
 
 --------------------------------------------------------------------
 
 DCP 008: Igor O. Vlasov - Fellow's Traveller
 
-a1 - Fellow's Traveller 			ISRC US-4SP-08-00028
-a2 - Nalim					ISRC US-4SP-08-00029
+a1 - Fellow's Traveller 		ISRC US-4SP-08-00028
+a2 - Nalim						ISRC US-4SP-08-00029
 b1 - Phoenix					ISRC US-4SP-08-00030
-b2 - Vapour					ISRC US-4SP-08-00031
-b3 (Digital Only) Horizon-C			ISRC US-4SP-08-00032
+b2 - Vapour						ISRC US-4SP-08-00031
+b3 (Digital Only) Horizon-C		ISRC US-4SP-08-00032
 
 
 --------------------------------------------------------------------
@@ -83,18 +83,18 @@ DCP 009: Isaac Hailie Selassie
 
 a1 - Jack Dangers - My life in the bush of lies (featuring Isaac Haile Selassie) 	ISRC US-4SP-08-00033
 a2 - Ruoho Ruotsi - Bèguèna Dub (feat. Isaac Haile Selassie) 				ISRC US-4SP-08-00034
-b1 - Gys - Settlers Dub (feat. Isaac Selassie)						ISRC US-4SP-08-00035
-b2 - dubLoner - Impact Dub (feat. Isaac Selassie)					ISRC US-4SP-08-00036
+b1 - Gys - Settlers Dub (feat. Isaac Selassie)										ISRC US-4SP-08-00035
+b2 - dubLoner - Impact Dub (feat. Isaac Selassie)									ISRC US-4SP-08-00036
 
 
 --------------------------------------------------------------------
 
 DCP 010: Aschka - Rain
 
-a1 - Rain					ISRC US-4SP-08-00037
-a2 - Rain (Kate Simko Remix)			ISRC US-4SP-08-00038
-b1 - Sensoreality				ISRC US-4SP-08-00039
-b2 - Sensoreality (Stefny's Elephas Maximus Mix)ISRC US-4SP-08-00040
+a1 - Rain											ISRC US-4SP-08-00037
+a2 - Rain (Kate Simko Remix)						ISRC US-4SP-08-00038
+b1 - Sensoreality									ISRC US-4SP-08-00039
+b2 - Sensoreality (Stefny's Elephas Maximus Mix)	ISRC US-4SP-08-00040
 
 
 --------------------------------------------------------------------
@@ -111,7 +111,7 @@ DCP 012: Ruoho Ruotsi - Afternoon Delighting
 
 a1 - Bramble Bramble			ISRC US-4SP-08-00044
 a2 - Dolores Tristes			ISRC US-4SP-08-00045
-b1 - Sweet Bits				ISRC US-4SP-08-00046
+b1 - Sweet Bits					ISRC US-4SP-08-00046
 b2 - Afternoon Delighting		ISRC US-4SP-08-00047
 
 --------------------------------------------------------------------
@@ -126,9 +126,9 @@ b2 - 						ISRC US-4SP-09-000??
 
 DCP 014: Ruoho Ruotsi & Triton - Eclaircies Dumont
 
-a1 - Triton - Dumont				ISRC US-4SP-09-00048
-a2 - Triton - Dumont (Ruoho Ruotsi Reshape)	ISRC US-4SP-09-00049
-b1 - Ruoho Ruotsi - Eclaircies			ISRC US-4SP-09-00050
+a1 - Triton - Dumont							ISRC US-4SP-09-00048
+a2 - Triton - Dumont (Ruoho Ruotsi Reshape)		ISRC US-4SP-09-00049
+b1 - Ruoho Ruotsi - Eclaircies					ISRC US-4SP-09-00050
 b2 - Ruoho Ruotsi - Eclaircies (Triton Version) ISRC US-4SP-09-00051
 
 
@@ -138,8 +138,8 @@ b2 - Ruoho Ruotsi - Eclaircies (Triton Version) ISRC US-4SP-09-00051
 DCP 015: Hollis P. Monroe & Ruoho Ruotsi - Black Rhapsody
 
 a1 - Hollis P. Monroe - I Wept For You featuring Ed Robinson 		ISRC US-4SP-09-00053
-b1 - Hollis P. Monroe - The Beautiful Izi 				ISRC US-4SP-09-00054
-b1 - Ruoho Ruotsi - Black Rhapsody featuring Ed Robinson		ISRC US-4SP-09-00052
+b1 - Hollis P. Monroe - The Beautiful Izi 							ISRC US-4SP-09-00054
+b1 - Ruoho Ruotsi - Black Rhapsody featuring Ed Robinson			ISRC US-4SP-09-00052
 b2 - Hollis P. Monroe - The Beautifuul Izi (Ruoho Ruotsi Reshape) 	ISRC US-4SP-09-00055
 
 
@@ -149,20 +149,20 @@ b2 - Hollis P. Monroe - The Beautifuul Izi (Ruoho Ruotsi Reshape) 	ISRC US-4SP-0
 DCP 016: dubLoner & Isaac Haile Selassie - The Fight, The Spirit
 
 a1 - dubLoner & Isaac Haile Selassie - The Fight, The Spirit (dubbed harder version)	ISRC US-4SP-10-00056
-b1 - dubLoner & Isaac Haile Selassie - Backoff!						ISRC US-4SP-10-00057
-b1 - dubLoner & Isaac Haile Selassie - The Fight, The Spirit (Djunya Remix)		ISRC US-4SP-10-00058
-b2 - dubLoner & Isaac Haile Selassie - The Fight, The Spirit (Kush Arora Remix) 	ISRC US-4SP-10-00059
-b3 - dubLoner & Isaac Haile Selassie - Backoff! (Ruoho Ruotsi Reshape)			ISRC US-4SP-10-00060
-(Digital Only) dubLoner & Isaac Haile Selassie - The Fight, The Spirit			ISRC US-4SP-10-00061
+b1 - dubLoner & Isaac Haile Selassie - Backoff!											ISRC US-4SP-10-00057
+b1 - dubLoner & Isaac Haile Selassie - The Fight, The Spirit (Djunya Remix)				ISRC US-4SP-10-00058
+b2 - dubLoner & Isaac Haile Selassie - The Fight, The Spirit (Kush Arora Remix) 		ISRC US-4SP-10-00059
+b3 - dubLoner & Isaac Haile Selassie - Backoff! (Ruoho Ruotsi Reshape)					ISRC US-4SP-10-00060
+(Digital Only) dubLoner & Isaac Haile Selassie - The Fight, The Spirit					ISRC US-4SP-10-00061
  
 --------------------------------------------------------------------
 
 
 DCP 017: Aschka - Cinnabar
 
-a1 - Aschka - Mantis Heights 				ISRC US-4SP-10-00062
+a1 - Aschka - Mantis Heights 						ISRC US-4SP-10-00062
 b1 - Aschka - Mantis Heights (Dirk Leyers Remix) 	ISRC US-4SP-10-00063
-b1 - Aschka - Cinnabar					ISRC US-4SP-10-00064
+b1 - Aschka - Cinnabar								ISRC US-4SP-10-00064
 b2 - Aschka - Cinnabar (Ruoho Ruotsi Reshape) 		ISRC US-4SP-10-00065
 
 
@@ -171,10 +171,10 @@ b2 - Aschka - Cinnabar (Ruoho Ruotsi Reshape) 		ISRC US-4SP-10-00065
 
 DCP 018: dubLoner & Isaac Haile Selassie - Wicked Man
 
-a1 - dubLoner & Isaac Haile Selassie - Wicked Man				ISRC US-4SP-10-00066
+a1 - dubLoner & Isaac Haile Selassie - Wicked Man						ISRC US-4SP-10-00066
 b1 - dubLoner & Isaac Haile Selassie - Wicked Man (Suspect Remix)		ISRC US-4SP-10-00067
-b1 - dubLoner & Isaac Haile Selassie - Wicked Man (Ruoho Ruotsi Reshape)	ISRC US-4SP-10-00068
-b2 - dubLoner & Isaac Haile Selassie - Wicked Man (Kush Arora Remix) 		ISRC US-4SP-10-00069
+b1 - dubLoner & Isaac Haile Selassie - Wicked Man (Ruoho Ruotsi Reshape)ISRC US-4SP-10-00068
+b2 - dubLoner & Isaac Haile Selassie - Wicked Man (Kush Arora Remix) 	ISRC US-4SP-10-00069
  
 
 --------------------------------------------------------------------
@@ -182,10 +182,10 @@ b2 - dubLoner & Isaac Haile Selassie - Wicked Man (Kush Arora Remix) 		ISRC US-4
 
 DCP 019: Gys - Tyrants
 
-a1 - Gys - Caving & Crushing				ISRC US-4SP-10-00070
+a1 - Gys - Caving & Crushing						ISRC US-4SP-10-00070
 a2 - Gys - Caving & Crushing (R. Audiard Remix)		ISRC US-4SP-10-00071
-b1 - Gys - Tyrants 					ISRC US-4SP-10-00072
-b2 - Gys - Tyrants (Ruoho Ruotsi Reshape) 		ISRC US-4SP-10-00073
+b1 - Gys - Tyrants 									ISRC US-4SP-10-00072
+b2 - Gys - Tyrants (Ruoho Ruotsi Reshape) 			ISRC US-4SP-10-00073
  
 
 --------------------------------------------------------------------
@@ -193,43 +193,43 @@ b2 - Gys - Tyrants (Ruoho Ruotsi Reshape) 		ISRC US-4SP-10-00073
 
 DCP 020: Ruoho Ruotsi (feat. jenn mierau) - A Little Haiku
 
-01 - Ruoho Ruotsi (feat. jenn mierau) - A Little Haiku (Original Version)			ISRC US-4SP-11-00074
-02 - Ruoho Ruotsi (feat. jenn mierau) - A Little Haiku (Hollis P. Monroe Remix)			ISRC US-4SP-11-00075
+01 - Ruoho Ruotsi (feat. jenn mierau) - A Little Haiku (Original Version)					ISRC US-4SP-11-00074
+02 - Ruoho Ruotsi (feat. jenn mierau) - A Little Haiku (Hollis P. Monroe Remix)				ISRC US-4SP-11-00075
 03 - Ruoho Ruotsi (feat. jenn mierau) - A Little Haiku (Leon Louder's Underwater Shuffle) 	ISRC US-4SP-11-00076
-04 - Ruoho Ruotsi (feat. jenn mierau) - A Little Haiku (jenn's Acoustic Version) 		ISRC US-4SP-11-00077 
+04 - Ruoho Ruotsi (feat. jenn mierau) - A Little Haiku (jenn's Acoustic Version) 			ISRC US-4SP-11-00077 
 
 
 --------------------------------------------------------------------
 
 DCP 021: Gosh from Yaputhma - Just Kitten
 
-01 - Gosh from Yaputhma - Just Kitten								ISRC US-4SP-11-00078
-02 - Gosh from Yaputhma - Just Kitten (Havantepe Version)					ISRC US-4SP-11-00079
-03 - Gosh from Yaputhma - Just Kitten (Ruoho Ruotsi Reshape)					ISRC US-4SP-11-00080
-04 - Gosh from Yaputhma - Just Kitten (Triton Version)						ISRC US-4SP-11-00081
-05 - Gosh from Yaputhma - Just Kitten (Martinez Gonzalez Remix)					ISRC US-4SP-11-00082
-06 - Gosh from Yaputhma - Just Kitten (Suspect Blueprint)					ISRC US-4SP-11-00083
-07 - Gosh from Yaputhma - Just Kitten (The Marx Trukker's Breathing Pads Rework)		ISRC US-4SP-11-00084
-08 - Gosh from Yaputhma - Just Kitten (Celice Monnette + Enrique Gongora Remix)			ISRC US-4SP-11-00085
-09 - Gosh from Yaputhma - Just Kitten (Selffish Remix) 						ISRC US-4SP-11-00086
+01 - Gosh from Yaputhma - Just Kitten												ISRC US-4SP-11-00078
+02 - Gosh from Yaputhma - Just Kitten (Havantepe Version)							ISRC US-4SP-11-00079
+03 - Gosh from Yaputhma - Just Kitten (Ruoho Ruotsi Reshape)						ISRC US-4SP-11-00080
+04 - Gosh from Yaputhma - Just Kitten (Triton Version)								ISRC US-4SP-11-00081
+05 - Gosh from Yaputhma - Just Kitten (Martinez Gonzalez Remix)						ISRC US-4SP-11-00082
+06 - Gosh from Yaputhma - Just Kitten (Suspect Blueprint)							ISRC US-4SP-11-00083
+07 - Gosh from Yaputhma - Just Kitten (The Marx Trukker's Breathing Pads Rework)	ISRC US-4SP-11-00084
+08 - Gosh from Yaputhma - Just Kitten (Celice Monnette + Enrique Gongora Remix)		ISRC US-4SP-11-00085
+09 - Gosh from Yaputhma - Just Kitten (Selffish Remix) 								ISRC US-4SP-11-00086
 
 --------------------------------------------------------------------
 
 DCP 022: Tomas Jirku & Ruoho Ruotsi - Clear Cut
 
-01 - Tomas Jirku - Clear Cut				ISRC US-4SP-11-00087
+01 - Tomas Jirku - Clear Cut						ISRC US-4SP-11-00087
 02 - Tomas Jirku - Clear Cut (Ruoho Ruotsi Reshape)	ISRC US-4SP-11-00088
-03 - Ruoho Ruotsi - Exact Found 			ISRC US-4SP-11-00089
-04 - Ruoho Rutosi - Exact Found (Tomas Jirku Remix) 	ISRC US-4SP-11-00090
+03 - Ruoho Ruotsi - Exact Found 					ISRC US-4SP-11-00089
+04 - Ruoho Rutosi - Exact Found (Tomas Jirku Remix) ISRC US-4SP-11-00090
  
 
 --------------------------------------------------------------------
 
 DCP 023: Aschka - Scrapewing
 
-A1 - Aschka - Scrapewing					ISRC US-4SP-12-00091
-A2 - Aschka - Scrapewing (Andy Stott Remix)			ISRC US-4SP-12-00092
-B1 - Aschka - Moments do not endure 				ISRC US-4SP-12-00093
+A1 - Aschka - Scrapewing									ISRC US-4SP-12-00091
+A2 - Aschka - Scrapewing (Andy Stott Remix)					ISRC US-4SP-12-00092
+B1 - Aschka - Moments do not endure 						ISRC US-4SP-12-00093
 B2 - Aschka - Moments do not endure (Ruoho Ruotsi Reshape) 	ISRC US-4SP-12-00094 			 
 
 
@@ -237,11 +237,11 @@ B2 - Aschka - Moments do not endure (Ruoho Ruotsi Reshape) 	ISRC US-4SP-12-00094
 
 DCP 024: Lumineon - Bentos 
 
-01 - Lumineon - Pielago (Intro)			ISRC US-4SP-12-00095
-02 - Lumineon - Abisal				ISRC US-4SP-12-00096
-03 - Lumineon - Bentos 				ISRC US-4SP-12-00097
+01 - Lumineon - Pielago (Intro)					ISRC US-4SP-12-00095
+02 - Lumineon - Abisal							ISRC US-4SP-12-00096
+03 - Lumineon - Bentos 							ISRC US-4SP-12-00097
 04 - Lumineon - Bentos (Ruoho Ruotsi Reshape) 	ISRC US-4SP-12-00098 			 
-05 - Lumineon - Bentos (Triton Version) 	ISRC US-4SP-12-00099
+05 - Lumineon - Bentos (Triton Version) 		ISRC US-4SP-12-00099
 
 --------------------------------------------------------------------
 
