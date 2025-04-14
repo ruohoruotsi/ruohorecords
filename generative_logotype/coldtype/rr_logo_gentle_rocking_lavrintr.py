@@ -1,9 +1,10 @@
 from coldtype import *
 from coldtype.fx.skia import phototype
 
-rr_ttf = Font("rr_fonts/lavirint/lavirint.ttf")
+rr_fonts_path = "/Users/iroro/github/ruohorecords/generative_logotype/coldtype/rr_fonts/"
+rr_ttf = Font.Cacheable(rr_fonts_path + "lavirint/lavirint.ttf")
 
-# Gently rocking "R"
+# Gently rocking logo style "R"
 @animation((500, 500), bg=hsl(0.45, 0.65, 1.0), timeline=Timeline(30, 18))
 def gently_rocking_single_lavrint_r(f):
     return (StSt("R", rr_ttf,

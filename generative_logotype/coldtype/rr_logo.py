@@ -1,11 +1,11 @@
 from coldtype import *
-from coldtype.text.reader import offset
 from coldtype.fx.skia import phototype
 
-rr_ttf = Font("rr_fonts/lavirint/lavirint.ttf")
+rr_fonts_path = "/Users/iroro/github/ruohorecords/generative_logotype/coldtype/rr_fonts/"
+rr_ttf = Font.Cacheable(rr_fonts_path + "lavirint/lavirint.ttf")
 
-@animation((500, 500),
-    timeline=Timeline(30, 18))
+# Gently rocking logo style "R" on a transparent background
+@animation((500, 500), timeline=Timeline(30, 18))
 def understroke(f):
     return (StSt("R", rr_ttf,
         ro=1,
@@ -13,7 +13,7 @@ def understroke(f):
         rotate=f.e("ceio", 1, rng=(-10, 0)),
         tu=f.e("eeio", 1, rng=(100, -100)))
         .align(f.a.r)
-        .reverse_pens() # overlaps pens L->R
+        .reversePens() # overlaps pens L->R
         .f(1)
         .understroke(sw=10)
         .ch(phototype(f.a.r, blur=6, 
