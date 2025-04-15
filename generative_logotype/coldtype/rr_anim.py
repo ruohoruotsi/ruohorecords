@@ -2,7 +2,12 @@ from coldtype import *
 from coldtype.fx.skia import phototype
 
 rr_fonts_path = "/Users/iroro/github/ruohorecords/generative_logotype/coldtype/rr_fonts/"
-rr_ttf = Font.Cacheable(rr_fonts_path + "lavirint/lavirint.ttf")
+#rr_ttf = Font.Cacheable(rr_fonts_path + "lavirint/lavirint.ttf")
+#rr_ttf = Font.Cacheable(rr_fonts_path + "bomb_factory/bombfact.ttf")
+#rr_ttf = Font.Cacheable(rr_fonts_path + "masked/masked.ttf")
+rr_ttf = Font.Cacheable(rr_fonts_path + "unicode-0024.regular.ttf")
+#rr_ttf = Font.Cacheable(rr_fonts_path + "Square One.ttf")
+
 rr_string = "RUOHO RECORDS"
 
 # bandcamp header dims: (975, 180), font_size=90
@@ -11,9 +16,9 @@ rr_string = "RUOHO RECORDS"
 @animation((1080, 180), timeline=60, render_bg=1)
 def rr_anim(f):
 
-#    return rr_colour_pulse_2secs(f)
+    return rr_colour_pulse_2secs(f)
 #    return glyphwise_per_char_styler(f)
-    return bandcamp_header_banner(f)
+#    return bandcamp_header_banner(f)
 
 def rr_colour_pulse_2secs(f):
     return P([
