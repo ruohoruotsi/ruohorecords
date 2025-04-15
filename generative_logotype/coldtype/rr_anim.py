@@ -44,7 +44,8 @@ def glyphwise_per_char_styler(f):
                 ,
                 dict(
                     font_size=f.e("seio", 1, rng=(80, 90)),
-                    rotate=f.e("seio", 1, rng=(0, -15))
+                    rotate=f.e("seio", 1, rng=(0, -15)),
+                    wght=fa.e("seio", 1)
                     )
                 ]
     

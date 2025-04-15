@@ -162,7 +162,7 @@ rr_ttf = Font("rr_fonts/lavirint/lavirint.ttf")
 #         .f(Gradient.H(r,
 #             hsl(0.05, s=0.75),
 #             hsl(0.8, s=0.75)))
-#         .understroke(s=0, sw=3)  # OMG what is this??
+#         .understroke(s=10, sw=3)  # OMG what is this??
 #         .align(r)
 #         )
 
@@ -233,13 +233,12 @@ rr_ttf = Font("rr_fonts/lavirint/lavirint.ttf")
 #         )
 
 def ruoho_records_classic_black_understroke(r):
-    return (StSt("RUOHO RECORDS", rr_ttf, 100, 
-        width=1.0, rotate=0, tu=-220)
+    return (StSt("RUOHO RECORDS", rr_ttf, 80, 
+        width=1.0, rotate=0, tu=30)
         .f(0)
-        .reverse_pens() # overlaps pens L->R
-        # .f(Gradient.H(r, hsl(0.05, s=0.75), hsl(0.8, s=0.75)))
-        .f(Gradient.Vertical(r, hsl(0.01, l=0), 
-                                hsl(0.09, l=0.5)))
-        .understroke(s=1, sw=10)
+        .reversePens() # overlaps pens L->R
+        #.f(Gradient.Vertical(r, hsl(0.01, l=0), hsl(0.09, l=0.5)))
+        .f(Gradient.H(r, hsl(0.05, s=0.75), hsl(0.8, s=0.75)))
+        .understroke(s=10, sw=3)
         .align(r)
         )
