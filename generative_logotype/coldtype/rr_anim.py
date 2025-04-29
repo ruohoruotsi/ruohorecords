@@ -24,17 +24,23 @@ def rr_colour_pulse_2secs(f):
     return P([
                 P(f.a.r)
                 .f(hsl(f.e("eeio", 1, rng=(0.1, 0.2)), 0.8, 0.6))
-                ,
-                (StSt(rr_string, rr_ttf,
+            ,
+                StSt(rr_string, rr_ttf,
                     font_size=f.e("eeio", 1, rng=(80, 90)),
                     # wdth=f.e("eeio", 1, rng=[0, 90]),
                     # wght=f.e("seio", 1, rng=[0, 18]), # Lavrint doesn't have variable weight
                     leading=5)
-                .f(0)
-                .understroke(s=0, sw=1)  # OMG this is the magic
+                .f(1)
                 .align(f.a.r)
-                )
-                ,
+                .understroke(s=0, sw=10)  # OMG this is the magic along with phototype
+                .ch(phototype(f.a.r, # this makes the nice round edges
+                            blur=2, 
+                            cut=110, 
+                            cutw=30,
+                            fill=0
+                            )
+                    )
+            ,
                 P(f.a.r).inset(5, 5).outline(5).f(0) # border
             ])
 
@@ -77,17 +83,17 @@ def bandcamp_header_banner(f):
                     ,rotate=f.e("ceio", 1, rng=(-10, 0))
                     ,tu=f.e("eeio", 1, rng=(100, -100))
                 )
-            .align(f.a.r)
-            .reversePens() # overlaps pens L->R
-            .f(1)
-            .understroke(sw=10)  # this makes 
-            .ch(phototype(f.a.r, # this makes the nice round edges
-                        blur=2, 
-                        cut=110, 
-                        cutw=30, 
-                        fill=hsl(h=0.5, s=0.5, l=0.0)
-                        )
-                )
+                .align(f.a.r)
+                .reversePens() # overlaps pens L->R
+                .f(1)
+                .understroke(sw=10)  # this makes 
+                .ch(phototype(f.a.r, # this makes the nice round edges
+                            blur=2, 
+                            cut=110, 
+                            cutw=30, 
+                            fill=hsl(h=0.5, s=0.5, l=0.0)
+                            )
+                    )
             ,
                 P(f.a.r).inset(5, 5).outline(5).f(0) # border
             ])
