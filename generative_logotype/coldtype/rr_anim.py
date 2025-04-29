@@ -2,10 +2,10 @@ from coldtype import *
 from coldtype.fx.skia import phototype
 
 rr_fonts_path = "/Users/iroro/github/ruohorecords/generative_logotype/coldtype/rr_fonts/"
-#rr_ttf = Font.Cacheable(rr_fonts_path + "lavirint/lavirint.ttf")
+rr_ttf = Font.Cacheable(rr_fonts_path + "lavirint/lavirint.ttf")
 #rr_ttf = Font.Cacheable(rr_fonts_path + "bomb_factory/bombfact.ttf")
 #rr_ttf = Font.Cacheable(rr_fonts_path + "masked/masked.ttf")
-rr_ttf = Font.Cacheable(rr_fonts_path + "unicode-0024.regular.ttf")
+#rr_ttf = Font.Cacheable(rr_fonts_path + "unicode-0024.regular.ttf")
 #rr_ttf = Font.Cacheable(rr_fonts_path + "Square One.ttf")
 
 rr_string = "RUOHO RECORDS"
@@ -27,11 +27,11 @@ def rr_colour_pulse_2secs(f):
                 ,
                 (StSt(rr_string, rr_ttf,
                     font_size=f.e("eeio", 1, rng=(80, 90)),
-                    #wdth=f.e("eeio", 1, rng=[0, 90]),
-                    #wght=f.e("seio", 1, rng=[0, 18]), # Lavrint doesn't have variable weight
+                    # wdth=f.e("eeio", 1, rng=[0, 90]),
+                    # wght=f.e("seio", 1, rng=[0, 18]), # Lavrint doesn't have variable weight
                     leading=5)
                 .f(0)
-                .understroke(s=0, sw=1)  # OMG what is this??
+                .understroke(s=0, sw=1)  # OMG this is the magic
                 .align(f.a.r)
                 )
                 ,
