@@ -8,17 +8,20 @@ rr_ttf = Font.Cacheable(rr_fonts_path + "lavirint/lavirint.ttf")
 #rr_ttf = Font.Cacheable(rr_fonts_path + "unicode-0024.regular.ttf")
 #rr_ttf = Font.Cacheable(rr_fonts_path + "Square One.ttf")
 
-rr_string = "RUOHO RECORDS"
+rr_string = "RUOHO"
 
 # bandcamp header dims: (975, 180), font_size=90
 # youtube header dims: (2048, 1152), font_size=116
+# soundcloud header dims: (2480, 520), font_size=116
 
-@animation((1080, 180), timeline=60, render_bg=1)
+# @animation((1080, 180), timeline=60, render_bg=1) 
+@animation((2480, 520), timeline=1, render_bg=1) 
 def rr_anim(f):
 
-    return rr_colour_pulse_2secs(f)
+    # return rr_colour_pulse_2secs(f)
 #    return glyphwise_per_char_styler(f)
 #    return bandcamp_header_banner(f)
+    return soundcloud_header_image(f)
 
 def rr_colour_pulse_2secs(f):
     return P([
@@ -96,4 +99,28 @@ def bandcamp_header_banner(f):
                     )
             ,
                 P(f.a.r).inset(5, 5).outline(5).f(0) # border
+            ])
+
+def soundcloud_header_image(f):
+    return P([
+                P(f.a.r)
+                .f(1)
+            ,
+                StSt(rr_string, rr_ttf
+                    ,ro=1
+                    ,font_size=550
+                    # ,rotate=f.e("ceio", 1, rng=(-10, 0))
+                    # ,tu=f.e("eeio", 1, rng=(100, -100))
+                )
+                .align(f.a.r)
+                .reversePens() # overlaps pens L->R
+                .f(1)
+                .understroke(sw=-40)  # this makes 
+                .ch(phototype(f.a.r, # this makes the nice round edges
+                            blur=12, 
+                            cut=20, 
+                            cutw=-100, 
+                            fill=hsl(h=0.50, s=0.5, l=0.0)
+                            )
+                    )
             ])
