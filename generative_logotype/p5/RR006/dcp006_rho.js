@@ -1,10 +1,13 @@
 let COLS = createCols("https://coolors.co/eb300f-fe7688-fff566-212121-306e42-0d3b66");
 let PALETTE;
 
+// -----------------------------------------------------------------
+var multiplier = 1;
+var canvasSize_w = 1500;  // 1080p at retina // 1920×1080 
+var canvasSize_h = 1500 * multiplier;  // 1080p at retina // 1920×1080 
 
 function setup() {
-	const s = min(windowWidth, windowHeight) * 0.9;
-	createCanvas(s, s);
+  	createCanvas(canvasSize_w, canvasSize_h);
 	background(240);
 	frameRate(0.25);
 }
@@ -16,7 +19,13 @@ function draw() {
 	
 	rectMode(CENTER);
 
-	pattern(PTN.stripePolygon(int(random(3, 7)),  int(random(6, 12))));
+	pattern(PTN.stripePolygon(int(random(5, 15)),  int(random(15, 25))));
+	pattern(PTN.stripe(60 / int(random(6, 12))));
+
+	//pattern(PTN.stripeCircle(60 / int(random(6, 12))));
+	// pattern(PTN.stripeRadial(TAU /  int(random(60, 80))));
+
+	console.log(TAU)
 	rectPattern(0, 0, windowWidth*2, windowHeight*2);
 	
 	// rho 
@@ -53,7 +62,7 @@ function rho(cx, cy, w, h, rho_shape)
 			{
 				const x = xSpan * (xi + 0.5);
 				const y = ySpan * (yi + 0.5);
-				patternColors(shuffle(PALETTE));
+				// patternColors(shuffle(PALETTE));
 				pattern(randPattern(xSpan));
 				patternAngle(int(random(4)) * PI / 4);
 				push();
@@ -94,7 +103,8 @@ function rho(cx, cy, w, h, rho_shape)
 function randPattern(t)
 {
 	const ptArr = [
-		PTN.noise(0.5),
+		// PTN.noise(0.5),
+		PTN.stripeRadial(TAU /  int(random(2, 90))),
 		PTN.noiseGrad(0.4),
 		PTN.stripe(t / int(random(6, 12))),
 		PTN.stripeCircle(t / int(random(6, 12))),
@@ -142,4 +152,9 @@ function customPatternFuncGen(_span, _dia)
 			}
 	}	
 	return customFunc;
+}
+
+function keyPressed() {
+  if (key == 's' || key == 'S') 
+    saveCanvas(Math.round(new Date().getTime() / 1000).toString(), 'png');
 }
