@@ -6,29 +6,30 @@ function setup() {
 	const s = min(windowWidth, windowHeight) * 0.9;
 	createCanvas(s, s);
 	background(240);
-	frameRate(0.75);
+	frameRate(0.25);
 }
 
 function draw() {
 	PALETTE = shuffle(COLS, true);
-	background(PALETTE[3]);
+	// background(PALETTE[3]);
 	PALETTE = PALETTE.slice(0, 3);
 	
 	rectMode(CENTER);
+
+	pattern(PTN.stripePolygon(int(random(3, 7)),  int(random(6, 12))));
+	rectPattern(0, 0, windowWidth*2, windowHeight*2);
 	
-	// typo(width /2 - width / 3.2, height /2, width / 4, height /4 / 2 * 7, true);
-	// typo(width * 0.49, height /2, width / 4, height /4 / 2 * 7, false);
-	rho( width / 2, 
-		 height / 2.5, 
-		 width / 3, 
-		 height /4 / 2 * 7, 
+	// rho 
+	rho( width - width / 2, 
+		 height / 3, 
+		 width / 2, 
+		 height, 
 		 true);
-	
 }
 
-function rho(cx, cy, w, h, isp)
+function rho(cx, cy, w, h, rho_shape)
 {
-	const structure = isp ? 
+	const structure = rho_shape ? 
 				[[-9, -9],[-9, -9],[0, 1],[-1, -1], [-1, 2], [-1, -9],[2, -9]] :
 				[[-1, 2],[-1, -9],[3, 1],[-9, -1], [0, 2], [-9, -9],[-9, -9]] ;
 
@@ -57,12 +58,28 @@ function rho(cx, cy, w, h, isp)
 				patternAngle(int(random(4)) * PI / 4);
 				push();
 				translate(x, y);
-				if(isDraw >= 0){
+				if(isDraw == 0 || isDraw > 1){
 					rotate(isDraw * HALF_PI);
-					const rn = random();
-					if(rn > 0.66)rectPattern(0, 0, xSpan, ySpan, xSpan, 0, 0, 0);
+					// const rn = random();
+					// if(rn > 0.66) rectPattern(0, 0, xSpan, ySpan, xSpan, 0, 0, 0);
 					// else if(rn > 0.33) arcPattern(xSpan / 2, ySpan / 2, xSpan * 2, ySpan * 2, PI, TAU / 4 * 3);
 					// else trianglePattern(xSpan / 2, ySpan / 2, -xSpan / 2, ySpan / 2, xSpan / 2, -ySpan / 2);
+					// trianglePattern(xSpan / 2, ySpan / 2, -xSpan / 2, ySpan / 2, xSpan / 2, -ySpan / 2);
+
+					// arcPattern(xSpan / 2, ySpan / 2, xSpan * 2, ySpan * 2, PI, TAU / 4 * 3);
+					rectPattern(0, 0, xSpan, ySpan, xSpan, 0, 0, 0);
+
+				}
+				else if(isDraw == 1) {					      
+
+				  // --- Mirrored, upper left shape
+				  push(); // Save coordinate system
+				  scale(-1, 1); // Flip horizontally
+				  
+				  // arcPattern(xSpan / 2, ySpan / 2, xSpan * 2, ySpan * 2, PI, TAU / 4 * 3);
+				  rectPattern(0, 0, xSpan, ySpan, xSpan, 0, 0, 0);
+
+				  pop(); // Restore coordinate system
 				}
 				else
 				{
