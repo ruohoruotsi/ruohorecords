@@ -1,4 +1,12 @@
-let COLS = createCols("https://coolors.co/eb300f-fe7688-fff566-212121-306e42-0d3b66");
+// let COLS = createCols("https://coolors.co/eb300f-fe7688-fff566-212121-306e42-0d3b66"); // orig
+// let COLS = createCols("https://coolors.co/000000-2f1000-621b00-945600-c75000"); // brown
+// let COLS = createCols("https://coolors.co/palette/e89005-ec7505-d84a05-f42b03-e70e02") // Fiyah
+// let COLS = createCols("https://coolors.co/palette/6e0d25-ffffb3-dcab6b-774e24-6a381f") // Golden Fields
+// let COLS = createCols("https://coolors.co/palette/ffd289-facc6b-ffd131-f5b82e-f4ac32") // Citron
+
+// JA is the winner palette for RR006
+let COLS = createCols("https://coolors.co/8ea604-f5bb00-ec9f05-d76a03-bf3100"); // JA
+
 let PALETTE;
 
 // -----------------------------------------------------------------
@@ -19,8 +27,8 @@ function draw() {
 	
 	rectMode(CENTER);
 
-	pattern(PTN.stripePolygon(int(random(5, 15)),  int(random(15, 25))));
-	pattern(PTN.stripe(60 / int(random(6, 12))));
+	pattern(PTN.stripePolygon(int(random(4, 10)),  int(random(8, 15))));
+	// pattern(PTN.stripe(60 / int(random(6, 12))));
 
 	//pattern(PTN.stripeCircle(60 / int(random(6, 12))));
 	// pattern(PTN.stripeRadial(TAU /  int(random(60, 80))));
@@ -62,22 +70,15 @@ function rho(cx, cy, w, h, rho_shape)
 			{
 				const x = xSpan * (xi + 0.5);
 				const y = ySpan * (yi + 0.5);
-				// patternColors(shuffle(PALETTE));
+				
+				patternColors(shuffle(PALETTE));
 				pattern(randPattern(xSpan));
 				patternAngle(int(random(4)) * PI / 4);
 				push();
 				translate(x, y);
 				if(isDraw == 0 || isDraw > 1){
 					rotate(isDraw * HALF_PI);
-					// const rn = random();
-					// if(rn > 0.66) rectPattern(0, 0, xSpan, ySpan, xSpan, 0, 0, 0);
-					// else if(rn > 0.33) arcPattern(xSpan / 2, ySpan / 2, xSpan * 2, ySpan * 2, PI, TAU / 4 * 3);
-					// else trianglePattern(xSpan / 2, ySpan / 2, -xSpan / 2, ySpan / 2, xSpan / 2, -ySpan / 2);
-					// trianglePattern(xSpan / 2, ySpan / 2, -xSpan / 2, ySpan / 2, xSpan / 2, -ySpan / 2);
-
-					// arcPattern(xSpan / 2, ySpan / 2, xSpan * 2, ySpan * 2, PI, TAU / 4 * 3);
 					rectPattern(0, 0, xSpan, ySpan, xSpan, 0, 0, 0);
-
 				}
 				else if(isDraw == 1) {					      
 
@@ -106,15 +107,15 @@ function randPattern(t)
 		// PTN.noise(0.5),
 		PTN.stripeRadial(TAU /  int(random(2, 90))),
 		PTN.noiseGrad(0.4),
-		PTN.stripe(t / int(random(6, 12))),
+		PTN.stripe(t / int(random(30, 120))),
 		PTN.stripeCircle(t / int(random(6, 12))),
-		PTN.stripePolygon(int(random(3, 7)),  int(random(6, 12))),
-		PTN.stripeRadial(TAU /  int(random(6, 30))),
+		PTN.stripePolygon(int(random(3, 10)),  int(random(6, 12))),
+		PTN.stripeRadial(TAU /  int(random(6, 50))),
 		PTN.wave(t / int(random(1, 3)), t / int(random(10, 20)), t / 5, t / 10),
 		PTN.dot(t / 10, t / 10 * random(0.2, 1)),
-		PTN.checked(t / int(random(5, 20)), t / int(random(5, 20))),
-		PTN.cross(t / int(random(10, 20)), t / int(random(20, 40))),
-		PTN.triangle(t / int(random(5, 20)), t / int(random(5, 20)))
+		PTN.checked(t / int(random(15, 40)), t / int(random(15, 40))),
+		PTN.cross(t / int(random(10, 40)), t / int(random(40, 60))),
+		PTN.triangle(t / int(random(5, 10)), t / int(random(5, 10)))
 	]
 	return random(ptArr);
 }
